@@ -61,8 +61,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/inventaris', [InventarisController::class, 'index'])->name('inventaris');
     Route::post('/addinventaris', [InventarisController::class, 'store'])->name('inventaris.store');
-    Route::put('editinventaris', [InventarisController::class, 'inventaris.update']);
-    Route::delete('hapusinventaris', [InventarisController::class, 'inventaris.delete']);
+    Route::patch('/editinventaris/{id}', [InventarisController::class, 'update'])->name('inventaris.update');
+    Route::delete('/hapusinventaris/{id}', [InventarisController::class, 'delete'])->name('inventaris.delete');
 });
 
 require __DIR__ . '/auth.php';

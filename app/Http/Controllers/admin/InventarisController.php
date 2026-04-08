@@ -20,9 +20,12 @@ class InventarisController extends Controller
         $inv = new Inventaris();
         $inv->nama_barang = $request->nama_barang;
         $inv->jenis = $request->jenis;
+        $inv->kode = $request->kode;
         $inv->jumlah = $request->jumlah;
         $inv->lokasi = $request->lokasi;
         $inv->kondisi = $request->kondisi;
+        $inv->tanggal = $request->tanggal;
+
         $inv->save();
         return redirect()->back()->with('success', 'Data berhasil ditambah');
     }
@@ -35,6 +38,9 @@ class InventarisController extends Controller
         $inv->jumlah = $request->jumlah;
         $inv->lokasi = $request->lokasi;
         $inv->kondisi = $request->kondisi;
+        $inv->tanggal = $request->tanggal;
+        $inv->kode = $request->kode;
+
         $inv->update();
         return redirect()->back()->with('success', 'Data berhasil ditambah');
     }
