@@ -1,7 +1,11 @@
 <?php
 
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\admin\InventarisController;
 use App\Http\Controllers\admin\KategoriController;
+use App\Http\Controllers\admin\MejaController;
+use App\Http\Controllers\admin\PegawaiController;
+use App\Http\Controllers\admin\ProdukController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -26,15 +30,39 @@ Route::get('/admin', function () {
     return Inertia::render('Admin/Home');
 })->middleware(['auth', 'verified'])->name('admin');
 
-Route::get('/kategori', [KategoriController::class, 'index'])->middleware(['auth', 'verified'])->name('kategori');
-Route::post('/addkategori', [KategoriController::class, 'store'])->middleware(['auth', 'verified'])->name('kategor.store');
-Route::post('/kategori/{id}', [KategoriController::class, 'delete'])->middleware(['auth', 'verified'])->name('kategori.delete');
+
 
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori');
+    Route::post('/addkategori', [KategoriController::class, 'store'])->name('kategori.store');
+    Route::delete('/kategori/{id}', [KategoriController::class, 'delete'])->name('kategori.delete');
+    Route::patch('/editkategori/{id}', [KategoriController::class, 'update'])->name('kategori.update');
+
+    Route::get('/pegawai', [PegawaiController::class, 'index'])->name('pegawai');
+    Route::post('/addpegawai', [PegawaiController::class, 'store'])->name('pegawai.store');
+    Route::delete('/hapuspegawai/{id}', [PegawaiController::class, 'delete'])->name('pegawai.delete');
+    Route::patch('/editpegawai/{id}', [PegawaiController::class, 'update'])->name('pegawai.update');
+
+    Route::get('/meja', [MejaController::class, 'index'])->name('meja');
+    Route::post('/addmeja', [MejaController::class, 'store'])->name('meja.store');
+    Route::delete('/hapusmeja/{id}', [MejaController::class, 'delete'])->name('meja.delete');
+    Route::patch('/editmeja/{id}', [MejaController::class, 'update'])->name('meja.update');
+
+    Route::get('/produk', [ProdukController::class, 'index'])->name('produk');
+    Route::post('/addproduk', [ProdukController::class, 'store'])->name('produk.store');
+    Route::delete('/hapusproduk/{id}', [ProdukController::class, 'delete'])->name('produk.delete');
+    Route::post('/editproduk/{id}', [ProdukController::class, 'update'])->name('produk.update');
+    Route::patch('/updatestatus/{id}', [ProdukController::class, 'updatestatus'])->name('produk.status');
+
+    Route::get('/inventaris', [InventarisController::class, 'index'])->name('inventaris');
+    Route::post('/addinventaris', [InventarisController::class, 'store'])->name('inventaris.store');
+    Route::put('editinventaris', [InventarisController::class, 'inventaris.update']);
+    Route::delete('hapusinventaris', [InventarisController::class, 'inventaris.delete']);
 });
 
 require __DIR__ . '/auth.php';

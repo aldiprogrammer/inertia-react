@@ -1,9 +1,12 @@
 import AdminLayout from '@/Layouts/AdminLayout'
-import { Form, useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import React, { useRef, useState } from 'react'
 
-
-export default function Kategori({ kategori }) {
+export default function Meja({ meja }) {
+    const { data, setData, post, patch, delete: destroy, processing, error, reset } = useForm({
+        kode: '',
+        meja: '',
+    });
     const [id, setId] = useState(0);
     const modalRef = useRef(null);
     const editModalRef = useRef(null);
@@ -12,10 +15,10 @@ export default function Kategori({ kategori }) {
         reset();
     };
 
-    const editopenModal = (id, kode, kategori) => {
+    const editopenModal = (id, kode, meja) => {
         editModalRef.current.showModal();
         setData('kode', kode);
-        setData('kategori', kategori);
+        setData('meja', meja);
         setData('id', id);
         setId(id)
     }
@@ -28,53 +31,38 @@ export default function Kategori({ kategori }) {
         editModalRef.current.close();
     }
 
-
-
-    const { data, setData, post, patch, delete: destroy, errors, processing, reset } = useForm({
-        kode: '',
-        kategori: '',
-        id: '',
-    })
-
-    function save(e) {
-        e.preventDefault()
-        post('/addkategori', {
+    const save = (e) => {
+        e.preventDefault();
+        post('/addmeja', {
             onSuccess: () => {
+                reset();
                 closeModal();
-                reset()
             }
         })
-    }
-    const hapus = (id) => {
-        if (confirm('Yakin ingin menghapus')) {
-            post('/kategori/' + id);
-        }
     }
 
     const edit = (e) => {
         e.preventDefault();
-        patch('/editkategori/' + id, {
+        patch('/editmeja/' + id, {
             onSuccess: () => {
-                editCloseModal();
                 reset();
+                editCloseModal();
             }
         })
-        // post('/editkategori/' + id, {
-        //     onSuccess: () => {
-        //         editCloseModal();
-        //         reset()
-        //     }
-        // })
-
     }
 
+    const hapus = () => {
+        if (confirm('Yakin ingin menghapus')) {
+            destroy('/hapusmeja/' + id);
+        }
+    }
     return (
-        <div>
+        <AdminLayout>
             <div class="grid grid-cols-1 xl:grid-cols-1 gap-">
                 <div class="xl:col-span-2 card bg-base-100 shadow-md border border-base-300">
                     <div class="card-body">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
-                            <h2 class="card-title">Data Kategori</h2>
+                            <h2 class="card-title">Data Meja</h2>
                             <div class="flex gap-2">
                                 <button className="btn btn-success" onClick={openModal}>
                                     <i className="fas fa-plus"></i>
@@ -106,20 +94,19 @@ export default function Kategori({ kategori }) {
                                                     required
                                                     onChange={(e) => setData('kode', e.target.value)}
                                                 />
-                                                {errors.kode && <div>{errors.kode}</div>}
+
                                             </label>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Kategori</span>
+                                                    <span className="label-text">Meja</span>
                                                 </div>
                                                 <input
                                                     type="text"
-                                                    name="kategori" value={data.kategori}
+                                                    name="meja" value={data.meja}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('kategori', e.target.value)}
+                                                    onChange={(e) => setData('meja', e.target.value)}
                                                 />
-                                                {errors.kategori && <div>{errors.kategori}</div>}
                                             </label>
 
                                             <div className="mt-4 flex gap-2">
@@ -165,20 +152,20 @@ export default function Kategori({ kategori }) {
                                                     required
                                                     onChange={(e) => setData('kode', e.target.value)}
                                                 />
-                                                {errors.kode && <div>{errors.kode}</div>}
+
                                             </label>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Kategori</span>
+                                                    <span className="label-text">Meja</span>
                                                 </div>
                                                 <input
                                                     type="text"
-                                                    name="kategori" value={data.kategori}
+                                                    name="meja" value={data.meja}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('kategori', e.target.value)}
+                                                    onChange={(e) => setData('meja', e.target.value)}
                                                 />
-                                                {errors.kategori && <div>{errors.kategori}</div>}
+
                                             </label>
 
                                             <div className="mt-4 flex gap-2">
@@ -206,22 +193,22 @@ export default function Kategori({ kategori }) {
                                     <tr>
                                         <th>No</th>
                                         <th>Kode</th>
-                                        <th>Kategori</th>
+                                        <th>Meja</th>
                                         <th>Opsi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {kategori.map((item, index) => (
+                                    {meja.map((item, index) => (
                                         <tr>
                                             <td>{index + 1}</td>
                                             <td>{item.kode}</td>
-                                            <td>{item.kategori}</td>
+                                            <td>{item.meja}</td>
                                             <td>
                                                 <div className='flex gap-2'>
                                                     <button className="btn btn-error btn-sm" onClick={() => hapus(item.id)}>
                                                         Hapus
                                                     </button>
-                                                    <button className='btn btn-success btn-sm' onClick={() => editopenModal(item.id, item.kode, item.kategori)}>Edit</button>
+                                                    <button className='btn btn-success btn-sm' onClick={() => editopenModal(item.id, item.kode, item.meja)}>Edit</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -233,8 +220,6 @@ export default function Kategori({ kategori }) {
                     </div>
                 </div>
             </div>
-        </div>
+        </AdminLayout>
     )
 }
-
-Kategori.layout = page => <AdminLayout>{page}</AdminLayout>

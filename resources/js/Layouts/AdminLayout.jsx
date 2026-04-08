@@ -77,13 +77,16 @@ export default function AdminLayout({ children }) {
                             <Link href="/admin" className="rounded-xl">Dashboard</Link>
                         </li>
                         <li>
-                            <Link href="/admin/users" className="rounded-xl">User</Link>
+                            <Link href="/produk" className="rounded-xl">Produk</Link>
                         </li>
                         <li>
-                            <Link href="/admin/products" className="rounded-xl">Produk</Link>
+                            <Link href="/kategori" className="rounded-xl">Kategori</Link>
                         </li>
                         <li>
-                            <Link href="/admin/orders" className="rounded-xl">Pesanan</Link>
+                            <Link href="/meja" className="rounded-xl">Meja</Link>
+                        </li>
+                        <li>
+                            <Link href="/pegawai" className="rounded-xl">Pegawai</Link>
                         </li>
                         <li>
                             <details>

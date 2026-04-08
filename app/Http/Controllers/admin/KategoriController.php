@@ -30,4 +30,13 @@ class KategoriController extends Controller
         $kt->delete();
         return redirect()->back();
     }
+
+    function update(Request $request, $id)
+    {
+        $kt = Kategori::find($id);
+        $kt->kode = $request->kode;
+        $kt->kategori = $request->kategori;
+        $kt->update();
+        return redirect()->back()->with('success', 'Data berhasil diubah');
+    }
 }
