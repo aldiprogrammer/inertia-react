@@ -3,7 +3,7 @@ import AdminLayout from "@/Layouts/AdminLayout";
 import { router } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 
-export default function Kasir({ produk, kategori, kodeorder, listorder }) {
+export default function Kasir({ produk, kategori, kodeorder, listorder, total }) {
     const [search, setSearch] = useState('');
     const formatRupiah = (angka) => {
         return new Intl.NumberFormat("id-ID", {
@@ -166,7 +166,7 @@ export default function Kasir({ produk, kategori, kodeorder, listorder }) {
 
                         </div>
                         <div>
-                            <Listorder list={listorder} />
+                            <Listorder list={listorder} total={total} />
                         </div>
                     </div>
                 </div>

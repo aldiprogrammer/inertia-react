@@ -54,7 +54,7 @@ class KeranjangController extends Controller
     function kurangqty($id)
     {
         $list = ListOrder::find($id);
-        $qty = $list->qty + 1;
+        $qty = $list->qty - 1;
         $list->qty = $qty;
         $list->total_harga = $list->harga * $qty;
         $list->update();

@@ -1,7 +1,7 @@
 import { router } from '@inertiajs/react'
 import React from 'react'
 
-export default function Listorder({ list }) {
+export default function Listorder({ list, total }) {
     const hapus = (id) => {
         if (confirm('Yakin ingin menghapus ?')) {
             router.delete('/hapuslistorder/' + id, {
@@ -47,7 +47,7 @@ export default function Listorder({ list }) {
                             {item.produk}
                         </h3>
                         <p className="mt-1 text-sm text-primary font-bold">
-                            Rp {item.harga.toLocaleString('id-ID')}
+                            Rp {Number(item.harga).toLocaleString('id-ID')}
                         </p>
 
                         <div className="mt-3 flex items-center gap-2">
@@ -68,9 +68,7 @@ export default function Listorder({ list }) {
                     <div className="flex flex-col items-end gap-3">
                         <p className="text-right text-sm font-bold">
                             Rp{' '}
-                            {(item.total_harga).toLocaleString(
-                                'id-ID'
-                            )}
+                            {Number(item.total_harga).toLocaleString('id-ID')}
                         </p>
 
                         <button className="btn btn-circle btn-sm btn-error btn-outline" onClick={() => hapus(item.id)}>
@@ -79,6 +77,28 @@ export default function Listorder({ list }) {
                     </div>
                 </div>
             ))}
+
+            <div className="space-y-4 border-t border-base-300 p-5">
+                <div className="flex items-center justify-between text-sm">
+                    <span className="text-base-content/70">Subtotal</span>
+                    <span className="font-semibold">
+                        Rp {total.toLocaleString('id-ID')}
+                    </span>
+                </div>
+
+                <div className="flex items-center justify-between text-lg font-bold">
+                    <span>Total</span>
+                    <span className="text-primary">
+                        Rp {total.toLocaleString('id-ID')}
+                    </span>
+                </div>
+
+                <button className="btn btn-success text-white btn-block rounded-2xl text-base">
+                    Cetak Struk
+                </button>
+            </div>
         </div>
+
+
     )
 }

@@ -27,6 +27,7 @@ class KasirController extends Controller
             $kodeorder = $order->kode + 1;
         }
         $listorder = ListOrder::with('listproduk')->where('kode_order', $kodeorder)->get();
-        return Inertia::render('Admin/Kasir', compact('produk', 'kategori', 'kodeorder', 'listorder'));
+        $total = ListOrder::where('kode_order', $kodeorder)->sum('total_harga');
+        return Inertia::render('Admin/Kasir', compact('produk', 'kategori', 'kodeorder', 'listorder', 'total'));
     }
 }
