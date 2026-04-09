@@ -12,7 +12,7 @@ class PegawaiController extends Controller
     function index()
     {
         $pegawai = Pegawai::all();
-        return Inertia::render('Admin/Pegawai', ['pegawai' => $pegawai]);
+        return Inertia::render('Admin/Pegawai', compact('pegawai'));
     }
 
     function store(Request $request)

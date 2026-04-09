@@ -12,7 +12,7 @@ class KategoriController extends Controller
     function index()
     {
         $kategori = Kategori::all();
-        return Inertia::render('Admin/Kategori', ['kategori' => $kategori]);
+        return Inertia::render('Admin/Kategori', compact('kategori'));
     }
 
     function store(Request $request)

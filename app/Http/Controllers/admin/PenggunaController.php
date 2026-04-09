@@ -13,7 +13,7 @@ class PenggunaController extends Controller
     function index()
     {
         $pengguna = Pengguna::all();
-        return Inertia::render('Admin/Pengguna', ['pengguna' => $pengguna]);
+        return Inertia::render('Admin/Pengguna', compact('pengguna'));
     }
 
     function store(Request $request)

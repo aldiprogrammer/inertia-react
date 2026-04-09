@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\admin\InventarisController;
+use App\Http\Controllers\admin\KasirController;
 use App\Http\Controllers\admin\KategoriController;
 use App\Http\Controllers\admin\MejaController;
 use App\Http\Controllers\admin\MemberController;
@@ -77,6 +78,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/editpengguna/{id}', [PenggunaController::class, 'update'])->name('pengguna.update');
     Route::delete('/hapuspengguna/{id}', [PenggunaController::class, 'delete'])->name('pengguna.delete');
     Route::patch('/statuspengguna/{id}', [PenggunaController::class, 'status'])->name('pengguna.status');
+
+    Route::get('/kasir', [KasirController::class, 'index'])->name('kasir');
 });
 
 require __DIR__ . '/auth.php';

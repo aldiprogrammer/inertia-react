@@ -13,7 +13,7 @@ class MemberController extends Controller
     {
         $member = Member::all();
         $kode = "KDM-" . rand(0, 100000);
-        return Inertia::render('Admin/Member', ['member' => $member, 'kode' => $kode]);
+        return Inertia::render('Admin/Member', compact('member', 'kode'));
     }
 
     function store(Request $request)

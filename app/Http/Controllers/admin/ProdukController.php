@@ -14,7 +14,7 @@ class ProdukController extends Controller
     {
         $produk = Produk::all();
         $kategori = Kategori::all();
-        return Inertia::render('Admin/Produk', ['produk' => $produk, 'kategori' => $kategori]);
+        return Inertia::render('Admin/Produk', compact('produk', 'kategori'));
     }
 
     function store(Request $request)

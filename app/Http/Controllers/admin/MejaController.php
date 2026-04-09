@@ -12,7 +12,7 @@ class MejaController extends Controller
     function index()
     {
         $meja = Meja::all();
-        return Inertia::render('Admin/Meja', ['meja' => $meja]);
+        return Inertia::render('Admin/Meja', compact('meja'));
     }
 
     function store(Request $request)
