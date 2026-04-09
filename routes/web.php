@@ -4,7 +4,9 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\admin\InventarisController;
 use App\Http\Controllers\admin\KategoriController;
 use App\Http\Controllers\admin\MejaController;
+use App\Http\Controllers\admin\MemberController;
 use App\Http\Controllers\admin\PegawaiController;
+use App\Http\Controllers\admin\PenggunaController;
 use App\Http\Controllers\admin\ProdukController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -63,6 +65,18 @@ Route::middleware('auth')->group(function () {
     Route::post('/addinventaris', [InventarisController::class, 'store'])->name('inventaris.store');
     Route::patch('/editinventaris/{id}', [InventarisController::class, 'update'])->name('inventaris.update');
     Route::delete('/hapusinventaris/{id}', [InventarisController::class, 'delete'])->name('inventaris.delete');
+
+    Route::get('/member', [MemberController::class, 'index'])->name('member');
+    Route::post('/addmember', [MemberController::class, 'store'])->name('member.store');
+    Route::patch('/editmember/{id}', [MemberController::class, 'update'])->name('member.update');
+    Route::delete('/hapusmember/{id}', [MemberController::class, 'delete'])->name('member.delete');
+    Route::patch('/statusmember/{id}', [MemberController::class, 'status'])->name('member.status');
+
+    Route::get('/pengguna', [PenggunaController::class, 'index'])->name('pengguna');
+    Route::post('/addpengguna', [PenggunaController::class, 'store'])->name('pengguna.store');
+    Route::patch('/editpengguna/{id}', [PenggunaController::class, 'update'])->name('pengguna.update');
+    Route::delete('/hapuspengguna/{id}', [PenggunaController::class, 'delete'])->name('pengguna.delete');
+    Route::patch('/statuspengguna/{id}', [PenggunaController::class, 'status'])->name('pengguna.status');
 });
 
 require __DIR__ . '/auth.php';

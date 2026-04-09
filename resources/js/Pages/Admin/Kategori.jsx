@@ -28,8 +28,6 @@ export default function Kategori({ kategori }) {
         editModalRef.current.close();
     }
 
-
-
     const { data, setData, post, patch, delete: destroy, errors, processing, reset } = useForm({
         kode: '',
         kategori: '',
@@ -59,12 +57,7 @@ export default function Kategori({ kategori }) {
                 reset();
             }
         })
-        // post('/editkategori/' + id, {
-        //     onSuccess: () => {
-        //         editCloseModal();
-        //         reset()
-        //     }
-        // })
+     
 
     }
 

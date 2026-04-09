@@ -1,31 +1,32 @@
 import AdminLayout from '@/Layouts/AdminLayout'
-import { useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react'
 import React, { useRef, useState } from 'react'
 
-export default function Meja({ meja }) {
-    const { data, setData, post, patch, delete: destroy, processing, error, reset } = useForm({
-        kode: '',
-        meja: '',
-    });
+export default function Pengguna({pengguna}) {
     const [id, setId] = useState(0);
+    const { data, setData, post, patch, delete: destroy, processing, error, reset } = useForm({
+        username: '',
+        role: '',
+        password : '',
+    });
+
     const modalRef = useRef(null);
     const editModalRef = useRef(null);
+    
     const openModal = () => {
         modalRef.current.showModal();
-        reset();
-    };
-
-    const editopenModal = (id, kode, meja) => {
+    }
+    const editopenModal = (id,username, role, password='') => {
         editModalRef.current.showModal();
-        setData('kode', kode);
-        setData('meja', meja);
-        setData('id', id);
-        setId(id)
+        setData('username', username);
+        setData('role', role);
+        setData('password', password);
+        setId(id);
     }
 
     const closeModal = () => {
         modalRef.current.close();
-    };
+    }
 
     const editCloseModal = () => {
         editModalRef.current.close();
@@ -33,36 +34,42 @@ export default function Meja({ meja }) {
 
     const save = (e) => {
         e.preventDefault();
-        post('/addmeja', {
+        post('/addpengguna', {
             onSuccess: () => {
                 reset();
-                closeModal();
+                closeModal()
             }
         })
-    }
+    };
 
-    const edit = (e) => {
+    const update = (e) => {
         e.preventDefault();
-        patch('/editmeja/' + id, {
+        patch('/editpengguna/' + id, {
             onSuccess: () => {
                 reset();
                 editCloseModal();
             }
         })
-    }
+    };
 
     const hapus = (id) => {
         if (confirm('Yakin ingin menghapus')) {
-            destroy('/hapusmeja/' + id);
+            destroy('/hapuspengguna/' + id);
+        }
+    };
+
+    const status = (id) => {
+        if (confirm('Yakin ingin update status ini?')) {
+            patch('/statuspengguna/' + id);
         }
     }
-    return (
-        <AdminLayout>
-            <div class="grid grid-cols-1 xl:grid-cols-1 gap-">
+  return (
+      <AdminLayout>
+          <div class="grid grid-cols-1 xl:grid-cols-1 gap-">
                 <div class="xl:col-span-2 card bg-base-100 shadow-md border border-base-300">
                     <div class="card-body">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
-                            <h2 class="card-title">Data Meja</h2>
+                            <h2 class="card-title">Data Pengguna</h2>
                             <div class="flex gap-2">
                                 <button className="btn btn-success" onClick={openModal}>
                                     <i className="fas fa-plus"></i>
@@ -81,34 +88,46 @@ export default function Meja({ meja }) {
 
                                         <h3 className="text-lg font-bold">Tambah data</h3>
 
-                                        <form onSubmit={save}>
+                                      <form onSubmit={save}>
+                                           
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Kode</span>
+                                                    <span className="label-text">Username</span>
                                                 </div>
                                                 <input
                                                     type="text"
                                                     name="kode"
-                                                    value={data.kode}
+                                                    value={data.username}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('kode', e.target.value)}
+                                                    onChange={(e) => setData('username', e.target.value)}
                                                 />
 
                                             </label>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Meja</span>
+                                                    <span className="label-text">Role</span>
+                                                </div>
+                                              <select name="role" id="" className='input input-bordered input-success' required onChange={(e) => setData('role', e.target.value)}>
+                                                  <option value=""> -- Pilih Role --</option>
+                                                  <option value="Kasir">Kasir</option>
+                                                  <option value="Kasir">Admin</option>
+                                               </select>
+                                          </label>
+                                          
+                                          <label className="form-control w-full mt-2">
+                                                <div className="label">
+                                                    <span className="label-text">Password</span>
                                                 </div>
                                                 <input
-                                                    type="text"
-                                                    name="meja" value={data.meja}
+                                                    type="password"
+                                                    name="passwowrd" value={data.password}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('meja', e.target.value)}
+                                                    onChange={(e) => setData('password', e.target.value)}
                                                 />
-                                            </label>
-
+                                          </label>
+                                          
                                             <div className="mt-4 flex gap-2">
                                                 <button type="submit" disabled={processing} className="btn btn-success">
                                                     Tambah data
@@ -139,36 +158,45 @@ export default function Meja({ meja }) {
 
                                         <h3 className="text-lg font-bold">Edit data</h3>
 
-                                        <form onSubmit={edit}>
-                                            <label className="form-control w-full mt-2">
+                                        <form onSubmit={update}>
+                                                                                         <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Kode</span>
+                                                    <span className="label-text">Username</span>
                                                 </div>
                                                 <input
                                                     type="text"
                                                     name="kode"
-                                                    value={data.kode}
+                                                    value={data.username}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('kode', e.target.value)}
+                                                    onChange={(e) => setData('username', e.target.value)}
                                                 />
 
                                             </label>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Meja</span>
+                                                    <span className="label-text">Role</span>
+                                                </div>
+                                              <select name="role" id="" className='input input-bordered input-success' required onChange={(e) => setData('role', e.target.value)}>
+                                                  <option value="{data.role}">{ data.role }</option>
+                                                  <option value="Kasir">Kasir</option>
+                                                  <option value="Kasir">Admin</option>
+                                               </select>
+                                          </label>
+                                          
+                                          <label className="form-control w-full mt-2">
+                                                <div className="label">
+                                                    <span className="label-text">New Password</span>
                                                 </div>
                                                 <input
-                                                    type="text"
-                                                    name="meja" value={data.meja}
+                                                    type="password"
+                                                    name="passwowrd" value={data.password}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('meja', e.target.value)}
+                                                    onChange={(e) => setData('password', e.target.value)}
                                                 />
-
-                                            </label>
-
-
+                                          </label>
+                                          
                                             <div className="mt-4 flex gap-2">
                                                 <button type="submit" disabled={processing} className="btn btn-success" >
                                                     Edit data
@@ -193,23 +221,24 @@ export default function Meja({ meja }) {
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Kode</th>
-                                        <th>Meja</th>
+                                        <th>Username</th>
+                                        <th>Role</th>
                                         <th>Opsi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {meja.map((item, index) => (
+                                    {pengguna.map((item, index) => (
                                         <tr>
                                             <td>{index + 1}</td>
-                                            <td>{item.kode}</td>
-                                            <td>{item.meja}</td>
+                                            <td>{item.username}</td>
+                                            <td>{item.role}</td>
                                             <td>
                                                 <div className='flex gap-2'>
                                                     <button className="btn btn-error btn-sm" onClick={() => hapus(item.id)}>
                                                         Hapus
                                                     </button>
-                                                    <button className='btn btn-success btn-sm' onClick={() => editopenModal(item.id, item.kode, item.meja)}>Edit</button>
+                                                    <button className='btn btn-success btn-sm' onClick={() => editopenModal(item.id, item.username, item.role)}>Edit</button>
+                                                      
                                                 </div>
                                             </td>
                                         </tr>
@@ -221,6 +250,6 @@ export default function Meja({ meja }) {
                     </div>
                 </div>
             </div>
-        </AdminLayout>
-    )
+    </AdminLayout>
+  )
 }
