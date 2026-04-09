@@ -1,7 +1,10 @@
+import Listorder from "@/Components/Listorder";
 import AdminLayout from "@/Layouts/AdminLayout";
-import React, { useEffect } from "react";
+import { router } from "@inertiajs/react";
+import React, { useEffect, useState } from "react";
 
-export default function Kasir({ produk, kategori }) {
+export default function Kasir({ produk, kategori, kodeorder, listorder }) {
+    const [search, setSearch] = useState('');
     const formatRupiah = (angka) => {
         return new Intl.NumberFormat("id-ID", {
             style: "currency",
@@ -9,9 +12,43 @@ export default function Kasir({ produk, kategori }) {
             minimumFractionDigits: 0,
         }).format(angka);
     };
-    useEffect(() => {
-        console.log(produk);
-    }, []);
+
+    const handleSearch = (val) => {
+        setSearch(val);
+        // console.log(val);
+        router.get('/kasir', {
+            search: val
+        }, {
+            preserveState: true,
+            replace: true,
+        })
+
+    }
+
+    const handleKeranjang = (id) => {
+        router.post('/addkeranjang', {
+            idproduk: id,
+            kodeorder: kodeorder,
+        }, {
+
+        })
+    }
+
+    const handleSearchkategori = (val) => {
+        // console.log(val);
+
+        router.get('/kasir', {
+            search: val == 'All' ? '' : val
+        }, {
+            preserveState: true,
+            replace: true,
+        })
+
+    }
+
+
+
+
     return (
         <AdminLayout>
             <div className="grid grid-cols-3 gap-4">
@@ -23,18 +60,18 @@ export default function Kasir({ produk, kategori }) {
                                     <input
                                         type="text"
                                         className="input input-bordered input-success w-full"
-                                        placeholder="Cari produk disini"
+                                        placeholder="Cari produk disini" value={search} onChange={(e) => handleSearch(e.target.value)}
                                     />
                                 </div>
 
                                 <div>
-                                    <select className="input input-bordered input-success w-full">
+                                    <select className="input input-bordered input-success w-full" onChange={(e) => handleSearchkategori(e.target.value)}>
                                         <option value="">
                                             -- Pilih Ketegori --
                                         </option>
                                         <option value="All">All</option>
                                         {kategori.map((item, index) => (
-                                            <option value={item.kategori}>
+                                            <option key={index} value={item.kategori}>
                                                 {item.kategori}
                                             </option>
                                         ))}
@@ -45,9 +82,9 @@ export default function Kasir({ produk, kategori }) {
                             <div className="flex gap-2"></div>
                             <div className="mt-4">
                                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
-                                    {produk.map((product) => (
+                                    {produk.map((product, index) => (
                                         <div
-                                            key={product.id}
+                                            key={index}
                                             className="card overflow-hidden rounded-3xl border border-base-300 bg-base-100 shadow-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
                                         >
                                             <figure className="relative h-56 overflow-hidden">
@@ -69,9 +106,9 @@ export default function Kasir({ produk, kategori }) {
                                             </figure>
 
                                             <div className="card-body p-5">
-                                                <h2 className="card-title line-clamp-2 text-lg font-bold">
+                                                <h3 className="card-title line-clamp-2 text-sm font-bold">
                                                     {product.nama}
-                                                </h2>
+                                                </h3>
 
                                                 <div className="mt-1 flex items-center justify-between">
                                                     <span className="text-2xl font-extrabold text-success">
@@ -86,14 +123,14 @@ export default function Kasir({ produk, kategori }) {
 
                                                 <div className="mt-4 flex gap-2">
                                                     <button
-                                                        className="btn btn-success text-white flex-1 rounded-2xl"
+                                                        className="btn btn-success text-white flex-1 rounded-2xl" onClick={() => handleKeranjang(product.id)}
                                                         disabled={
                                                             product.status ==
                                                             "0"
                                                         }
                                                     >
                                                         {product.status ==
-                                                        "1" ? (
+                                                            "1" ? (
                                                             <> + Keranjang</>
                                                         ) : (
                                                             "- Tidak tersedia"
@@ -103,14 +140,35 @@ export default function Kasir({ produk, kategori }) {
                                             </div>
                                         </div>
                                     ))}
+
+
                                 </div>
+                                {produk == false ?
+                                    <div className="my-5">
+                                        <div className="flex justify-center">
+                                            <img width="100" height="100" src="https://img.icons8.com/arcade/64/kawaii-coffee.png" alt="kawaii-coffee" />
+                                        </div>
+                                        <p className="text-center text-success font-semibold">Menu yang anda cari tidak tersedia</p>
+
+                                    </div>
+                                    :
+                                    ''
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div className="col-span-1 card bg-base-100 shadow-md border border-base-300">
-                    <div className="card-body">Keranjanga Order</div>
+                    <div className="card-body">
+                        <div className="flex">
+                            <h2 className="text-sm card-title font-bold"> Keranjang order {kodeorder}</h2>
+
+                        </div>
+                        <div>
+                            <Listorder list={listorder} />
+                        </div>
+                    </div>
                 </div>
             </div>
         </AdminLayout>

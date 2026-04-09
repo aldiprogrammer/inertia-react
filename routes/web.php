@@ -4,6 +4,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\admin\InventarisController;
 use App\Http\Controllers\admin\KasirController;
 use App\Http\Controllers\admin\KategoriController;
+use App\Http\Controllers\admin\KeranjangController;
 use App\Http\Controllers\admin\MejaController;
 use App\Http\Controllers\admin\MemberController;
 use App\Http\Controllers\admin\PegawaiController;
@@ -32,9 +33,6 @@ Route::get('/About', [AboutController::class, 'index'])->middleware(['auth', 've
 Route::get('/admin', function () {
     return Inertia::render('Admin/Home');
 })->middleware(['auth', 'verified'])->name('admin');
-
-
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -80,6 +78,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/statuspengguna/{id}', [PenggunaController::class, 'status'])->name('pengguna.status');
 
     Route::get('/kasir', [KasirController::class, 'index'])->name('kasir');
+    Route::post('/addkeranjang', [KeranjangController::class, 'store'])->name('keranjang.store');
+    Route::delete('/hapuslistorder/{id}', [KeranjangController::class, 'delete'])->name('keranjang.delete');
+    Route::put('/tambahqty/{id}', [KeranjangController::class, 'tambahqty'])->name('keranjang.tambahqty');
+    Route::put('/kurangqty/{id}', [KeranjangController::class, 'kurangqty'])->name('keranjang.kurangqty');
 });
 
 require __DIR__ . '/auth.php';

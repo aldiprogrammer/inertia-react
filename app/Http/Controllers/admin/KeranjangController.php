@@ -1,0 +1,63 @@
+<?php
+
+namespace App\Http\Controllers\admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\ListOrder;
+use App\Models\Produk;
+use Illuminate\Http\Request;
+
+class KeranjangController extends Controller
+{
+    public function store(Request $request)
+    {
+        $item = Produk::find($request->idproduk);
+        $cekorder = ListOrder::where('id_produk', $request->idproduk)->where('kode_order', $request->kodeorder)->where('tanggal', date('Y-m-d'))->first();
+        if ($cekorder == true) {
+            $qty = $cekorder->qty + 1;
+            $cekorder->qty  = $qty;
+            $cekorder->total_harga = $cekorder->harga * $qty;
+            $cekorder->update();
+        } else {
+            $lo =  new ListOrder();
+            $lo->tanggal = date('Y-m-d');
+            $lo->kode_order = $request->kodeorder;
+            $lo->produk = $item->nama;
+            $lo->id_produk = $request->idproduk;
+            $lo->harga = $item->harga;
+            $lo->qty = 1;
+            $lo->status = 0;
+            $lo->total_harga = $item->harga;
+            $lo->save();
+        }
+
+        return redirect()->back()->with('success', 'Menu ditambah kekeranjang');
+    }
+
+    function delete($id)
+    {
+        $list = ListOrder::find($id);
+        $list->delete();
+        return redirect()->back()->with('success', 'Order berhasil dihapus');
+    }
+
+    function tambahqty($id)
+    {
+        $list = ListOrder::find($id);
+        $qty = $list->qty + 1;
+        $list->qty = $qty;
+        $list->total_harga = $list->harga * $qty;
+        $list->update();
+        return redirect()->back()->with('success', 'Qty berhasil diupdate');
+    }
+
+    function kurangqty($id)
+    {
+        $list = ListOrder::find($id);
+        $qty = $list->qty + 1;
+        $list->qty = $qty;
+        $list->total_harga = $list->harga * $qty;
+        $list->update();
+        return redirect()->back()->with('success', 'Qty berhasil diupdate');
+    }
+}
