@@ -9,6 +9,7 @@ use App\Http\Controllers\admin\MejaController;
 use App\Http\Controllers\admin\MemberController;
 use App\Http\Controllers\admin\PegawaiController;
 use App\Http\Controllers\admin\PenggunaController;
+use App\Http\Controllers\admin\PotonganMemberController;
 use App\Http\Controllers\admin\ProdukController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -82,6 +83,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/hapuslistorder/{id}', [KeranjangController::class, 'delete'])->name('keranjang.delete');
     Route::put('/tambahqty/{id}', [KeranjangController::class, 'tambahqty'])->name('keranjang.tambahqty');
     Route::put('/kurangqty/{id}', [KeranjangController::class, 'kurangqty'])->name('keranjang.kurangqty');
+    Route::get('/cekmember/{kode}', [KeranjangController::class, 'cekmember'])->name('keranjang.cekmember');
+
+    Route::get('/potongan', [PotonganMemberController::class, 'index'])->name('potongan');
+    Route::post('/addpotongan', [PotonganMemberController::class, 'store'])->name('potongan.store');
+    Route::patch('/editpotongan/{id}', [PotonganMemberController::class, 'update'])->name('potongan.update');
+    Route::delete('/hapuspotongan/{id}', [PotonganMemberController::class, 'delete'])->name('potongan.delete');
+    Route::patch('/statuspotongan/{id}', [PotonganMemberController::class, 'status'])->name('potongan.status');
 });
 
 require __DIR__ . '/auth.php';

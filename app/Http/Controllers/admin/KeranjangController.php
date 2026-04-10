@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ListOrder;
+use App\Models\Member;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 
@@ -59,5 +60,12 @@ class KeranjangController extends Controller
         $list->total_harga = $list->harga * $qty;
         $list->update();
         return redirect()->back()->with('success', 'Qty berhasil diupdate');
+    }
+
+    function cekmember($kode)
+    {
+
+        $member = Member::where('kode', $kode)->first();
+        return response()->json(['data' => $member]);
     }
 }

@@ -1,8 +1,8 @@
 import AdminLayout from "@/Layouts/AdminLayout";
-import { useForm } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 import React, { useRef, useState } from "react";
 
-export default function Member({ member, kode }) {
+export default function Potongan({ potongan }) {
     const [id, setId] = useState(0);
     const {
         data,
@@ -11,15 +11,13 @@ export default function Member({ member, kode }) {
         patch,
         delete: destroy,
         processing,
-        error,
+        errors,
         reset,
     } = useForm({
-        tgl_daftar: "",
-        kode: kode,
-        nama: "",
-        tgl_lahir: "",
-        nohp: "",
-        alamat: "",
+        tgl_mulai: "",
+        tgl_selesai: "",
+        min_order: "",
+        diskon: "",
     });
 
     const modalRef = useRef(null);
@@ -28,22 +26,13 @@ export default function Member({ member, kode }) {
     const openModal = () => {
         modalRef.current.showModal();
     };
-    const editopenModal = (
-        id,
-        tgl_daftar,
-        kode,
-        nama,
-        tgl_lahir,
-        nohp,
-        alamat,
-    ) => {
+
+    const editopenModal = (id, tgl_mulai, tgl_selesai, min_order, diskon) => {
         editModalRef.current.showModal();
-        setData("tgl_daftar", tgl_daftar);
-        setData("kode", kode);
-        setData("nama", nama);
-        setData("tgl_lahir", tgl_lahir);
-        setData("nohp", nohp);
-        setData("alamat", alamat);
+        setData("tgl_mulai", tgl_mulai);
+        setData("tgl_selesai", tgl_selesai);
+        setData("min_order", min_order);
+        setData("diskon", diskon);
         setId(id);
     };
 
@@ -51,13 +40,13 @@ export default function Member({ member, kode }) {
         modalRef.current.close();
     };
 
-    const editCloseModal = () => {
+    const editcloseModal = () => {
         editModalRef.current.close();
     };
 
     const save = (e) => {
         e.preventDefault();
-        post("/addmember", {
+        post("/addpotongan", {
             onSuccess: () => {
                 reset();
                 closeModal();
@@ -67,20 +56,19 @@ export default function Member({ member, kode }) {
 
     const update = (e) => {
         e.preventDefault();
-        patch("/editmember/" + id, {
+        patch("/editpotongan/" + id, {
             onSuccess: () => {
                 reset();
-                editCloseModal();
+                editcloseModal();
             },
         });
     };
 
     const hapus = (id) => {
         if (confirm("Yakin ingin menghapus")) {
-            destroy("/hapusmember/" + id);
+            destroy("/hapuspotongan/" + id);
         }
     };
-
     const status = (id) => {
         if (confirm("Yakin ingin update status ini?")) {
             patch("/statusmember/" + id);
@@ -92,7 +80,7 @@ export default function Member({ member, kode }) {
                 <div class="xl:col-span-2 card bg-base-100 shadow-md border border-base-300">
                     <div class="card-body">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
-                            <h2 class="card-title">Data Member</h2>
+                            <h2 class="card-title">Data Potongan Member</h2>
                             <div class="flex gap-2">
                                 <button
                                     className="btn btn-success"
@@ -120,58 +108,18 @@ export default function Member({ member, kode }) {
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
                                                     <span className="label-text">
-                                                        Tanggal Daftar
+                                                        Tanggal Mulai
                                                     </span>
                                                 </div>
                                                 <input
                                                     type="date"
-                                                    name="kode"
-                                                    value={data.tgl_daftar}
+                                                    name="tgl_mulai"
+                                                    value={data.tgl_mulai}
                                                     className="input input-bordered input-success w-full"
                                                     required
                                                     onChange={(e) =>
                                                         setData(
-                                                            "tgl_daftar",
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                />
-                                            </label>
-                                            <label className="form-control w-full mt-2">
-                                                <div className="label">
-                                                    <span className="label-text">
-                                                        Kode
-                                                    </span>
-                                                </div>
-                                                <input
-                                                    type="text"
-                                                    name="kode"
-                                                    value={data.kode}
-                                                    className="input input-bordered input-success w-full"
-                                                    required
-                                                    onChange={(e) =>
-                                                        setData(
-                                                            "kode",
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                />
-                                            </label>
-                                            <label className="form-control w-full mt-2">
-                                                <div className="label">
-                                                    <span className="label-text">
-                                                        Nama
-                                                    </span>
-                                                </div>
-                                                <input
-                                                    type="text"
-                                                    name="nama"
-                                                    value={data.nama}
-                                                    className="input input-bordered input-success w-full"
-                                                    required
-                                                    onChange={(e) =>
-                                                        setData(
-                                                            "nama",
+                                                            "tgl_mulai",
                                                             e.target.value,
                                                         )
                                                     }
@@ -181,39 +129,38 @@ export default function Member({ member, kode }) {
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
                                                     <span className="label-text">
-                                                        Tanggal Lahir
+                                                        Tanggal Selesai
                                                     </span>
                                                 </div>
                                                 <input
                                                     type="date"
-                                                    name="tgl_lahir"
-                                                    value={data.tgl_lahir}
+                                                    name="tgl_selesai"
+                                                    value={data.tgl_selesai}
                                                     className="input input-bordered input-success w-full"
                                                     required
                                                     onChange={(e) =>
                                                         setData(
-                                                            "tgl_lahir",
+                                                            "tgl_selesai",
                                                             e.target.value,
                                                         )
                                                     }
                                                 />
                                             </label>
-
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
                                                     <span className="label-text">
-                                                        No Whatsapp
+                                                        Min Order
                                                     </span>
                                                 </div>
                                                 <input
-                                                    type="text"
-                                                    name="nohp"
-                                                    value={data.nohp}
+                                                    type="number"
+                                                    name="min_order"
+                                                    value={data.min_order}
                                                     className="input input-bordered input-success w-full"
                                                     required
                                                     onChange={(e) =>
                                                         setData(
-                                                            "nohp",
+                                                            "min_order",
                                                             e.target.value,
                                                         )
                                                     }
@@ -223,22 +170,25 @@ export default function Member({ member, kode }) {
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
                                                     <span className="label-text">
-                                                        Alamat
+                                                        Diskon
                                                     </span>
                                                 </div>
-                                                <textarea
-                                                    name="alamat"
-                                                    className="input input-bordered input-success"
-                                                    id="
-                                                "
+                                                <input
+                                                    type="number"
+                                                    name="diskon"
+                                                    value={data.diskon}
+                                                    className="input input-bordered input-success w-full"
+                                                    required
                                                     onChange={(e) =>
                                                         setData(
-                                                            "alamat",
+                                                            "diskon",
                                                             e.target.value,
                                                         )
                                                     }
-                                                    value={data.alamat}
-                                                ></textarea>
+                                                />
+                                                <small>
+                                                    Masukan angak tanpa tanda %
+                                                </small>
                                             </label>
 
                                             <div className="mt-4 flex gap-2">
@@ -267,7 +217,7 @@ export default function Member({ member, kode }) {
                                     <div className="modal-box">
                                         <button
                                             type="button"
-                                            onClick={editCloseModal}
+                                            onClick={editcloseModal}
                                             className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
                                         >
                                             ✕
@@ -281,58 +231,18 @@ export default function Member({ member, kode }) {
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
                                                     <span className="label-text">
-                                                        Tanggal Daftar
-                                                    </span>
-                                                </div>
-                                                <input
-                                                    type="date"
-                                                    name="kode"
-                                                    value={data.tgl_daftar}
-                                                    className="input input-bordered input-success w-full"
-                                                    required
-                                                    onChange={(e) =>
-                                                        setData(
-                                                            "tgl_daftar",
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                />
-                                            </label>
-                                            <label className="form-control w-full mt-2">
-                                                <div className="label">
-                                                    <span className="label-text">
-                                                        Kode
+                                                        Tanggal Mulai
                                                     </span>
                                                 </div>
                                                 <input
                                                     type="text"
-                                                    name="kode"
-                                                    value={data.kode}
+                                                    name="tgl_mulai"
+                                                    value={data.tgl_mulai}
                                                     className="input input-bordered input-success w-full"
                                                     required
                                                     onChange={(e) =>
                                                         setData(
-                                                            "kode",
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                />
-                                            </label>
-                                            <label className="form-control w-full mt-2">
-                                                <div className="label">
-                                                    <span className="label-text">
-                                                        Nama
-                                                    </span>
-                                                </div>
-                                                <input
-                                                    type="text"
-                                                    name="nama"
-                                                    value={data.nama}
-                                                    className="input input-bordered input-success w-full"
-                                                    required
-                                                    onChange={(e) =>
-                                                        setData(
-                                                            "nama",
+                                                            "tgl_mulai",
                                                             e.target.value,
                                                         )
                                                     }
@@ -342,39 +252,38 @@ export default function Member({ member, kode }) {
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
                                                     <span className="label-text">
-                                                        Tanggal Lahir
-                                                    </span>
-                                                </div>
-                                                <input
-                                                    type="date"
-                                                    name="tgl_lahir"
-                                                    value={data.tgl_lahir}
-                                                    className="input input-bordered input-success w-full"
-                                                    required
-                                                    onChange={(e) =>
-                                                        setData(
-                                                            "tgl_lahir",
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                />
-                                            </label>
-
-                                            <label className="form-control w-full mt-2">
-                                                <div className="label">
-                                                    <span className="label-text">
-                                                        No Whatsapp
+                                                        Tanggal Selesai
                                                     </span>
                                                 </div>
                                                 <input
                                                     type="text"
-                                                    name="nohp"
-                                                    value={data.nohp}
+                                                    name="tgl_mulai"
+                                                    value={data.tgl_selesai}
                                                     className="input input-bordered input-success w-full"
                                                     required
                                                     onChange={(e) =>
                                                         setData(
-                                                            "nohp",
+                                                            "tgl_selesai",
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                />
+                                            </label>
+                                            <label className="form-control w-full mt-2">
+                                                <div className="label">
+                                                    <span className="label-text">
+                                                        Min Order
+                                                    </span>
+                                                </div>
+                                                <input
+                                                    type="number"
+                                                    name="min_order"
+                                                    value={data.min_order}
+                                                    className="input input-bordered input-success w-full"
+                                                    required
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "min_order",
                                                             e.target.value,
                                                         )
                                                     }
@@ -384,22 +293,25 @@ export default function Member({ member, kode }) {
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
                                                     <span className="label-text">
-                                                        Alamat
+                                                        Diskon
                                                     </span>
                                                 </div>
-                                                <textarea
-                                                    name="alamat"
-                                                    className="input input-bordered input-success"
-                                                    id="
-                                                "
+                                                <input
+                                                    type="number"
+                                                    name="diskon"
+                                                    value={data.diskon}
+                                                    className="input input-bordered input-success w-full"
+                                                    required
                                                     onChange={(e) =>
                                                         setData(
-                                                            "alamat",
+                                                            "diskon",
                                                             e.target.value,
                                                         )
                                                     }
-                                                    value={data.alamat}
-                                                ></textarea>
+                                                />
+                                                <small>
+                                                    Masukan angak tanpa tanda %
+                                                </small>
                                             </label>
 
                                             <div className="mt-4 flex gap-2">
@@ -413,7 +325,7 @@ export default function Member({ member, kode }) {
 
                                                 <button
                                                     type="button"
-                                                    onClick={editCloseModal}
+                                                    onClick={editcloseModal}
                                                     className="btn btn-error"
                                                 >
                                                     Keluar
@@ -430,27 +342,26 @@ export default function Member({ member, kode }) {
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Kode</th>
-                                        <th>Tgl Daftar</th>
-                                        <th>Nama</th>
-                                        <th>Tgl Lahir</th>
-                                        <th>No Wa</th>
-                                        <th>Alamat</th>
+                                        <th>Tgl Mulai</th>
+                                        <th>Tgl Selesai</th>
+                                        <th>Min Order</th>
+                                        <th>Dikson</th>
                                         <th>Status</th>
-
                                         <th>Opsi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {member.map((item, index) => (
+                                    {potongan.map((item, index) => (
                                         <tr>
                                             <td>{index + 1}</td>
-                                            <td>{item.kode}</td>
-                                            <td>{item.tgl_daftar}</td>
-                                            <td>{item.nama}</td>
-                                            <td>{item.tgl_lahir}</td>
-                                            <td>{item.nohp}</td>
-                                            <td>{item.alamat}</td>
+                                            <td>{item.tgl_mulai}</td>
+                                            <td>{item.tgl_selesai}</td>
+                                            <td>
+                                                {item.min_order.toLocaleString(
+                                                    "id-ID",
+                                                )}
+                                            </td>
+                                            <td>{item.diskon}%</td>
                                             <td>
                                                 {item.status == 1 ? (
                                                     <div class="badge badge-primary">
@@ -462,7 +373,6 @@ export default function Member({ member, kode }) {
                                                     </div>
                                                 )}
                                             </td>
-
                                             <td>
                                                 <div className="flex gap-2">
                                                     <button
@@ -478,12 +388,10 @@ export default function Member({ member, kode }) {
                                                         onClick={() =>
                                                             editopenModal(
                                                                 item.id,
-                                                                item.tgl_daftar,
-                                                                item.kode,
-                                                                item.nama,
-                                                                item.tgl_lahir,
-                                                                item.nohp,
-                                                                item.alamat,
+                                                                item.tgl_mulai,
+                                                                item.tgl_selesai,
+                                                                item.min_order,
+                                                                item.diskon,
                                                             )
                                                         }
                                                     >
