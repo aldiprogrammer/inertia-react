@@ -160,7 +160,16 @@ export default function Listorder({ list, total }) {
             {total == 0 ? (
                 <>
                     <div className="justify-center mt-20">
-                        <div className="text-center text-gray-400">Opps!</div>
+                        <div className="text-center text-gray-400">
+                            <div className="flex justify-center">
+                                <img
+                                    width="64"
+                                    height="64"
+                                    src="https://img.icons8.com/dusk/64/shopping-bag--v1.png"
+                                    alt="shopping-bag--v1"
+                                />
+                            </div>
+                        </div>
                         <p className="text-gray-400 text-center">
                             {" "}
                             Keranjang Belanja kosong
