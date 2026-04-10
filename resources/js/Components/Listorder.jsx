@@ -2,18 +2,22 @@ import { router, useForm } from "@inertiajs/react";
 import axios from "axios";
 import React, { useRef, useState } from "react";
 
-export default function Listorder({ list, total }) {
+export default function Listorder({ list, total, kode }) {
     const [member, setMember] = useState("");
-    const [showformcash, setShowformcash] = useState(false);
+    // const [showformcash, setShowformcash] = useState(false);
+    const [showdiskon, setShowdiskon] = useState(false)
+    const [hargadiskon, setHargadiskon] = useState(0);
 
     const [nama, setNama] = useState("");
-    const { data, setData } = useForm({
+    const { data, setData, post, processing, reset } = useForm({
+        kode: '',
         kode_member: "",
-        nama: "",
-        id: "",
         uang: "",
         kembalian: "0",
-        metoda_pembayaran: "",
+        total_harga: '',
+        diskon: 0,
+        metode_pembayaran: "",
+        formcash: false,
     });
     const modalRef = useRef(null);
 
@@ -55,6 +59,8 @@ export default function Listorder({ list, total }) {
         setMember(val);
         setNama("");
         getMember(val);
+        // console.log(val);
+
     };
 
     const getMember = async (kode) => {
@@ -64,14 +70,20 @@ export default function Listorder({ list, total }) {
                 setNama("");
             } else {
                 setNama(response.data.data.nama);
+                console.log(response);
+                setData('kode_member', response.data.data.kode);
+                cekdiskonMember();
             }
-        } catch (error) {}
+        } catch (error) {
+            setHargadiskon(0)
+            setShowdiskon(false)
+        }
     };
 
     const handleUang = (val) => {
         setData("uang", val);
         const uang = Number(val);
-        const kembalian = uang - Number(total);
+        const kembalian = uang - Number(showdiskon == true ? hargadiskon : total);
         if (kembalian <= 0) {
             setData("kembalian", 0);
         } else {
@@ -82,7 +94,7 @@ export default function Listorder({ list, total }) {
     const handlefilteruang = (val) => {
         setData("uang", val);
         const uang = Number(val);
-        const kembalian = uang - Number(total);
+        const kembalian = uang - Number(showdiskon == true ? hargadiskon : total);
         if (kembalian <= 0) {
             setData("kembalian", 0);
         } else {
@@ -91,13 +103,49 @@ export default function Listorder({ list, total }) {
     };
 
     const handlemetodepembayaran = (val) => {
-        setData("metode_pembyaran", val);
+        setData("metode_pembayaran", val);
+        setData('kode', kode);
+        setData('total_harga', total);
         if (val == "Cash") {
-            setShowformcash(true);
+            setData('formcash', true)
         } else {
-            setShowformcash(false);
+            setData('formcash', false);
         }
     };
+
+    const cekdiskonMember = async () => {
+        try {
+            const response = await axios.get('/cekdiskonmember');
+            const persen = response.data.diskon;
+            const minorder = response.data.min_order;
+            if (total >= minorder) {
+                const diskon = total * persen / 100;
+                const harga = total - diskon;
+                setData('diskon', persen)
+                setHargadiskon(harga)
+                setShowdiskon(true)
+            }
+
+        } catch (error) {
+
+            setShowdiskon(false)
+        }
+    }
+
+    const save = (e) => {
+        e.preventDefault();
+        if (data.metode_pembayaran == '') {
+            alert('Metode pembayaran tidak bole kosong');
+        } else {
+            post('/addorder', {
+                onSuccess: () => {
+                    reset();
+                    closeModal();
+                }
+            })
+        }
+
+    }
     return (
         <div>
             {list.map((item, index) => (
@@ -217,18 +265,30 @@ export default function Listorder({ list, total }) {
                                     Pembayaran
                                 </h3>
 
-                                <form>
+                                <form onSubmit={save}>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-5 mt-3">
                                         <div class="card bg-green-300 shadow-md border border-base-300">
                                             <div class="card-body">
                                                 <p class="text-sm text-black">
                                                     Total
                                                 </p>
-                                                <h2 class="text-3xl font-bold">
-                                                    {total.toLocaleString(
-                                                        "id-ID",
-                                                    )}
-                                                </h2>
+
+                                                {showdiskon == true ?
+                                                    <>
+                                                        <h2 class="text-2xl font-bold line-through text-gray-600">
+                                                            {total.toLocaleString("id-ID")}
+                                                        </h2>
+                                                        <div class="text-lg font-semibold text-black">
+                                                            {hargadiskon.toLocaleString("id-ID")}
+                                                        </div>
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <h2 class="text-2xl font-bold">
+                                                            {total.toLocaleString("id-ID")}
+                                                        </h2>
+                                                    </>
+                                                }
                                             </div>
                                         </div>
 
@@ -275,12 +335,14 @@ export default function Listorder({ list, total }) {
                                                 readOnly
                                             />
                                         </label>
+
                                     </div>
+
                                     <div className="mt-3">
                                         <label htmlFor="">
                                             Sitem Pembayaran
                                         </label>
-                                        <div class="flex gap-6 mb-6">
+                                        <div class="flex gap-2 mb-6">
                                             <label class="label cursor-pointer gap-2">
                                                 <input
                                                     type="radio"
@@ -332,7 +394,7 @@ export default function Listorder({ list, total }) {
                                                 </span>
                                             </label>
                                         </div>
-                                        {showformcash == true ? (
+                                        {data.formcash == true ? (
                                             <div className="grid sm:grid-cols-2 gap-2">
                                                 <label className="form-control w-full">
                                                     <input
@@ -390,7 +452,7 @@ export default function Listorder({ list, total }) {
                                     <div className="mt-10 grid sm:grid-cols-2 gap-2">
                                         <button
                                             type="submit"
-                                            // disabled={processing}
+                                            disabled={processing}
                                             className="btn btn-success text-white"
                                         >
                                             Simpan Order
@@ -399,6 +461,7 @@ export default function Listorder({ list, total }) {
                                         <button
                                             type="button"
                                             className="btn btn-error text-white"
+                                            disabled={processing}
                                         >
                                             Cetak Struk
                                         </button>

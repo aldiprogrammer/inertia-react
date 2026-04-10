@@ -235,7 +235,7 @@ export default function Potongan({ potongan }) {
                                                     </span>
                                                 </div>
                                                 <input
-                                                    type="text"
+                                                    type="date"
                                                     name="tgl_mulai"
                                                     value={data.tgl_mulai}
                                                     className="input input-bordered input-success w-full"
@@ -256,7 +256,7 @@ export default function Potongan({ potongan }) {
                                                     </span>
                                                 </div>
                                                 <input
-                                                    type="text"
+                                                    type="date"
                                                     name="tgl_mulai"
                                                     value={data.tgl_selesai}
                                                     className="input input-bordered input-success w-full"

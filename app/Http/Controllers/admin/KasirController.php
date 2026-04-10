@@ -23,8 +23,9 @@ class KasirController extends Controller
             $kode = KodeOrder::first();
             $kodeorder = $kode->kode;
         } else {
-            $order = Order::orderBy('id', 'dessc')->first();
-            $kodeorder = $order->kode + 1;
+            $order = Order::orderBy('id', 'desc')->first();
+            $angka = $order->kode + 1;
+            $kodeorder = str_pad($angka, 5, "0", STR_PAD_LEFT);
         }
         $listorder = ListOrder::with('listproduk')->where('kode_order', $kodeorder)->get();
         $total = ListOrder::where('kode_order', $kodeorder)->sum('total_harga');

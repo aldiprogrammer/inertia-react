@@ -158,7 +158,7 @@ export default function Kasir({
                                                         }
                                                     >
                                                         {product.status ==
-                                                        "1" ? (
+                                                            "1" ? (
                                                             <> + Keranjang</>
                                                         ) : (
                                                             "- Tidak tersedia"
@@ -208,7 +208,7 @@ export default function Kasir({
                             </div>
                         </div>
                         <div>
-                            <Listorder list={listorder} total={total} />
+                            <Listorder list={listorder} total={total} kode={kodeorder} />
                         </div>
                     </div>
                 </div>

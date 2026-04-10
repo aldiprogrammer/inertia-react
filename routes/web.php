@@ -84,6 +84,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/tambahqty/{id}', [KeranjangController::class, 'tambahqty'])->name('keranjang.tambahqty');
     Route::put('/kurangqty/{id}', [KeranjangController::class, 'kurangqty'])->name('keranjang.kurangqty');
     Route::get('/cekmember/{kode}', [KeranjangController::class, 'cekmember'])->name('keranjang.cekmember');
+    Route::get('/cekdiskonmember', [KeranjangController::class, 'cekdiskonmember'])->name('keranjang.cekdiskon');
+    Route::post('/addorder', [KeranjangController::class, 'addorder'])->name('keranjang.addorder');
 
     Route::get('/potongan', [PotonganMemberController::class, 'index'])->name('potongan');
     Route::post('/addpotongan', [PotonganMemberController::class, 'store'])->name('potongan.store');

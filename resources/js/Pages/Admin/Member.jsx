@@ -446,7 +446,7 @@ export default function Member({ member, kode }) {
                                         <tr>
                                             <td>{index + 1}</td>
                                             <td>{item.kode}</td>
-                                            <td>{item.tgl_daftar}</td>
+                                            <td>{item.tanggal_daftar}</td>
                                             <td>{item.nama}</td>
                                             <td>{item.tgl_lahir}</td>
                                             <td>{item.nohp}</td>
@@ -478,7 +478,7 @@ export default function Member({ member, kode }) {
                                                         onClick={() =>
                                                             editopenModal(
                                                                 item.id,
-                                                                item.tgl_daftar,
+                                                                item.tanggal_daftar,
                                                                 item.kode,
                                                                 item.nama,
                                                                 item.tgl_lahir,

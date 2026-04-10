@@ -19,12 +19,11 @@ class MemberController extends Controller
     function store(Request $request)
     {
         $mb = new Member();
-        $mb->tgl_daftar = $request->tgl_daftar;
+        $mb->tanggal_daftar = $request->tgl_daftar;
         $mb->kode = $request->kode;
         $mb->tgl_lahir = $request->tgl_lahir;
         $mb->nama = $request->nama;
         $mb->nohp = $request->nohp;
-        $mb->tgl_daftar = $request->tgl_daftar;
         $mb->alamat = $request->alamat;
         $mb->status = 1;
         $mb->save();
@@ -34,12 +33,11 @@ class MemberController extends Controller
     function update(Request $request, $id)
     {
         $mb = Member::find($id);
-        $mb->tgl_daftar = $request->tgl_daftar;
+        $mb->tanggal_daftar = $request->tgl_daftar;
         $mb->kode = $request->kode;
         $mb->tgl_lahir = $request->tgl_lahir;
         $mb->nama = $request->nama;
         $mb->nohp = $request->nohp;
-        $mb->tgl_daftar = $request->tgl_daftar;
         $mb->alamat = $request->alamat;
         $mb->status = 1;
         $mb->update();
