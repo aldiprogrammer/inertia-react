@@ -17,10 +17,13 @@ return new class extends Migration
             $table->string('id_kasir', 30);
             $table->string('kode', 15);
             $table->string('kode_member', 30);
+            $table->string('meja', 30);
             $table->string('total_harga', 30);
             $table->string('uang', 30);
             $table->string('kembalian', 30);
+            $table->integer('diskon');
             $table->string('metode_pembayaran', 30);
+            $table->string('jenis_pesanan', 30);
             $table->string('status', 11);
             $table->timestamps();
         });

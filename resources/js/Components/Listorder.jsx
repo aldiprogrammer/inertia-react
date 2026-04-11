@@ -2,21 +2,23 @@ import { router, useForm } from "@inertiajs/react";
 import axios from "axios";
 import React, { useRef, useState } from "react";
 
-export default function Listorder({ list, total, kode }) {
+export default function Listorder({ list, total, kode, meja }) {
     const [member, setMember] = useState("");
     // const [showformcash, setShowformcash] = useState(false);
-    const [showdiskon, setShowdiskon] = useState(false)
+    const [showdiskon, setShowdiskon] = useState(false);
     const [hargadiskon, setHargadiskon] = useState(0);
 
     const [nama, setNama] = useState("");
     const { data, setData, post, processing, reset } = useForm({
-        kode: '',
+        kode: "",
         kode_member: "",
         uang: "",
         kembalian: "0",
-        total_harga: '',
+        total_harga: "",
         diskon: 0,
         metode_pembayaran: "",
+        jenis_pesanan: "",
+        meja: "",
         formcash: false,
     });
     const modalRef = useRef(null);
@@ -60,7 +62,6 @@ export default function Listorder({ list, total, kode }) {
         setNama("");
         getMember(val);
         // console.log(val);
-
     };
 
     const getMember = async (kode) => {
@@ -71,19 +72,20 @@ export default function Listorder({ list, total, kode }) {
             } else {
                 setNama(response.data.data.nama);
                 console.log(response);
-                setData('kode_member', response.data.data.kode);
+                setData("kode_member", response.data.data.kode);
                 cekdiskonMember();
             }
         } catch (error) {
-            setHargadiskon(0)
-            setShowdiskon(false)
+            setHargadiskon(0);
+            setShowdiskon(false);
         }
     };
 
     const handleUang = (val) => {
         setData("uang", val);
         const uang = Number(val);
-        const kembalian = uang - Number(showdiskon == true ? hargadiskon : total);
+        const kembalian =
+            uang - Number(showdiskon == true ? hargadiskon : total);
         if (kembalian <= 0) {
             setData("kembalian", 0);
         } else {
@@ -94,7 +96,8 @@ export default function Listorder({ list, total, kode }) {
     const handlefilteruang = (val) => {
         setData("uang", val);
         const uang = Number(val);
-        const kembalian = uang - Number(showdiskon == true ? hargadiskon : total);
+        const kembalian =
+            uang - Number(showdiskon == true ? hargadiskon : total);
         if (kembalian <= 0) {
             setData("kembalian", 0);
         } else {
@@ -104,48 +107,49 @@ export default function Listorder({ list, total, kode }) {
 
     const handlemetodepembayaran = (val) => {
         setData("metode_pembayaran", val);
-        setData('kode', kode);
-        setData('total_harga', total);
+        setData("kode", kode);
+        setData("total_harga", total);
         if (val == "Cash") {
-            setData('formcash', true)
+            setData("formcash", true);
         } else {
-            setData('formcash', false);
+            setData("formcash", false);
         }
     };
 
     const cekdiskonMember = async () => {
         try {
-            const response = await axios.get('/cekdiskonmember');
+            const response = await axios.get("/cekdiskonmember");
             const persen = response.data.diskon;
             const minorder = response.data.min_order;
             if (total >= minorder) {
-                const diskon = total * persen / 100;
+                const diskon = (total * persen) / 100;
                 const harga = total - diskon;
-                setData('diskon', persen)
-                setHargadiskon(harga)
-                setShowdiskon(true)
+                setData("diskon", persen);
+                setHargadiskon(harga);
+                setShowdiskon(true);
             }
-
         } catch (error) {
-
-            setShowdiskon(false)
+            setShowdiskon(false);
         }
-    }
+    };
 
     const save = (e) => {
         e.preventDefault();
-        if (data.metode_pembayaran == '') {
-            alert('Metode pembayaran tidak bole kosong');
+        if (data.metode_pembayaran == "" || data.jenis_pesanan == "") {
+            alert("Metode pembayaran atau Jenis pesanan harus di pilih");
         } else {
-            post('/addorder', {
+            post("/addorder", {
                 onSuccess: () => {
                     reset();
                     closeModal();
-                }
-            })
+                },
+            });
         }
+    };
 
-    }
+    const handlejenispesanan = (val) => {
+        setData("jenis_pesanan", val);
+    };
     return (
         <div>
             {list.map((item, index) => (
@@ -273,22 +277,28 @@ export default function Listorder({ list, total, kode }) {
                                                     Total
                                                 </p>
 
-                                                {showdiskon == true ?
+                                                {showdiskon == true ? (
                                                     <>
                                                         <h2 class="text-2xl font-bold line-through text-gray-600">
-                                                            {total.toLocaleString("id-ID")}
+                                                            {total.toLocaleString(
+                                                                "id-ID",
+                                                            )}
                                                         </h2>
                                                         <div class="text-lg font-semibold text-black">
-                                                            {hargadiskon.toLocaleString("id-ID")}
+                                                            {hargadiskon.toLocaleString(
+                                                                "id-ID",
+                                                            )}
                                                         </div>
                                                     </>
-                                                    :
+                                                ) : (
                                                     <>
                                                         <h2 class="text-2xl font-bold">
-                                                            {total.toLocaleString("id-ID")}
+                                                            {total.toLocaleString(
+                                                                "id-ID",
+                                                            )}
                                                         </h2>
                                                     </>
-                                                }
+                                                )}
                                             </div>
                                         </div>
 
@@ -336,9 +346,95 @@ export default function Listorder({ list, total, kode }) {
                                             />
                                         </label>
 
+                                        <label className="form-control w-full mt-1">
+                                            <div className="label">
+                                                <span className="label-text">
+                                                    No Meja
+                                                </span>
+                                            </div>
+                                            <select
+                                                name="meja"
+                                                id=""
+                                                className="input input-bordered input-success"
+                                                required
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "meja",
+                                                        e.target.value,
+                                                    )
+                                                }
+                                            >
+                                                <option value="0">0</option>
+                                                {meja.map((item, index) => (
+                                                    <option value={item.meja}>
+                                                        {item.meja}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </label>
+
+                                        <label className="form-control w-full mt-1">
+                                            <div className="label">
+                                                <span className="label-text">
+                                                    Jenis Pesanan
+                                                </span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                                <label class="label cursor-pointer gap-2">
+                                                    <input
+                                                        type="radio"
+                                                        name="pembayaran"
+                                                        value="cash"
+                                                        class="radio radio-error"
+                                                        onClick={() =>
+                                                            handlejenispesanan(
+                                                                "Dine In",
+                                                            )
+                                                        }
+                                                    />
+                                                    <span class="label-text font-semibold">
+                                                        DI
+                                                    </span>
+                                                </label>
+
+                                                <label class="label cursor-pointer gap-2">
+                                                    <input
+                                                        type="radio"
+                                                        name="pembayaran"
+                                                        value="cash"
+                                                        class="radio radio-success"
+                                                        onClick={() =>
+                                                            handlejenispesanan(
+                                                                "Takeway",
+                                                            )
+                                                        }
+                                                    />
+                                                    <span class="label-text font-semibold">
+                                                        TW
+                                                    </span>
+                                                </label>
+
+                                                <label class="label cursor-pointer gap-2">
+                                                    <input
+                                                        type="radio"
+                                                        name="pembayaran"
+                                                        value="cash"
+                                                        class="radio radio-gray"
+                                                        onClick={() =>
+                                                            handlejenispesanan(
+                                                                "Delivery",
+                                                            )
+                                                        }
+                                                    />
+                                                    <span class="label-text font-semibold">
+                                                        DLVR
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </label>
                                     </div>
 
-                                    <div className="mt-3">
+                                    <div className="mt-8">
                                         <label htmlFor="">
                                             Sitem Pembayaran
                                         </label>

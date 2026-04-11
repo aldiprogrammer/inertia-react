@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('members', function (Blueprint $table) {
             $table->id();
-            $table->string('tgl_daftar', 18);
+            $table->string('tanggal_daftar', 18);
             $table->string('kode', 30);
             $table->string('nama', 30);
             $table->string('tgl_lahir', 15);

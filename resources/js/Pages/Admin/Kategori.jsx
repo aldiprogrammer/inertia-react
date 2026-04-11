@@ -1,7 +1,6 @@
-import AdminLayout from '@/Layouts/AdminLayout'
-import { Form, useForm } from '@inertiajs/react';
-import React, { useRef, useState } from 'react'
-
+import AdminLayout from "@/Layouts/AdminLayout";
+import { Form, useForm } from "@inertiajs/react";
+import React, { useRef, useState } from "react";
 
 export default function Kategori({ kategori }) {
     const [id, setId] = useState(0);
@@ -14,11 +13,11 @@ export default function Kategori({ kategori }) {
 
     const editopenModal = (id, kode, kategori) => {
         editModalRef.current.showModal();
-        setData('kode', kode);
-        setData('kategori', kategori);
-        setData('id', id);
-        setId(id)
-    }
+        setData("kode", kode);
+        setData("kategori", kategori);
+        setData("id", id);
+        setId(id);
+    };
 
     const closeModal = () => {
         modalRef.current.close();
@@ -26,40 +25,53 @@ export default function Kategori({ kategori }) {
 
     const editCloseModal = () => {
         editModalRef.current.close();
-    }
+    };
 
-    const { data, setData, post, patch, delete: destroy, errors, processing, reset } = useForm({
-        kode: '',
-        kategori: '',
-        id: '',
-    })
+    const {
+        data,
+        setData,
+        post,
+        patch,
+        delete: destroy,
+        errors,
+        processing,
+        reset,
+    } = useForm({
+        kode: "",
+        kategori: "",
+        id: "",
+    });
 
     function save(e) {
-        e.preventDefault()
-        post('/addkategori', {
+        e.preventDefault();
+        post("/addkategori", {
             onSuccess: () => {
                 closeModal();
-                reset()
-            }
-        })
+                reset();
+            },
+        });
     }
     const hapus = (id) => {
-        if (confirm('Yakin ingin menghapus')) {
-            post('/kategori/' + id);
+        if (confirm("Yakin ingin menghapus")) {
+            destroy("/kategori/" + id);
         }
-    }
+    };
 
     const edit = (e) => {
         e.preventDefault();
-        patch('/editkategori/' + id, {
+        patch("/editkategori/" + id, {
             onSuccess: () => {
                 editCloseModal();
                 reset();
-            }
-        })
-     
-
-    }
+            },
+        });
+        // post('/editkategori/' + id, {
+        //     onSuccess: () => {
+        //         editCloseModal();
+        //         reset()
+        //     }
+        // })
+    };
 
     return (
         <div>
@@ -69,7 +81,10 @@ export default function Kategori({ kategori }) {
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
                             <h2 class="card-title">Data Kategori</h2>
                             <div class="flex gap-2">
-                                <button className="btn btn-success" onClick={openModal}>
+                                <button
+                                    className="btn btn-success"
+                                    onClick={openModal}
+                                >
                                     <i className="fas fa-plus"></i>
                                     Tambah data
                                 </button>
@@ -84,12 +99,16 @@ export default function Kategori({ kategori }) {
                                             ✕
                                         </button>
 
-                                        <h3 className="text-lg font-bold">Tambah data</h3>
+                                        <h3 className="text-lg font-bold">
+                                            Tambah data
+                                        </h3>
 
                                         <form onSubmit={save}>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Kode</span>
+                                                    <span className="label-text">
+                                                        Kode
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
@@ -97,26 +116,47 @@ export default function Kategori({ kategori }) {
                                                     value={data.kode}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('kode', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "kode",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
-                                                {errors.kode && <div>{errors.kode}</div>}
+                                                {errors.kode && (
+                                                    <div>{errors.kode}</div>
+                                                )}
                                             </label>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Kategori</span>
+                                                    <span className="label-text">
+                                                        Kategori
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
-                                                    name="kategori" value={data.kategori}
+                                                    name="kategori"
+                                                    value={data.kategori}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('kategori', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "kategori",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
-                                                {errors.kategori && <div>{errors.kategori}</div>}
+                                                {errors.kategori && (
+                                                    <div>{errors.kategori}</div>
+                                                )}
                                             </label>
 
                                             <div className="mt-4 flex gap-2">
-                                                <button type="submit" disabled={processing} className="btn btn-success">
+                                                <button
+                                                    type="submit"
+                                                    disabled={processing}
+                                                    className="btn btn-success"
+                                                >
                                                     Tambah data
                                                 </button>
 
@@ -143,12 +183,16 @@ export default function Kategori({ kategori }) {
                                             ✕
                                         </button>
 
-                                        <h3 className="text-lg font-bold">Edit data</h3>
+                                        <h3 className="text-lg font-bold">
+                                            Edit data
+                                        </h3>
 
                                         <form onSubmit={edit}>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Kode</span>
+                                                    <span className="label-text">
+                                                        Kode
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
@@ -156,26 +200,47 @@ export default function Kategori({ kategori }) {
                                                     value={data.kode}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('kode', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "kode",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
-                                                {errors.kode && <div>{errors.kode}</div>}
+                                                {errors.kode && (
+                                                    <div>{errors.kode}</div>
+                                                )}
                                             </label>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Kategori</span>
+                                                    <span className="label-text">
+                                                        Kategori
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
-                                                    name="kategori" value={data.kategori}
+                                                    name="kategori"
+                                                    value={data.kategori}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('kategori', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "kategori",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
-                                                {errors.kategori && <div>{errors.kategori}</div>}
+                                                {errors.kategori && (
+                                                    <div>{errors.kategori}</div>
+                                                )}
                                             </label>
 
                                             <div className="mt-4 flex gap-2">
-                                                <button type="submit" disabled={processing} className="btn btn-success" >
+                                                <button
+                                                    type="submit"
+                                                    disabled={processing}
+                                                    className="btn btn-success"
+                                                >
                                                     Edit data
                                                 </button>
 
@@ -210,15 +275,30 @@ export default function Kategori({ kategori }) {
                                             <td>{item.kode}</td>
                                             <td>{item.kategori}</td>
                                             <td>
-                                                <div className='flex gap-2'>
-                                                    <button className="btn btn-error btn-sm" onClick={() => hapus(item.id)}>
+                                                <div className="flex gap-2">
+                                                    <button
+                                                        className="btn btn-error btn-sm"
+                                                        onClick={() =>
+                                                            hapus(item.id)
+                                                        }
+                                                    >
                                                         Hapus
                                                     </button>
-                                                    <button className='btn btn-success btn-sm' onClick={() => editopenModal(item.id, item.kode, item.kategori)}>Edit</button>
+                                                    <button
+                                                        className="btn btn-success btn-sm"
+                                                        onClick={() =>
+                                                            editopenModal(
+                                                                item.id,
+                                                                item.kode,
+                                                                item.kategori,
+                                                            )
+                                                        }
+                                                    >
+                                                        Edit
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
-
                                     ))}
                                 </tbody>
                             </table>
@@ -227,7 +307,7 @@ export default function Kategori({ kategori }) {
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
-Kategori.layout = page => <AdminLayout>{page}</AdminLayout>
+Kategori.layout = (page) => <AdminLayout>{page}</AdminLayout>;

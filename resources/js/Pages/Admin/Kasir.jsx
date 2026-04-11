@@ -9,6 +9,7 @@ export default function Kasir({
     kodeorder,
     listorder,
     total,
+    meja,
 }) {
     const [search, setSearch] = useState("");
     const formatRupiah = (angka) => {
@@ -158,7 +159,7 @@ export default function Kasir({
                                                         }
                                                     >
                                                         {product.status ==
-                                                            "1" ? (
+                                                        "1" ? (
                                                             <> + Keranjang</>
                                                         ) : (
                                                             "- Tidak tersedia"
@@ -208,7 +209,12 @@ export default function Kasir({
                             </div>
                         </div>
                         <div>
-                            <Listorder list={listorder} total={total} kode={kodeorder} />
+                            <Listorder
+                                list={listorder}
+                                total={total}
+                                kode={kodeorder}
+                                meja={meja}
+                            />
                         </div>
                     </div>
                 </div>

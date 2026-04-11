@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Kategori;
 use App\Models\KodeOrder;
 use App\Models\ListOrder;
+use App\Models\Meja;
 use App\Models\Order;
 use App\Models\Produk;
 use Illuminate\Http\Request;
@@ -29,6 +30,7 @@ class KasirController extends Controller
         }
         $listorder = ListOrder::with('listproduk')->where('kode_order', $kodeorder)->get();
         $total = ListOrder::where('kode_order', $kodeorder)->sum('total_harga');
-        return Inertia::render('Admin/Kasir', compact('produk', 'kategori', 'kodeorder', 'listorder', 'total'));
+        $meja = Meja::all();
+        return Inertia::render('Admin/Kasir', compact('produk', 'kategori', 'kodeorder', 'listorder', 'total', 'meja'));
     }
 }

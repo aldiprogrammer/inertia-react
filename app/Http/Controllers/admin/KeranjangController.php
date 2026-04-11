@@ -84,7 +84,7 @@ class KeranjangController extends Controller
         $add->kode = $request->kode;
         $add->tanggal = date('Y-m-d');
         $add->id_kasir = 1;
-        $add->meja = '001';
+        $add->meja = $request->meja ?? 0;
         $add->kode_member = $request->kode_member ?? 0;
         $add->total_harga = $request->total_harga;
         if ($request->metode_pembayaran != 'Cash') {
@@ -105,6 +105,7 @@ class KeranjangController extends Controller
 
         $add->diskon = $request->diskon;
         $add->metode_pembayaran = $request->metode_pembayaran;
+        $add->jenis_pesanan = $request->jenis_pesanan;
         $add->status = 1;
         $add->save();
         return redirect()->back()->with('success', 'Data berhasil ditambah');
