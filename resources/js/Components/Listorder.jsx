@@ -383,7 +383,7 @@ export default function Listorder({ list, total, kode, meja }) {
                                                 <label class="label cursor-pointer gap-2">
                                                     <input
                                                         type="radio"
-                                                        name="pembayaran"
+                                                        name="jenispesanan"
                                                         value="cash"
                                                         class="radio radio-error"
                                                         onClick={() =>
@@ -400,7 +400,7 @@ export default function Listorder({ list, total, kode, meja }) {
                                                 <label class="label cursor-pointer gap-2">
                                                     <input
                                                         type="radio"
-                                                        name="pembayaran"
+                                                        name="jenispesanan"
                                                         value="cash"
                                                         class="radio radio-success"
                                                         onClick={() =>
@@ -417,7 +417,7 @@ export default function Listorder({ list, total, kode, meja }) {
                                                 <label class="label cursor-pointer gap-2">
                                                     <input
                                                         type="radio"
-                                                        name="pembayaran"
+                                                        name="jenispesanan"
                                                         value="cash"
                                                         class="radio radio-gray"
                                                         onClick={() =>

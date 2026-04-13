@@ -9,6 +9,7 @@ use App\Http\Controllers\admin\MejaController;
 use App\Http\Controllers\admin\MemberController;
 use App\Http\Controllers\admin\PegawaiController;
 use App\Http\Controllers\admin\PenggunaController;
+use App\Http\Controllers\admin\PenjualanController;
 use App\Http\Controllers\admin\PotonganMemberController;
 use App\Http\Controllers\admin\ProdukController;
 use App\Http\Controllers\ProfileController;
@@ -92,6 +93,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/editpotongan/{id}', [PotonganMemberController::class, 'update'])->name('potongan.update');
     Route::delete('/hapuspotongan/{id}', [PotonganMemberController::class, 'delete'])->name('potongan.delete');
     Route::patch('/statuspotongan/{id}', [PotonganMemberController::class, 'status'])->name('potongan.status');
+
+    Route::get('/penjualan', [PenjualanController::class, 'index'])->name('penjualan');
+    Route::delete('/hapuspenjualan', [PenjualanController::class, 'delete'])->name('penjualan.delete');
+    Route::get('/testprint', [PenjualanController::class, 'testprint'])->name('testprint');
 });
 
 require __DIR__ . '/auth.php';
