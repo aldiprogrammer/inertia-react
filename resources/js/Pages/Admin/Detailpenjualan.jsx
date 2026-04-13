@@ -2,29 +2,30 @@ import AdminLayout from "@/Layouts/AdminLayout";
 import { Link, useForm } from "@inertiajs/react";
 import React from "react";
 
-export default function Penjualan({ penjualan }) {
+export default function Detailpenjualan({ detail, total, kodeorder }) {
     const {
         data,
         setData,
         post,
         delete: destroy,
+        reset,
         processing,
-        error,
     } = useForm({});
 
-    const hapus = (kode) => {
+    const hapus = (id) => {
         if (confirm("Yakin ingin menghapus")) {
-            destroy("/hapusorder/" + kode);
+            destroy("/hapusdetailorder/" + id);
         }
     };
-
     return (
         <AdminLayout>
             <div class="grid grid-cols-1 xl:grid-cols-1 gap-">
                 <div class="xl:col-span-2 card bg-base-100 shadow-md border border-base-300">
                     <div class="card-body">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
-                            <h2 class="card-title">Data Penjualan</h2>
+                            <h2 class="card-title">
+                                Detail Penjualan #{kodeorder}
+                            </h2>
                         </div>
 
                         <div>
@@ -34,68 +35,51 @@ export default function Penjualan({ penjualan }) {
                                         <th>No</th>
                                         <th>Kode</th>
                                         <th>Tanggal</th>
-                                        <th>Meja</th>
-                                        <th>Member</th>
-                                        <th>Total</th>
-                                        <th>Disc</th>
-                                        <th>Metoda P</th>
-                                        <th>Uang</th>
-                                        <th>Kembalian</th>
-                                        <th>Jenis P</th>
+                                        <th>Produk</th>
+                                        <th>Harga</th>
+                                        <th>Qty</th>
+                                        <th>Total Harga</th>
                                         <th>Opsi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {penjualan.map((item, index) => (
+                                    {detail.map((item, index) => (
                                         <tr>
                                             <td>{index + 1}</td>
-                                            <td>{item.kode}</td>
+                                            <td>{item.kode_order}</td>
                                             <td>{item.tanggal}</td>
-                                            <td>{item.meja}</td>
-                                            <td>{item.kode_memebr}</td>
+                                            <td>{item.produk}</td>
+                                            <td>
+                                                {Number(
+                                                    item.harga,
+                                                ).toLocaleString("id-ID")}
+                                            </td>
+                                            <td>{item.qty}</td>
                                             <td>
                                                 {Number(
                                                     item.total_harga,
                                                 ).toLocaleString("id-ID")}
                                             </td>
-                                            <td>{item.diskon}</td>
-                                            <td>{item.metode_pembayaran}</td>
-                                            <td>
-                                                {Number(
-                                                    item.uang,
-                                                ).toLocaleString("id-ID")}
-                                            </td>
-                                            <td>
-                                                {Number(
-                                                    item.kembalian,
-                                                ).toLocaleString("id-ID")}
-                                            </td>
-                                            <td>{item.jenis_pesanan}</td>
                                             <td>
                                                 <div className="flex gap-2">
                                                     <button
                                                         className="btn btn-error btn-sm"
                                                         onClick={() =>
-                                                            hapus(item.kode)
+                                                            hapus(item.id)
                                                         }
                                                     >
                                                         Hapus
                                                     </button>
-                                                    <Link
-                                                        href={
-                                                            "/detailpenjualan/" +
-                                                            item.kode
-                                                        }
-                                                        className="btn btn-success btn-sm"
-                                                    >
-                                                        Detail
-                                                    </Link>
                                                 </div>
                                             </td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
+
+                            <h3 className="font-bold mt-5">
+                                Total Harga : {total.toLocaleString("id-ID")}
+                            </h3>
                         </div>
                     </div>
                 </div>

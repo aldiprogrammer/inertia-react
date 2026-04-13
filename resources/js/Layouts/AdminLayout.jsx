@@ -124,6 +124,25 @@ export default function AdminLayout({ children }) {
                             </Link>
                         </li>
                         <li>
+                            <details>
+                                <summary className="rounded-xl">
+                                    Penjualan
+                                </summary>
+                                <ul>
+                                    <li>
+                                        <Link href="/penjualanhariini">
+                                            Penjualan Hari Ini
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/penjualan">
+                                            Data Penjualan
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </details>
+                        </li>
+                        <li>
                             <Link href="/produk" className="rounded-xl">
                                 Produk
                             </Link>
@@ -162,6 +181,11 @@ export default function AdminLayout({ children }) {
                                     </li>
                                 </ul>
                             </details>
+                        </li>
+                        <li>
+                            <Link href="/pengguna" className="rounded-xl">
+                                Pengguna
+                            </Link>
                         </li>
                         <li>
                             <Link href="/admin/settings" className="rounded-xl">

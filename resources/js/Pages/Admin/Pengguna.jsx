@@ -1,77 +1,90 @@
-import AdminLayout from '@/Layouts/AdminLayout'
-import { useForm } from '@inertiajs/react'
-import React, { useRef, useState } from 'react'
+import AdminLayout from "@/Layouts/AdminLayout";
+import { useForm } from "@inertiajs/react";
+import React, { useRef, useState } from "react";
 
-export default function Pengguna({pengguna}) {
+export default function Pengguna({ pengguna }) {
     const [id, setId] = useState(0);
-    const { data, setData, post, patch, delete: destroy, processing, error, reset } = useForm({
-        username: '',
-        role: '',
-        password : '',
+    const {
+        data,
+        setData,
+        post,
+        patch,
+        delete: destroy,
+        processing,
+        error,
+        reset,
+    } = useForm({
+        email: "",
+        username: "",
+        role: "",
+        password: "",
     });
 
     const modalRef = useRef(null);
     const editModalRef = useRef(null);
-    
+
     const openModal = () => {
         modalRef.current.showModal();
-    }
-    const editopenModal = (id,username, role, password='') => {
+    };
+    const editopenModal = (id, username, role, password = "") => {
         editModalRef.current.showModal();
-        setData('username', username);
-        setData('role', role);
-        setData('password', password);
+        setData("username", username);
+        setData("role", role);
+        setData("password", password);
         setId(id);
-    }
+    };
 
     const closeModal = () => {
         modalRef.current.close();
-    }
+    };
 
     const editCloseModal = () => {
         editModalRef.current.close();
-    }
+    };
 
     const save = (e) => {
         e.preventDefault();
-        post('/addpengguna', {
+        post("/addpengguna", {
             onSuccess: () => {
                 reset();
-                closeModal()
-            }
-        })
+                closeModal();
+            },
+        });
     };
 
     const update = (e) => {
         e.preventDefault();
-        patch('/editpengguna/' + id, {
+        patch("/editpengguna/" + id, {
             onSuccess: () => {
                 reset();
                 editCloseModal();
-            }
-        })
+            },
+        });
     };
 
     const hapus = (id) => {
-        if (confirm('Yakin ingin menghapus')) {
-            destroy('/hapuspengguna/' + id);
+        if (confirm("Yakin ingin menghapus")) {
+            destroy("/hapuspengguna/" + id);
         }
     };
 
     const status = (id) => {
-        if (confirm('Yakin ingin update status ini?')) {
-            patch('/statuspengguna/' + id);
+        if (confirm("Yakin ingin update status ini?")) {
+            patch("/statuspengguna/" + id);
         }
-    }
-  return (
-      <AdminLayout>
-          <div class="grid grid-cols-1 xl:grid-cols-1 gap-">
+    };
+    return (
+        <AdminLayout>
+            <div class="grid grid-cols-1 xl:grid-cols-1 gap-">
                 <div class="xl:col-span-2 card bg-base-100 shadow-md border border-base-300">
                     <div class="card-body">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
                             <h2 class="card-title">Data Pengguna</h2>
                             <div class="flex gap-2">
-                                <button className="btn btn-success" onClick={openModal}>
+                                <button
+                                    className="btn btn-success"
+                                    onClick={openModal}
+                                >
                                     <i className="fas fa-plus"></i>
                                     Tambah data
                                 </button>
@@ -86,13 +99,37 @@ export default function Pengguna({pengguna}) {
                                             ✕
                                         </button>
 
-                                        <h3 className="text-lg font-bold">Tambah data</h3>
+                                        <h3 className="text-lg font-bold">
+                                            Tambah data
+                                        </h3>
 
-                                      <form onSubmit={save}>
-                                           
+                                        <form onSubmit={save}>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Username</span>
+                                                    <span className="label-text">
+                                                        Email
+                                                    </span>
+                                                </div>
+                                                <input
+                                                    type="email"
+                                                    name="email"
+                                                    value={data.email}
+                                                    className="input input-bordered input-success w-full"
+                                                    required
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "email",
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                />
+                                            </label>
+
+                                            <label className="form-control w-full mt-2">
+                                                <div className="label">
+                                                    <span className="label-text">
+                                                        Username
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
@@ -100,36 +137,72 @@ export default function Pengguna({pengguna}) {
                                                     value={data.username}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('username', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "username",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
-
                                             </label>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Role</span>
+                                                    <span className="label-text">
+                                                        Role
+                                                    </span>
                                                 </div>
-                                              <select name="role" id="" className='input input-bordered input-success' required onChange={(e) => setData('role', e.target.value)}>
-                                                  <option value=""> -- Pilih Role --</option>
-                                                  <option value="Kasir">Kasir</option>
-                                                  <option value="Kasir">Admin</option>
-                                               </select>
-                                          </label>
-                                          
-                                          <label className="form-control w-full mt-2">
+                                                <select
+                                                    name="role"
+                                                    id=""
+                                                    className="input input-bordered input-success"
+                                                    required
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "role",
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                >
+                                                    <option value="">
+                                                        {" "}
+                                                        -- Pilih Role --
+                                                    </option>
+                                                    <option value="Kasir">
+                                                        Kasir
+                                                    </option>
+                                                    <option value="Kasir">
+                                                        Admin
+                                                    </option>
+                                                </select>
+                                            </label>
+
+                                            <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Password</span>
+                                                    <span className="label-text">
+                                                        Password
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="password"
-                                                    name="passwowrd" value={data.password}
+                                                    name="passwowrd"
+                                                    value={data.password}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('password', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "password",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
-                                          </label>
-                                          
+                                            </label>
+
                                             <div className="mt-4 flex gap-2">
-                                                <button type="submit" disabled={processing} className="btn btn-success">
+                                                <button
+                                                    type="submit"
+                                                    disabled={processing}
+                                                    className="btn btn-success"
+                                                >
                                                     Tambah data
                                                 </button>
 
@@ -156,12 +229,37 @@ export default function Pengguna({pengguna}) {
                                             ✕
                                         </button>
 
-                                        <h3 className="text-lg font-bold">Edit data</h3>
+                                        <h3 className="text-lg font-bold">
+                                            Edit data
+                                        </h3>
 
                                         <form onSubmit={update}>
-                                                                                         <label className="form-control w-full mt-2">
+                                            <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Username</span>
+                                                    <span className="label-text">
+                                                        Email
+                                                    </span>
+                                                </div>
+                                                <input
+                                                    type="email"
+                                                    name="email"
+                                                    value={data.email}
+                                                    className="input input-bordered input-success w-full"
+                                                    required
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "email",
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                />
+                                            </label>
+
+                                            <label className="form-control w-full mt-2">
+                                                <div className="label">
+                                                    <span className="label-text">
+                                                        Username
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
@@ -169,36 +267,71 @@ export default function Pengguna({pengguna}) {
                                                     value={data.username}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('username', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "username",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
-
                                             </label>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Role</span>
+                                                    <span className="label-text">
+                                                        Role
+                                                    </span>
                                                 </div>
-                                              <select name="role" id="" className='input input-bordered input-success' required onChange={(e) => setData('role', e.target.value)}>
-                                                  <option value="{data.role}">{ data.role }</option>
-                                                  <option value="Kasir">Kasir</option>
-                                                  <option value="Kasir">Admin</option>
-                                               </select>
-                                          </label>
-                                          
-                                          <label className="form-control w-full mt-2">
+                                                <select
+                                                    name="role"
+                                                    id=""
+                                                    className="input input-bordered input-success"
+                                                    required
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "role",
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                >
+                                                    <option value="{data.role}">
+                                                        {data.role}
+                                                    </option>
+                                                    <option value="Kasir">
+                                                        Kasir
+                                                    </option>
+                                                    <option value="Kasir">
+                                                        Admin
+                                                    </option>
+                                                </select>
+                                            </label>
+
+                                            <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">New Password</span>
+                                                    <span className="label-text">
+                                                        New Password
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="password"
-                                                    name="passwowrd" value={data.password}
+                                                    name="passwowrd"
+                                                    value={data.password}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('password', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "password",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
-                                          </label>
-                                          
+                                            </label>
+
                                             <div className="mt-4 flex gap-2">
-                                                <button type="submit" disabled={processing} className="btn btn-success" >
+                                                <button
+                                                    type="submit"
+                                                    disabled={processing}
+                                                    className="btn btn-success"
+                                                >
                                                     Edit data
                                                 </button>
 
@@ -221,6 +354,7 @@ export default function Pengguna({pengguna}) {
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>Email</th>
                                         <th>Username</th>
                                         <th>Role</th>
                                         <th>Opsi</th>
@@ -230,19 +364,34 @@ export default function Pengguna({pengguna}) {
                                     {pengguna.map((item, index) => (
                                         <tr>
                                             <td>{index + 1}</td>
+                                            <td>{item.email}</td>
                                             <td>{item.username}</td>
                                             <td>{item.role}</td>
                                             <td>
-                                                <div className='flex gap-2'>
-                                                    <button className="btn btn-error btn-sm" onClick={() => hapus(item.id)}>
+                                                <div className="flex gap-2">
+                                                    <button
+                                                        className="btn btn-error btn-sm"
+                                                        onClick={() =>
+                                                            hapus(item.id)
+                                                        }
+                                                    >
                                                         Hapus
                                                     </button>
-                                                    <button className='btn btn-success btn-sm' onClick={() => editopenModal(item.id, item.username, item.role)}>Edit</button>
-                                                      
+                                                    <button
+                                                        className="btn btn-success btn-sm"
+                                                        onClick={() =>
+                                                            editopenModal(
+                                                                item.id,
+                                                                item.username,
+                                                                item.role,
+                                                            )
+                                                        }
+                                                    >
+                                                        Edit
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
-
                                     ))}
                                 </tbody>
                             </table>
@@ -250,6 +399,6 @@ export default function Pengguna({pengguna}) {
                     </div>
                 </div>
             </div>
-    </AdminLayout>
-  )
+        </AdminLayout>
+    );
 }

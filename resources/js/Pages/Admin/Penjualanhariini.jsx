@@ -2,7 +2,7 @@ import AdminLayout from "@/Layouts/AdminLayout";
 import { Link, useForm } from "@inertiajs/react";
 import React from "react";
 
-export default function Penjualan({ penjualan }) {
+export default function Penjualanhariini({ penjualan }) {
     const {
         data,
         setData,
@@ -17,14 +17,13 @@ export default function Penjualan({ penjualan }) {
             destroy("/hapusorder/" + kode);
         }
     };
-
     return (
         <AdminLayout>
             <div class="grid grid-cols-1 xl:grid-cols-1 gap-">
                 <div class="xl:col-span-2 card bg-base-100 shadow-md border border-base-300">
                     <div class="card-body">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
-                            <h2 class="card-title">Data Penjualan</h2>
+                            <h2 class="card-title">Data Penjualan Hari Ini</h2>
                         </div>
 
                         <div>

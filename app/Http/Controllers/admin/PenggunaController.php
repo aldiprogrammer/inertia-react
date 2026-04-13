@@ -20,6 +20,7 @@ class PenggunaController extends Controller
     {
         $pg = new Pengguna();
         $pg->username = $request->username;
+        $pg->email = $request->email;
         $pg->role = $request->role;
         $pg->password = Hash::make($request->password);
         $pg->save();
@@ -30,6 +31,7 @@ class PenggunaController extends Controller
     {
         $pg = Pengguna::find($id);
         $pg->username = $request->username;
+        $pg->email = $request->email;
         $pg->role = $request->role;
         $pg->password = Hash::make($request->password);
         $pg->update();

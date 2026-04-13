@@ -26,6 +26,7 @@
 
 <body class="font-sans antialiased bg-base-200 min-h-screen">
     @inertia
+    
 </body>
 
 </html>

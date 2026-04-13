@@ -96,6 +96,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/penjualan', [PenjualanController::class, 'index'])->name('penjualan');
     Route::delete('/hapuspenjualan', [PenjualanController::class, 'delete'])->name('penjualan.delete');
+    Route::get('/detailpenjualan/{kode}', [PenjualanController::class, 'detail'])->name('penjualan.detail');
+    Route::delete('/hapusdetailorder/{id}', [PenjualanController::class, 'hapusdetail'])->name('penjualan.deletedetail');
+    Route::delete('/hapusorder/{kode}', [PenjualanController::class, 'hapusorder'])->name('penjualan.deletorder');
+
+    Route::get('/penjualanhariini', [PenjualanController::class, 'penjualanhariini'])->name('penjualanhariini');
+
     Route::get('/testprint', [PenjualanController::class, 'testprint'])->name('testprint');
 });
 
