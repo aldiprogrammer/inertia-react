@@ -1,8 +1,10 @@
 import AdminLayout from "@/Layouts/AdminLayout";
-import { useForm } from "@inertiajs/react";
-import React, { useRef, useState } from "react";
+import { useForm, usePage } from "@inertiajs/react";
+import React, { useEffect, useRef, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Pengguna({ pengguna }) {
+    const { flash } = usePage().props;
     const [id, setId] = useState(0);
     const {
         data,
@@ -26,8 +28,9 @@ export default function Pengguna({ pengguna }) {
     const openModal = () => {
         modalRef.current.showModal();
     };
-    const editopenModal = (id, username, role, password = "") => {
+    const editopenModal = (email, id, username, role, password = "") => {
         editModalRef.current.showModal();
+        setData("email", email);
         setData("username", username);
         setData("role", role);
         setData("password", password);
@@ -73,6 +76,20 @@ export default function Pengguna({ pengguna }) {
             patch("/statuspengguna/" + id);
         }
     };
+
+    useEffect(() => {
+        if (flash.success) {
+            toast.success(flash.success, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
+        }
+    }, [flash]);
     return (
         <AdminLayout>
             <div class="grid grid-cols-1 xl:grid-cols-1 gap-">
@@ -381,6 +398,7 @@ export default function Pengguna({ pengguna }) {
                                                         className="btn btn-success btn-sm"
                                                         onClick={() =>
                                                             editopenModal(
+                                                                item.email,
                                                                 item.id,
                                                                 item.username,
                                                                 item.role,
@@ -399,6 +417,7 @@ export default function Pengguna({ pengguna }) {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </AdminLayout>
     );
 }

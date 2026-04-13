@@ -1,18 +1,29 @@
-import AdminLayout from '@/Layouts/AdminLayout'
-import { useForm, usePage } from '@inertiajs/react';
-import React, { useRef, useState } from 'react'
+import AdminLayout from "@/Layouts/AdminLayout";
+import { useForm, usePage } from "@inertiajs/react";
+import React, { useEffect, useRef, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Produk({ produk, kategori }) {
+    const { flash } = usePage().props;
     const [id, setId] = useState(0);
     const { errors } = usePage().props;
-    const { data, setData, post, patch, delete: destroy, processing, error, reset } = useForm({
-        kode: '',
-        nama: '',
-        diskon: '',
-        harga: '',
-        kategori: '',
+    const {
+        data,
+        setData,
+        post,
+        patch,
+        delete: destroy,
+        processing,
+        error,
+        reset,
+    } = useForm({
+        kode: "",
+        nama: "",
+        diskon: "",
+        harga: "",
+        kategori: "",
         status: 1,
-        foto: '',
+        foto: "",
     });
 
     const modalRef = useRef(null);
@@ -23,17 +34,16 @@ export default function Produk({ produk, kategori }) {
     };
 
     const editopenModal = (id, kode, nama, kategori, harga, diskon, gambar) => {
-
         editModalRef.current.showModal();
 
-        setData('kode', kode);
-        setData('nama', nama);
-        setData('kategori', kategori);
-        setData('harga', harga);
-        setData('diskon', diskon);
-        setData('foto', gambar);
-        setId(id)
-    }
+        setData("kode", kode);
+        setData("nama", nama);
+        setData("kategori", kategori);
+        setData("harga", harga);
+        setData("diskon", diskon);
+        setData("foto", gambar);
+        setId(id);
+    };
 
     const closeModal = () => {
         modalRef.current.close();
@@ -41,41 +51,55 @@ export default function Produk({ produk, kategori }) {
 
     const editCloseModal = () => {
         editModalRef.current.close();
-    }
+    };
 
     const save = (e) => {
         e.preventDefault();
-        forceFormData: true,
-            post('/addproduk', {
+        forceFormData: (true,
+            post("/addproduk", {
                 onSuccess: () => {
                     reset();
-                    closeModal()
-                }
-            })
-    }
+                    closeModal();
+                },
+            }));
+    };
 
     const update = (e) => {
         e.preventDefault();
-        post('/editproduk/' + id, {
+        post("/editproduk/" + id, {
             forceFormData: true,
             onSuccess: () => {
                 reset();
                 editCloseModal();
-            }
+            },
         });
-    }
+    };
 
     const status = (id) => {
-        if (confirm('Yakin ingin update status ini ?')) {
-            patch('/updatestatus/' + id);
+        if (confirm("Yakin ingin update status ini ?")) {
+            patch("/updatestatus/" + id);
         }
-    }
+    };
 
     const hapus = (id) => {
-        if (confirm('Yakin ingin menghapus')) {
-            destroy('/hapusproduk/' + id);
+        if (confirm("Yakin ingin menghapus")) {
+            destroy("/hapusproduk/" + id);
         }
-    }
+    };
+
+    useEffect(() => {
+        if (flash.success) {
+            toast.success(flash.success, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
+        }
+    }, [flash]);
 
     return (
         <AdminLayout>
@@ -85,7 +109,10 @@ export default function Produk({ produk, kategori }) {
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
                             <h2 class="card-title">Data Produk</h2>
                             <div class="flex gap-2">
-                                <button className="btn btn-success" onClick={openModal}>
+                                <button
+                                    className="btn btn-success"
+                                    onClick={openModal}
+                                >
                                     <i className="fas fa-plus"></i>
                                     Tambah data
                                 </button>
@@ -100,12 +127,16 @@ export default function Produk({ produk, kategori }) {
                                             ✕
                                         </button>
 
-                                        <h3 className="text-lg font-bold">Tambah data</h3>
+                                        <h3 className="text-lg font-bold">
+                                            Tambah data
+                                        </h3>
 
                                         <form onSubmit={save}>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Kode</span>
+                                                    <span className="label-text">
+                                                        Kode
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
@@ -113,14 +144,20 @@ export default function Produk({ produk, kategori }) {
                                                     value={data.kode}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('kode', e.target.value)}
-
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "kode",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
                                             </label>
 
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Nama</span>
+                                                    <span className="label-text">
+                                                        Nama
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
@@ -128,53 +165,93 @@ export default function Produk({ produk, kategori }) {
                                                     className="input input-bordered input-success w-full"
                                                     required
                                                     value={data.nama}
-                                                    onChange={(e) => setData('nama', e.target.value)}
-
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "nama",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
                                             </label>
 
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Kategori</span>
+                                                    <span className="label-text">
+                                                        Kategori
+                                                    </span>
                                                 </div>
-                                                <select name="jenis_kelamin" id="" className='input input-bordered input-success w-full' required onChange={(e) => setData('kategori', e.target.value)}>
-                                                    <option value="">-- Pilih Kategori --</option>
-                                                    {kategori.map((item, index) => (
-                                                        <option>{item.kategori}</option>
-                                                    ))}
+                                                <select
+                                                    name="jenis_kelamin"
+                                                    id=""
+                                                    className="input input-bordered input-success w-full"
+                                                    required
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "kategori",
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                >
+                                                    <option value="">
+                                                        -- Pilih Kategori --
+                                                    </option>
+                                                    {kategori.map(
+                                                        (item, index) => (
+                                                            <option>
+                                                                {item.kategori}
+                                                            </option>
+                                                        ),
+                                                    )}
                                                 </select>
                                             </label>
 
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Harga</span>
+                                                    <span className="label-text">
+                                                        Harga
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="number"
-                                                    name="nohp" value={data.harga}
+                                                    name="nohp"
+                                                    value={data.harga}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('harga', e.target.value)}
-                                                />
-                                            </label>
-
-
-                                            <label className="form-control w-full mt-2">
-                                                <div className="label">
-                                                    <span className="label-text">Diskon</span>
-                                                </div>
-                                                <input
-                                                    type="number"
-                                                    name="diskon" value={data.diskon}
-                                                    className="input input-bordered input-success w-full"
-                                                    required
-                                                    onChange={(e) => setData('diskon', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "harga",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
                                             </label>
 
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Foto</span>
+                                                    <span className="label-text">
+                                                        Diskon
+                                                    </span>
+                                                </div>
+                                                <input
+                                                    type="number"
+                                                    name="diskon"
+                                                    value={data.diskon}
+                                                    className="input input-bordered input-success w-full"
+                                                    required
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "diskon",
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                />
+                                            </label>
+
+                                            <label className="form-control w-full mt-2">
+                                                <div className="label">
+                                                    <span className="label-text">
+                                                        Foto
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="file"
@@ -182,13 +259,21 @@ export default function Produk({ produk, kategori }) {
                                                     accept="image/*"
                                                     className="file-input file-input-bordered file-input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('foto', e.target.files[0])}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "foto",
+                                                            e.target.files[0],
+                                                        )
+                                                    }
                                                 />
                                             </label>
 
-
                                             <div className="mt-4 flex gap-2">
-                                                <button type="submit" disabled={processing} className="btn btn-success">
+                                                <button
+                                                    type="submit"
+                                                    disabled={processing}
+                                                    className="btn btn-success"
+                                                >
                                                     Tambah data
                                                 </button>
 
@@ -215,12 +300,16 @@ export default function Produk({ produk, kategori }) {
                                             ✕
                                         </button>
 
-                                        <h3 className="text-lg font-bold">Edit data</h3>
+                                        <h3 className="text-lg font-bold">
+                                            Edit data
+                                        </h3>
 
                                         <form onSubmit={update}>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Kode</span>
+                                                    <span className="label-text">
+                                                        Kode
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
@@ -228,14 +317,20 @@ export default function Produk({ produk, kategori }) {
                                                     value={data.kode}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('kode', e.target.value)}
-
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "kode",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
                                             </label>
 
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Nama</span>
+                                                    <span className="label-text">
+                                                        Nama
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
@@ -243,67 +338,119 @@ export default function Produk({ produk, kategori }) {
                                                     className="input input-bordered input-success w-full"
                                                     required
                                                     value={data.nama}
-                                                    onChange={(e) => setData('nama', e.target.value)}
-
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "nama",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
-                                                {errors.nama && <div className='text-error'>{errors.nama}</div>}
+                                                {errors.nama && (
+                                                    <div className="text-error">
+                                                        {errors.nama}
+                                                    </div>
+                                                )}
                                             </label>
 
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Kategori</span>
+                                                    <span className="label-text">
+                                                        Kategori
+                                                    </span>
                                                 </div>
-                                                <select name="jenis_kelamin" id="" className='input input-bordered input-success w-full' required onChange={(e) => setData('kategori', e.target.value)}>
-                                                    <option>{data.kategori}</option>
-                                                    {kategori.map((item, index) => (
-                                                        <option>{item.kategori}</option>
-                                                    ))}
+                                                <select
+                                                    name="jenis_kelamin"
+                                                    id=""
+                                                    className="input input-bordered input-success w-full"
+                                                    required
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "kategori",
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                >
+                                                    <option>
+                                                        {data.kategori}
+                                                    </option>
+                                                    {kategori.map(
+                                                        (item, index) => (
+                                                            <option>
+                                                                {item.kategori}
+                                                            </option>
+                                                        ),
+                                                    )}
                                                 </select>
                                             </label>
 
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Harga</span>
+                                                    <span className="label-text">
+                                                        Harga
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="number"
-                                                    name="nohp" value={data.harga}
+                                                    name="nohp"
+                                                    value={data.harga}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('harga', e.target.value)}
-                                                />
-                                            </label>
-
-
-                                            <label className="form-control w-full mt-2">
-                                                <div className="label">
-                                                    <span className="label-text">Diskon</span>
-                                                </div>
-                                                <input
-                                                    type="number"
-                                                    name="diskon" value={data.diskon}
-                                                    className="input input-bordered input-success w-full"
-                                                    required
-                                                    onChange={(e) => setData('diskon', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "harga",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
                                             </label>
 
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Foto</span>
+                                                    <span className="label-text">
+                                                        Diskon
+                                                    </span>
+                                                </div>
+                                                <input
+                                                    type="number"
+                                                    name="diskon"
+                                                    value={data.diskon}
+                                                    className="input input-bordered input-success w-full"
+                                                    required
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "diskon",
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                />
+                                            </label>
+
+                                            <label className="form-control w-full mt-2">
+                                                <div className="label">
+                                                    <span className="label-text">
+                                                        Foto
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="file"
                                                     name="foto"
                                                     accept="image/*"
                                                     className="file-input file-input-bordered file-input-success w-full"
-
-                                                    onChange={(e) => setData('foto', e.target.files[0])}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "foto",
+                                                            e.target.files[0],
+                                                        )
+                                                    }
                                                 />
                                             </label>
 
                                             <div className="mt-4 flex gap-2">
-                                                <button type="submit" disabled={processing} className="btn btn-success" >
+                                                <button
+                                                    type="submit"
+                                                    disabled={processing}
+                                                    className="btn btn-success"
+                                                >
                                                     Edit data
                                                 </button>
 
@@ -353,19 +500,53 @@ export default function Produk({ produk, kategori }) {
                                                 />
                                             </td>
                                             <td>
-                                                {item.status == 1 ? <div class="badge badge-primary">Tersedia</div> : <div class="badge badge-error text-white">Tidak tersedia</div>}
+                                                {item.status == 1 ? (
+                                                    <div class="badge badge-primary">
+                                                        Tersedia
+                                                    </div>
+                                                ) : (
+                                                    <div class="badge badge-error text-white">
+                                                        Tidak tersedia
+                                                    </div>
+                                                )}
                                             </td>
                                             <td>
-                                                <div className='flex gap-2'>
-                                                    <button className="btn btn-error btn-sm" onClick={() => hapus(item.id)}>
+                                                <div className="flex gap-2">
+                                                    <button
+                                                        className="btn btn-error btn-sm"
+                                                        onClick={() =>
+                                                            hapus(item.id)
+                                                        }
+                                                    >
                                                         Hapus
                                                     </button>
-                                                    <button className='btn btn-success btn-sm' onClick={() => editopenModal(item.id, item.kode, item.nama, item.kategori, item.harga, item.diskon, item.gambar)}>Edit</button>
-                                                    <button className='btn btn-primary btn-sm' onClick={() => status(item.id)}>Updata status</button>
+                                                    <button
+                                                        className="btn btn-success btn-sm"
+                                                        onClick={() =>
+                                                            editopenModal(
+                                                                item.id,
+                                                                item.kode,
+                                                                item.nama,
+                                                                item.kategori,
+                                                                item.harga,
+                                                                item.diskon,
+                                                                item.gambar,
+                                                            )
+                                                        }
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                    <button
+                                                        className="btn btn-primary btn-sm"
+                                                        onClick={() =>
+                                                            status(item.id)
+                                                        }
+                                                    >
+                                                        Updata status
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
-
                                     ))}
                                 </tbody>
                             </table>
@@ -373,6 +554,7 @@ export default function Produk({ produk, kategori }) {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </AdminLayout>
-    )
+    );
 }

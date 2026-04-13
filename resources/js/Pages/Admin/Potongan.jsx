@@ -1,8 +1,10 @@
 import AdminLayout from "@/Layouts/AdminLayout";
-import { router, useForm } from "@inertiajs/react";
-import React, { useRef, useState } from "react";
+import { router, useForm, usePage } from "@inertiajs/react";
+import React, { useEffect, useRef, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Potongan({ potongan }) {
+    const { flash } = usePage().props;
     const [id, setId] = useState(0);
     const {
         data,
@@ -71,9 +73,23 @@ export default function Potongan({ potongan }) {
     };
     const status = (id) => {
         if (confirm("Yakin ingin update status ini?")) {
-            patch("/statusmember/" + id);
+            patch("/statuspotongan/" + id);
         }
     };
+
+    useEffect(() => {
+        if (flash.success) {
+            toast.success(flash.success, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
+        }
+    }, [flash]);
     return (
         <AdminLayout>
             <div class="grid grid-cols-1 xl:grid-cols-1 gap-">
@@ -415,6 +431,7 @@ export default function Potongan({ potongan }) {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </AdminLayout>
     );
 }

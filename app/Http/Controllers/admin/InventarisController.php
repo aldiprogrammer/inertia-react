@@ -42,13 +42,13 @@ class InventarisController extends Controller
         $inv->kode = $request->kode;
 
         $inv->update();
-        return redirect()->back()->with('success', 'Data berhasil ditambah');
+        return redirect()->back()->with('success', 'Data berhasil diubah');
     }
 
     function delete($id)
     {
         $inv = Inventaris::find($id);
         $inv->delete();
-        return redirect()->back()->with('success', 'Data berhasil ditambah');
+        return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
 }

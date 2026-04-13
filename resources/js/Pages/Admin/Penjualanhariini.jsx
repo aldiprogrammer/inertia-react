@@ -1,8 +1,10 @@
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Link, useForm } from "@inertiajs/react";
-import React from "react";
+import { Link, useForm, usePage } from "@inertiajs/react";
+import React, { useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Penjualanhariini({ penjualan }) {
+    const { flash } = usePage().props;
     const {
         data,
         setData,
@@ -17,6 +19,20 @@ export default function Penjualanhariini({ penjualan }) {
             destroy("/hapusorder/" + kode);
         }
     };
+
+    useEffect(() => {
+        if (flash.success) {
+            toast.success(flash.success, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
+        }
+    }, [flash]);
     return (
         <AdminLayout>
             <div class="grid grid-cols-1 xl:grid-cols-1 gap-">
@@ -99,6 +115,7 @@ export default function Penjualanhariini({ penjualan }) {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </AdminLayout>
     );
 }

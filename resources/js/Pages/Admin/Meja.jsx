@@ -1,13 +1,25 @@
-import AdminLayout from '@/Layouts/AdminLayout'
-import { useForm } from '@inertiajs/react';
-import React, { useRef, useState } from 'react'
+import AdminLayout from "@/Layouts/AdminLayout";
+import { useForm, usePage } from "@inertiajs/react";
+import React, { useEffect, useRef, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Meja({ meja }) {
-    const { data, setData, post, patch, delete: destroy, processing, error, reset } = useForm({
-        kode: '',
-        meja: '',
+    const { flash } = usePage().props;
+    const {
+        data,
+        setData,
+        post,
+        patch,
+        delete: destroy,
+        processing,
+        error,
+        reset,
+    } = useForm({
+        kode: "",
+        meja: "",
     });
     const [id, setId] = useState(0);
+
     const modalRef = useRef(null);
     const editModalRef = useRef(null);
     const openModal = () => {
@@ -17,11 +29,11 @@ export default function Meja({ meja }) {
 
     const editopenModal = (id, kode, meja) => {
         editModalRef.current.showModal();
-        setData('kode', kode);
-        setData('meja', meja);
-        setData('id', id);
-        setId(id)
-    }
+        setData("kode", kode);
+        setData("meja", meja);
+        setData("id", id);
+        setId(id);
+    };
 
     const closeModal = () => {
         modalRef.current.close();
@@ -29,33 +41,47 @@ export default function Meja({ meja }) {
 
     const editCloseModal = () => {
         editModalRef.current.close();
-    }
+    };
 
     const save = (e) => {
         e.preventDefault();
-        post('/addmeja', {
+        post("/addmeja", {
             onSuccess: () => {
                 reset();
                 closeModal();
-            }
-        })
-    }
+            },
+        });
+    };
 
     const edit = (e) => {
         e.preventDefault();
-        patch('/editmeja/' + id, {
+        patch("/editmeja/" + id, {
             onSuccess: () => {
                 reset();
                 editCloseModal();
-            }
-        })
-    }
+            },
+        });
+    };
 
     const hapus = (id) => {
-        if (confirm('Yakin ingin menghapus')) {
-            destroy('/hapusmeja/' + id);
+        if (confirm("Yakin ingin menghapus")) {
+            destroy("/hapusmeja/" + id);
         }
-    }
+    };
+
+    useEffect(() => {
+        if (flash.success) {
+            toast.success(flash.success, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
+        }
+    }, [flash]);
     return (
         <AdminLayout>
             <div class="grid grid-cols-1 xl:grid-cols-1 gap-">
@@ -64,7 +90,10 @@ export default function Meja({ meja }) {
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
                             <h2 class="card-title">Data Meja</h2>
                             <div class="flex gap-2">
-                                <button className="btn btn-success" onClick={openModal}>
+                                <button
+                                    className="btn btn-success"
+                                    onClick={openModal}
+                                >
                                     <i className="fas fa-plus"></i>
                                     Tambah data
                                 </button>
@@ -79,12 +108,16 @@ export default function Meja({ meja }) {
                                             ✕
                                         </button>
 
-                                        <h3 className="text-lg font-bold">Tambah data</h3>
+                                        <h3 className="text-lg font-bold">
+                                            Tambah data
+                                        </h3>
 
                                         <form onSubmit={save}>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Kode</span>
+                                                    <span className="label-text">
+                                                        Kode
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
@@ -92,25 +125,41 @@ export default function Meja({ meja }) {
                                                     value={data.kode}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('kode', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "kode",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
-
                                             </label>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Meja</span>
+                                                    <span className="label-text">
+                                                        Meja
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
-                                                    name="meja" value={data.meja}
+                                                    name="meja"
+                                                    value={data.meja}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('meja', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "meja",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
                                             </label>
 
                                             <div className="mt-4 flex gap-2">
-                                                <button type="submit" disabled={processing} className="btn btn-success">
+                                                <button
+                                                    type="submit"
+                                                    disabled={processing}
+                                                    className="btn btn-success"
+                                                >
                                                     Tambah data
                                                 </button>
 
@@ -137,12 +186,16 @@ export default function Meja({ meja }) {
                                             ✕
                                         </button>
 
-                                        <h3 className="text-lg font-bold">Edit data</h3>
+                                        <h3 className="text-lg font-bold">
+                                            Edit data
+                                        </h3>
 
                                         <form onSubmit={edit}>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Kode</span>
+                                                    <span className="label-text">
+                                                        Kode
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
@@ -150,27 +203,41 @@ export default function Meja({ meja }) {
                                                     value={data.kode}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('kode', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "kode",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
-
                                             </label>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Meja</span>
+                                                    <span className="label-text">
+                                                        Meja
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
-                                                    name="meja" value={data.meja}
+                                                    name="meja"
+                                                    value={data.meja}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('meja', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "meja",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
-
                                             </label>
 
-
                                             <div className="mt-4 flex gap-2">
-                                                <button type="submit" disabled={processing} className="btn btn-success" >
+                                                <button
+                                                    type="submit"
+                                                    disabled={processing}
+                                                    className="btn btn-success"
+                                                >
                                                     Edit data
                                                 </button>
 
@@ -205,15 +272,30 @@ export default function Meja({ meja }) {
                                             <td>{item.kode}</td>
                                             <td>{item.meja}</td>
                                             <td>
-                                                <div className='flex gap-2'>
-                                                    <button className="btn btn-error btn-sm" onClick={() => hapus(item.id)}>
+                                                <div className="flex gap-2">
+                                                    <button
+                                                        className="btn btn-error btn-sm"
+                                                        onClick={() =>
+                                                            hapus(item.id)
+                                                        }
+                                                    >
                                                         Hapus
                                                     </button>
-                                                    <button className='btn btn-success btn-sm' onClick={() => editopenModal(item.id, item.kode, item.meja)}>Edit</button>
+                                                    <button
+                                                        className="btn btn-success btn-sm"
+                                                        onClick={() =>
+                                                            editopenModal(
+                                                                item.id,
+                                                                item.kode,
+                                                                item.meja,
+                                                            )
+                                                        }
+                                                    >
+                                                        Edit
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
-
                                     ))}
                                 </tbody>
                             </table>
@@ -221,6 +303,7 @@ export default function Meja({ meja }) {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </AdminLayout>
-    )
+    );
 }

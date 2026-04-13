@@ -1,19 +1,28 @@
-import AdminLayout from '@/Layouts/AdminLayout'
-import { useForm } from '@inertiajs/react';
-import React, { useRef, useState } from 'react'
+import AdminLayout from "@/Layouts/AdminLayout";
+import { useForm, usePage } from "@inertiajs/react";
+import React, { useEffect, useRef, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
-export default function Inventaris({inventaris}) {
+export default function Inventaris({ inventaris }) {
     const [id, setId] = useState(0);
-    const { data, setData, post, patch, delete: destroy, reset, processing, errors } = useForm({
-        nama_barang: '',
-        kode: '',
-        tanggal: '',
-        jenis: '',
-        jumlah: '',
-        kondisi: '',
-        lokasi : '',
-
-
+    const { flash } = usePage().props;
+    const {
+        data,
+        setData,
+        post,
+        patch,
+        delete: destroy,
+        reset,
+        processing,
+        errors,
+    } = useForm({
+        nama_barang: "",
+        kode: "",
+        tanggal: "",
+        jenis: "",
+        jumlah: "",
+        kondisi: "",
+        lokasi: "",
     });
     const modalRef = useRef(null);
     const editmodalRef = useRef(null);
@@ -21,62 +30,88 @@ export default function Inventaris({inventaris}) {
     const openModal = () => {
         modalRef.current.showModal();
         reset();
-    }
-    const openeditModal = (id, kode, tanggal, nama_barang,  jumlah, lokasi, kondisi, jenis) => {
+    };
+    const openeditModal = (
+        id,
+        kode,
+        tanggal,
+        nama_barang,
+        jumlah,
+        lokasi,
+        kondisi,
+        jenis,
+    ) => {
         editmodalRef.current.showModal();
-        setData('kode', kode);
-        setData('nama_barang', nama_barang);
-        setData('tanggal', tanggal);
-        setData('jumlah', jumlah);
-        setData('lokasi', lokasi);
-        setData('kondisi', kondisi);
-        setData('jenis', jenis);
+        setData("kode", kode);
+        setData("nama_barang", nama_barang);
+        setData("tanggal", tanggal);
+        setData("jumlah", jumlah);
+        setData("lokasi", lokasi);
+        setData("kondisi", kondisi);
+        setData("jenis", jenis);
         setId(id);
-    }
+    };
 
     const closeModal = () => {
         modalRef.current.close();
-    }
+    };
 
-     const editCloseModal = () => {
+    const editCloseModal = () => {
         editmodalRef.current.close();
-    }
+    };
 
     const save = (e) => {
         e.preventDefault();
-        post('/addinventaris', {
+        post("/addinventaris", {
             onSuccess: () => {
                 reset();
                 closeModal();
-            }
-        })
-    }
+            },
+        });
+    };
 
-    const  update = (e) => {
-       e.preventDefault();
-        patch('/editinventaris/'+id, {
+    const update = (e) => {
+        e.preventDefault();
+        patch("/editinventaris/" + id, {
             onSuccess: () => {
                 reset();
                 editCloseModal();
-            }
-        })
-    }
+            },
+        });
+    };
 
     const hapus = (id) => {
-        if (confirm('Yakin ingin menghapus')) {
-            destroy('/hapusinventaris/' + id);
+        if (confirm("Yakin ingin menghapus")) {
+            destroy("/hapusinventaris/" + id);
         }
-    }
+    };
+
+    useEffect(() => {
+        if (flash.success) {
+            toast.success(flash.success, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
+        }
+    }, [flash]);
 
     return (
         <AdminLayout>
-                  <div class="grid grid-cols-1 xl:grid-cols-1 gap-">
+            <div class="grid grid-cols-1 xl:grid-cols-1 gap-">
                 <div class="xl:col-span-2 card bg-base-100 shadow-md border border-base-300">
                     <div class="card-body">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
                             <h2 class="card-title">Data Inventaris</h2>
                             <div class="flex gap-2">
-                                <button className="btn btn-success" onClick={openModal}>
+                                <button
+                                    className="btn btn-success"
+                                    onClick={openModal}
+                                >
                                     <i className="fas fa-plus"></i>
                                     Tambah data
                                 </button>
@@ -91,12 +126,16 @@ export default function Inventaris({inventaris}) {
                                             ✕
                                         </button>
 
-                                        <h3 className="text-lg font-bold">Tambah data</h3>
+                                        <h3 className="text-lg font-bold">
+                                            Tambah data
+                                        </h3>
 
                                         <form onSubmit={save}>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Tanggal</span>
+                                                    <span className="label-text">
+                                                        Tanggal
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="date"
@@ -104,13 +143,19 @@ export default function Inventaris({inventaris}) {
                                                     value={data.tanggal}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('tanggal', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "tanggal",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
-
                                             </label>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Kode</span>
+                                                    <span className="label-text">
+                                                        Kode
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
@@ -118,69 +163,129 @@ export default function Inventaris({inventaris}) {
                                                     value={data.kode}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('kode', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "kode",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
-                                                {errors.kode && <div>{errors.kode}</div>}
+                                                {errors.kode && (
+                                                    <div>{errors.kode}</div>
+                                                )}
                                             </label>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Nama Barang</span>
+                                                    <span className="label-text">
+                                                        Nama Barang
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
-                                                    name="kategori" value={data.nama_barang}
+                                                    name="kategori"
+                                                    value={data.nama_barang}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('nama_barang', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "nama_barang",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
                                             </label>
 
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Jumlah Barang</span>
+                                                    <span className="label-text">
+                                                        Jumlah Barang
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
-                                                    name="jml_barang" value={data.jumlah}
+                                                    name="jml_barang"
+                                                    value={data.jumlah}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('jumlah', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "jumlah",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
                                             </label>
 
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Jenis Barang</span>
+                                                    <span className="label-text">
+                                                        Jenis Barang
+                                                    </span>
                                                 </div>
-                                                <select className='input input-bordered input-success' required name='jeneis' onChange={(e) => setData('jenis', e.target.value)}>
-                                                    <option value=''>-- Pilih Jenis Barang  --</option>
+                                                <select
+                                                    className="input input-bordered input-success"
+                                                    required
+                                                    name="jeneis"
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "jenis",
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                >
+                                                    <option value="">
+                                                        -- Pilih Jenis Barang --
+                                                    </option>
                                                     <option>Fernitur</option>
-                                                    <option>Peralatan Dapur</option>
+                                                    <option>
+                                                        Peralatan Dapur
+                                                    </option>
                                                     <option>Dll</option>
                                                 </select>
                                             </label>
 
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Lokasi</span>
+                                                    <span className="label-text">
+                                                        Lokasi
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
-                                                    name="lokasi" value={data.lokasi}
+                                                    name="lokasi"
+                                                    value={data.lokasi}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('lokasi', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "lokasi",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
                                             </label>
 
-
-
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Kondisi Barang</span>
+                                                    <span className="label-text">
+                                                        Kondisi Barang
+                                                    </span>
                                                 </div>
-                                                <select className='input input-bordered input-success' required name='kondisi' onChange={(e) => setData('kondisi', e.target.value)}>
-                                                    <option value=''>-- Pilih Kondisi Barang  --</option>
+                                                <select
+                                                    className="input input-bordered input-success"
+                                                    required
+                                                    name="kondisi"
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "kondisi",
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                >
+                                                    <option value="">
+                                                        -- Pilih Kondisi Barang
+                                                        --
+                                                    </option>
                                                     <option>Baik</option>
                                                     <option>Rusak</option>
                                                     <option>Dll</option>
@@ -188,7 +293,11 @@ export default function Inventaris({inventaris}) {
                                             </label>
 
                                             <div className="mt-4 flex gap-2">
-                                                <button type="submit" disabled={processing} className="btn btn-success">
+                                                <button
+                                                    type="submit"
+                                                    disabled={processing}
+                                                    className="btn btn-success"
+                                                >
                                                     Tambah data
                                                 </button>
 
@@ -215,12 +324,16 @@ export default function Inventaris({inventaris}) {
                                             ✕
                                         </button>
 
-                                        <h3 className="text-lg font-bold">Edit data</h3>
+                                        <h3 className="text-lg font-bold">
+                                            Edit data
+                                        </h3>
 
                                         <form onSubmit={update}>
-                                                                                        <label className="form-control w-full mt-2">
+                                            <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Tanggal</span>
+                                                    <span className="label-text">
+                                                        Tanggal
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="date"
@@ -228,13 +341,19 @@ export default function Inventaris({inventaris}) {
                                                     value={data.tanggal}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('tanggal', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "tanggal",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
-
                                             </label>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Kode</span>
+                                                    <span className="label-text">
+                                                        Kode
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
@@ -242,67 +361,130 @@ export default function Inventaris({inventaris}) {
                                                     value={data.kode}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('kode', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "kode",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
-                                                {errors.kode && <div>{errors.kode}</div>}
+                                                {errors.kode && (
+                                                    <div>{errors.kode}</div>
+                                                )}
                                             </label>
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Nama Barang</span>
+                                                    <span className="label-text">
+                                                        Nama Barang
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
-                                                    name="kategori" value={data.nama_barang}
+                                                    name="kategori"
+                                                    value={data.nama_barang}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('nama_barang', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "nama_barang",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
                                             </label>
 
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Jumlah Barang</span>
+                                                    <span className="label-text">
+                                                        Jumlah Barang
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
-                                                    name="jml_barang" value={data.jumlah}
+                                                    name="jml_barang"
+                                                    value={data.jumlah}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('jumlah', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "jumlah",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
                                             </label>
 
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Jenis Barang</span>
+                                                    <span className="label-text">
+                                                        Jenis Barang
+                                                    </span>
                                                 </div>
-                                                <select className='input input-bordered input-success' required name='jeneis' onChange={(e) => setData('jenis', e.target.value)}>
-                                                    <option value={data.jenis}>{data.jenis}</option>
+                                                <select
+                                                    className="input input-bordered input-success"
+                                                    required
+                                                    name="jeneis"
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "jenis",
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                >
+                                                    <option value={data.jenis}>
+                                                        {data.jenis}
+                                                    </option>
                                                     <option>Fernitur</option>
-                                                    <option>Peralatan Dapur</option>
+                                                    <option>
+                                                        Peralatan Dapur
+                                                    </option>
                                                     <option>Dll</option>
                                                 </select>
                                             </label>
 
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Lokasi</span>
+                                                    <span className="label-text">
+                                                        Lokasi
+                                                    </span>
                                                 </div>
                                                 <input
                                                     type="text"
-                                                    name="lokasi" value={data.lokasi}
+                                                    name="lokasi"
+                                                    value={data.lokasi}
                                                     className="input input-bordered input-success w-full"
                                                     required
-                                                    onChange={(e) => setData('lokasi', e.target.value)}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "lokasi",
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
                                             </label>
 
                                             <label className="form-control w-full mt-2">
                                                 <div className="label">
-                                                    <span className="label-text">Kondisi Barang</span>
+                                                    <span className="label-text">
+                                                        Kondisi Barang
+                                                    </span>
                                                 </div>
-                                                <select className='input input-bordered input-success' required name='kondisi' onChange={(e) => setData('kondisi', e.target.value)}>
-                                                    <option value={data.kondisi}>{data.kondisi}</option>
+                                                <select
+                                                    className="input input-bordered input-success"
+                                                    required
+                                                    name="kondisi"
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "kondisi",
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                >
+                                                    <option
+                                                        value={data.kondisi}
+                                                    >
+                                                        {data.kondisi}
+                                                    </option>
                                                     <option>Baik</option>
                                                     <option>Rusak</option>
                                                     <option>Dll</option>
@@ -310,7 +492,11 @@ export default function Inventaris({inventaris}) {
                                             </label>
 
                                             <div className="mt-4 flex gap-2">
-                                                <button type="submit" disabled={processing} className="btn btn-success" >
+                                                <button
+                                                    type="submit"
+                                                    disabled={processing}
+                                                    className="btn btn-success"
+                                                >
                                                     Edit data
                                                 </button>
 
@@ -356,15 +542,35 @@ export default function Inventaris({inventaris}) {
                                             <td>{item.kondisi}</td>
 
                                             <td>
-                                                <div className='flex gap-2'>
-                                                    <button className="btn btn-error btn-sm" onClick={() => hapus(item.id)}>
+                                                <div className="flex gap-2">
+                                                    <button
+                                                        className="btn btn-error btn-sm"
+                                                        onClick={() =>
+                                                            hapus(item.id)
+                                                        }
+                                                    >
                                                         Hapus
                                                     </button>
-                                                    <button className='btn btn-success btn-sm' onClick={() => openeditModal(item.id, item.kode, item.tanggal, item.nama_barang, item.jumlah, item.lokasi, item.kondisi, item.jenis)}>Edit</button>
+                                                    <button
+                                                        className="btn btn-success btn-sm"
+                                                        onClick={() =>
+                                                            openeditModal(
+                                                                item.id,
+                                                                item.kode,
+                                                                item.tanggal,
+                                                                item.nama_barang,
+                                                                item.jumlah,
+                                                                item.lokasi,
+                                                                item.kondisi,
+                                                                item.jenis,
+                                                            )
+                                                        }
+                                                    >
+                                                        Edit
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
-
                                     ))}
                                 </tbody>
                             </table>
@@ -372,6 +578,7 @@ export default function Inventaris({inventaris}) {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </AdminLayout>
-    )
+    );
 }

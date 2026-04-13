@@ -1,8 +1,10 @@
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Form, useForm } from "@inertiajs/react";
-import React, { useRef, useState } from "react";
+import { Form, useForm, usePage } from "@inertiajs/react";
+import React, { useEffect, useRef, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Kategori({ kategori }) {
+    const { flash } = usePage().props;
     const [id, setId] = useState(0);
     const modalRef = useRef(null);
     const editModalRef = useRef(null);
@@ -72,6 +74,20 @@ export default function Kategori({ kategori }) {
         //     }
         // })
     };
+
+    useEffect(() => {
+        if (flash.sucess) {
+            toast.success(flash.success, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
+        }
+    }, [flash]);
 
     return (
         <div>
@@ -306,6 +322,7 @@ export default function Kategori({ kategori }) {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 }

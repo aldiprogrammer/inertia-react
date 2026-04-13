@@ -1,8 +1,10 @@
 import AdminLayout from "@/Layouts/AdminLayout";
-import { useForm } from "@inertiajs/react";
-import React, { useRef, useState } from "react";
+import { useForm, usePage } from "@inertiajs/react";
+import React, { useEffect, useRef, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Member({ member, kode }) {
+    const { flash } = usePage().props;
     const [id, setId] = useState(0);
     const {
         data,
@@ -86,6 +88,20 @@ export default function Member({ member, kode }) {
             patch("/statusmember/" + id);
         }
     };
+
+    useEffect(() => {
+        if (flash.success) {
+            toast.success(flash.success, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
+        }
+    }, [flash]);
     return (
         <AdminLayout>
             <div class="grid grid-cols-1 xl:grid-cols-1 gap-">
@@ -507,6 +523,7 @@ export default function Member({ member, kode }) {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </AdminLayout>
     );
 }
