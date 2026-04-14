@@ -98,7 +98,7 @@ export default function Meja({ meja }) {
                                     Tambah data
                                 </button>
 
-                                <dialog ref={modalRef} className="modal">
+                                <dialog ref={modalRef} className="modal ">
                                     <div className="modal-box">
                                         <button
                                             type="button"

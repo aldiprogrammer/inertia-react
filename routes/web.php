@@ -14,6 +14,8 @@ use App\Http\Controllers\admin\PenjualanController;
 use App\Http\Controllers\admin\PotonganMemberController;
 use App\Http\Controllers\admin\ProdukController;
 use App\Http\Controllers\app\HomeController;
+use App\Http\Controllers\app\KeranjangController as AppKeranjangController;
+use App\Http\Controllers\app\MenuController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -111,5 +113,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/app', [HomeController::class, 'index'])->name('app');
+Route::get('/menu/{menu}', [MenuController::class, 'index'])->name('menu');
+Route::post('/addkeranjanguser', [AppKeranjangController::class, 'store'])->name('keranjanguser');
+
+
 
 require __DIR__ . '/auth.php';
