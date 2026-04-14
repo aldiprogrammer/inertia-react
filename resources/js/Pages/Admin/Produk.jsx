@@ -245,6 +245,9 @@ export default function Produk({ produk, kategori }) {
                                                         )
                                                     }
                                                 />
+                                                <small>
+                                                    Masukan diskon tanpa tana %
+                                                </small>
                                             </label>
 
                                             <label className="form-control w-full mt-2">
@@ -423,6 +426,9 @@ export default function Produk({ produk, kategori }) {
                                                         )
                                                     }
                                                 />
+                                                <small>
+                                                    Masukan diskon tanpa tana %
+                                                </small>
                                             </label>
 
                                             <label className="form-control w-full mt-2">

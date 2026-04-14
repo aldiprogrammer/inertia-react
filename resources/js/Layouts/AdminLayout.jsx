@@ -114,18 +114,19 @@ export default function AdminLayout({ children }) {
 
                     <ul className="menu p-4 text-base-content w-full gap-1">
                         <li>
-                            <Link href="/admin" className="rounded-xl">
-                                Dashboard
+                            <Link href="/dashboard" className="rounded-xl">
+                                <i className="fas fa-dashboard"></i> Dashboard
                             </Link>
                         </li>
                         <li>
                             <Link href="/kasir" className="rounded-xl">
-                                Kasir
+                                <i className="fas fa-cash-register"></i>Kasir
                             </Link>
                         </li>
                         <li>
                             <details>
                                 <summary className="rounded-xl">
+                                    <i className="fas fa-calendar-days"></i>{" "}
                                     Penjualan
                                 </summary>
                                 <ul>
@@ -144,32 +145,36 @@ export default function AdminLayout({ children }) {
                         </li>
                         <li>
                             <Link href="/produk" className="rounded-xl">
-                                Produk
+                                <i className="fas fa-bowl-food"></i> Produk
                             </Link>
                         </li>
                         <li>
                             <Link href="/kategori" className="rounded-xl">
-                                Kategori
+                                <i className="fas fa-book"></i> Kategori
                             </Link>
                         </li>
                         <li>
                             <Link href="/meja" className="rounded-xl">
-                                Meja
+                                <i className="fas fa-spoon"></i> Meja
                             </Link>
                         </li>
                         <li>
                             <Link href="/pegawai" className="rounded-xl">
-                                Pegawai
+                                <i className="fas fa-user"></i> Pegawai
                             </Link>
                         </li>
                         <li>
                             <Link href="/inventaris" className="rounded-xl">
-                                Inventaris
+                                <i className="fas fa-box-open"></i> Inventaris
                             </Link>
                         </li>
                         <li>
                             <details>
-                                <summary className="rounded-xl">Member</summary>
+                                <summary className="rounded-xl">
+                                    {" "}
+                                    <i className="fas fa-user-circle"></i>
+                                    Member
+                                </summary>
                                 <ul>
                                     <li>
                                         <Link href="/member">Data Member</Link>
@@ -184,12 +189,12 @@ export default function AdminLayout({ children }) {
                         </li>
                         <li>
                             <Link href="/pengguna" className="rounded-xl">
-                                Pengguna
+                                <i className="fas fa-users"></i> Pengguna
                             </Link>
                         </li>
                         <li>
                             <Link href="/admin/settings" className="rounded-xl">
-                                Pengaturan
+                                <i className="fas fa-gear"></i> Pengaturan
                             </Link>
                         </li>
                     </ul>
