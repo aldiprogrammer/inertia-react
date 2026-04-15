@@ -159,7 +159,7 @@ export default function Kasir({
                                                         }
                                                     >
                                                         {product.status ==
-                                                        "1" ? (
+                                                            "1" ? (
                                                             <> + Keranjang</>
                                                         ) : (
                                                             "- Tidak tersedia"

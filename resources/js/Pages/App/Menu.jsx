@@ -1,7 +1,10 @@
-import { Link } from "@inertiajs/react";
+import Keranjangapp from "@/Components/Keranjangapp";
+import { Link, router, usePage } from "@inertiajs/react";
 import React, { useState, useEffect, useRef } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
-export default function Home({ kategori, produk }) {
+export default function Menu({ kategori, produk, menu, kodeorder, meja }) {
+    const { flash } = usePage().props;
     const [wishlist, setWishlist] = useState([]);
     const [scrolled, setScrolled] = useState(false);
     const scrollRef = useRef(null);
@@ -14,11 +17,25 @@ export default function Home({ kategori, produk }) {
         );
     };
 
-    const handleKeranjang = (id) => {
-        console.log("Tambah ke keranjang:", id);
+    const addkeranjang = (id) => {
+        router.post("/addkeranjanguser", {
+            idproduk: id,
+            kodeorder: kodeorder,
+        });
     };
 
     useEffect(() => {
+        if (flash.success) {
+            toast.success(flash.success, {
+                position: "top-center",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
+        }
         const handleScroll = () => {
             if (scrollRef.current.scrollTop > 10) {
                 setScrolled(true);
@@ -28,67 +45,68 @@ export default function Home({ kategori, produk }) {
         };
 
         const el = scrollRef.current;
-        if (el) {
-            el.addEventListener("scroll", handleScroll);
-        }
+        el.addEventListener("scroll", handleScroll);
 
-        return () => {
-            if (el) el.removeEventListener("scroll", handleScroll);
-        };
-    }, []);
+        return () => el.removeEventListener("scroll", handleScroll);
+    }, [flash]);
 
     return (
         <div className="bg-gray-200 md:flex md:items-center md:justify-center md:min-h-screen">
+            {/* DEVICE */}
             <div className="w-full h-screen bg-white overflow-hidden relative md:max-w-[375px] md:mx-auto md:shadow-2xl md:border md:rounded-sm">
-                {/* HEADER */}
+                {/* 🔥 HEADER STICKY */}
                 <div
-                    className={`sticky top-0 z-50 p-4 transition ${scrolled ? "bg-white shadow-md border-b" : "bg-white/80 backdrop-blur"}`}
+                    className={`sticky top-0 z-50 p-4 transition-all duration-300 ${
+                        scrolled
+                            ? "bg-white shadow-md border-b"
+                            : "bg-white/80 backdrop-blur"
+                    }`}
                 >
-                    <div className="flex items-center gap-3">
-                        <img
-                            src="https://i.pravatar.cc/40"
-                            className="w-10 h-10 rounded-full"
-                        />
-                        <input
-                            type="text"
-                            placeholder="Search"
-                            className="input input-bordered w-full rounded-full"
-                        />
+                    <div className="flex justify-between">
+                        <h3 className="font-bold">{menu}</h3>
+                        <i className="fas fa-angle-right"></i>
                     </div>
                 </div>
 
-                {/* SCROLL */}
+                {/* 🔥 SCROLL AREA */}
                 <div
                     ref={scrollRef}
-                    className="p-4 space-y-4 h-[calc(100%-70px)] overflow-y-auto"
+                    className="p-4 space-y-4 h-[calc(100%-130px)] overflow-y-auto"
                 >
-                    {/* BANNER */}
-                    <div className="bg-green-200 rounded-xl p-3">
-                        <div className="font-bold">Hello Aldi</div>
-                        <div>Selamat datang di aplikasi E-order</div>
-                    </div>
-
                     {/* MENU */}
                     <div className="grid grid-cols-4 gap-3">
+                        <Link href={"/menu/All"}>
+                            {menu == "All Menu" ? (
+                                <>
+                                    <div className=" bg-green-400 text-white rounded-xl p-3 flex flex-col items-center text-xs shadow text-success font-medium">
+                                        All
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <div className=" bg-gray-100 rounded-xl p-3 flex flex-col items-center text-xs shadow text-success font-medium">
+                                        All
+                                    </div>
+                                </>
+                            )}
+                        </Link>
                         {kategori.map((item, index) => (
-                            <Link href={`/menu/${item.kategori}`} key={index}>
-                                <div className="bg-gray-100 rounded-xl p-3 text-center text-xs shadow text-success font-medium">
-                                    {item.kategori}
-                                </div>
+                            <Link href={"/menu/" + item.kategori} key={index}>
+                                {menu == item.kategori ? (
+                                    <>
+                                        <div className=" bg-green-400 text-white rounded-xl p-3 flex flex-col items-center text-xs shadow text-success font-medium">
+                                            {item.kategori}
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className=" bg-gray-100 rounded-xl p-3 flex flex-col items-center text-xs shadow text-success font-medium">
+                                            {item.kategori}
+                                        </div>
+                                    </>
+                                )}
                             </Link>
                         ))}
-                    </div>
-
-                    {/* PAYMENT */}
-                    <div className="bg-gray-100 rounded-xl p-3 flex justify-between">
-                        <div>
-                            <p className="text-xs text-gray-500">Payment</p>
-                            <p className="font-semibold text-sm">Add a Card</p>
-                        </div>
-                        <div className="flex gap-4 text-sm">
-                            <span>Ovo 0</span>
-                            <span>Gift</span>
-                        </div>
                     </div>
 
                     {/* FOOD */}
@@ -171,6 +189,25 @@ export default function Home({ kategori, produk }) {
                                 </div>
                             ))}
                         </div>
+
+                        {produk == false ? (
+                            <div className="mt-20">
+                                <div className="flex justify-center">
+                                    <img
+                                        width="64"
+                                        height="64"
+                                        src="https://img.icons8.com/arcade/64/shop-local.png"
+                                        alt="shop-local"
+                                    />
+                                </div>
+                                <div className="flex justify-center items-center text-center text-gray-400">
+                                    Mohon maaf, Untuk saat ini menu yang anda
+                                    cari belum tersedia
+                                </div>
+                            </div>
+                        ) : (
+                            <></>
+                        )}
                     </div>
                 </div>
 
@@ -178,13 +215,13 @@ export default function Home({ kategori, produk }) {
                 <div className="absolute bottom-0 left-0 w-full bg-white border-t p-2 flex justify-around">
                     <button className="btn btn-ghost btn-sm">🏠</button>
                     <button className="btn btn-ghost btn-sm">🛒</button>
-                    <button className="btn bg-green-400 text-white rounded-full px-6">
-                        <i className="fas fa-bag-shopping"></i>Order
-                    </button>
+                    <Keranjangapp kodeorder={kodeorder} meja={meja} />
                     <button className="btn btn-ghost btn-sm">💬</button>
                     <button className="btn btn-ghost btn-sm">👤</button>
                 </div>
             </div>
+
+            <ToastContainer />
         </div>
     );
 }

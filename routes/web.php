@@ -14,6 +14,9 @@ use App\Http\Controllers\admin\PenjualanController;
 use App\Http\Controllers\admin\PotonganMemberController;
 use App\Http\Controllers\admin\ProdukController;
 use App\Http\Controllers\app\HomeController;
+use App\Http\Controllers\app\KeranjangController as AppKeranjangController;
+use App\Http\Controllers\app\MenuController;
+use App\Http\Controllers\app\SuksesController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -111,5 +114,20 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/app', [HomeController::class, 'index'])->name('app');
+Route::get('/menu/{menu}', [MenuController::class, 'index'])->name('menu');
+Route::post('/addkeranjanguser', [AppKeranjangController::class, 'store'])->name('addkeranjanguser');
+Route::get('/keranjanguser/{kodeorder}', [AppKeranjangController::class, 'index'])->name('datakeranjanguser');
+Route::delete('/hapuslistorderuser/{id}', [AppKeranjangController::class, 'delete'])->name('hapuslistorderuser');
+Route::put('/tambahqtyuser/{id}', [AppKeranjangController::class, 'tambahqty'])->name('tambahqtyuser');
+Route::put('/kurangqtyuser/{id}', [AppKeranjangController::class, 'kurangqty'])->name('kurangqtyuser');
+
+Route::post('/addorderuser', [AppKeranjangController::class, 'addorder'])->name('addroderuser');
+
+Route::get('/sukses', [SuksesController::class, 'index'])->name('sukses');
+
+
+
+
+
 
 require __DIR__ . '/auth.php';
