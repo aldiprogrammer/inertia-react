@@ -6,10 +6,10 @@ export default function Keranjangapp({ kodeorder, meja }) {
     const modalRef = useRef(null);
     const [keranjang, Setkeranjang] = useState([]);
     const [total, setTotal] = useState(0);
-    const [showmeja, setShowmeja] = useState(false);
+    const [showmeja, setShowmeja] = useState(true);
     const [valmeja, setValmeja] = useState(0);
     const [catatan, setCatatan] = useState("");
-    const [jenispesanan, setJenispesanan] = useState("");
+    const [jenispesanan, setJenispesanan] = useState("Dine In");
 
     const openModal = () => {
         modalRef.current.showModal();
@@ -92,7 +92,7 @@ export default function Keranjangapp({ kodeorder, meja }) {
             {
                 onSuccess: () => {
                     Setkeranjang([]);
-                    setJenispesanan("");
+                    setJenispesanan("Dine In");
                     setValmeja("");
                     setCatatan("");
                     setTotal(0);
@@ -225,6 +225,7 @@ export default function Keranjangapp({ kodeorder, meja }) {
                                                 name="jenispesanan"
                                                 value="cash"
                                                 class="radio radio-error"
+                                                defaultChecked
                                                 onClick={() =>
                                                     handlejenispesanan(
                                                         "Dine In",
@@ -242,7 +243,6 @@ export default function Keranjangapp({ kodeorder, meja }) {
                                                 name="jenispesanan"
                                                 value="cash"
                                                 class="radio radio-success"
-                                                defaultChecked
                                                 onClick={() =>
                                                     handlejenispesanan(
                                                         "Takeway",

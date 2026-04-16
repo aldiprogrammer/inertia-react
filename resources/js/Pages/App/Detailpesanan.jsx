@@ -1,11 +1,9 @@
 import Keranjangapp from "@/Components/Keranjangapp";
-import { Link, router, usePage } from "@inertiajs/react";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-export default function Sukses({ kodeorder }) {
+export default function Detailpesanan({ listorder, kodeorder, meja, tanggal }) {
     const [scrolled, setScrolled] = useState(false);
     const scrollRef = useRef(null);
-
     useEffect(() => {
         const handleScroll = () => {
             if (scrollRef.current.scrollTop > 10) {
@@ -33,7 +31,7 @@ export default function Sukses({ kodeorder }) {
                     }`}
                 >
                     <div className="flex justify-between">
-                        <h3 className="font-bold">Order Sukses</h3>
+                        <h3 className="font-bold">Detail pesanan</h3>
                         <i className="fas fa-angle-right"></i>
                     </div>
                 </div>
@@ -43,20 +41,36 @@ export default function Sukses({ kodeorder }) {
                     ref={scrollRef}
                     className="p-4 space-y-4 h-[calc(100%-130px)] overflow-y-auto"
                 >
-                    <div className="mt-20">
-                        <img src="img/sukses.svg" alt="" />
-                        <div className="text-center text-gray-500">
-                            Pesanan anda berhasil dikirim, silahan melakukan
-                            pembyaran di kasir agar pesanan anda di proses
+                    <div className="card bg-base-100 shadow-xl border border-base-200 overflow-hidden">
+                        {/* Header */}
+                        <div className="bg-green-400 text-white px-4 py-3 flex justify-between">
+                            <div className="text-sm font-semibold">
+                                <i className="fas fa-calendar-day"></i>{" "}
+                                {tanggal}
+                            </div>
+
+                            <div className="text-sm font-semibold">
+                                {kodeorder}
+                            </div>
                         </div>
-                        <div className="flex justify-center">
-                            <Link
-                                href="/pesanananda"
-                                className="btn bg-green-300 rounded-[20px]"
-                            >
-                                Lihat status pesanan anda{" "}
-                                <i className="fas fa-angle-right"></i>
-                            </Link>
+
+                        {/* Body */}
+                        <div className="card-body">
+                            <p className="text-sm text-gray-600">
+                                Apakah Anda masih menggunakan beras ini? Atau
+                                sudah beralih ke yang ini?
+                            </p>
+
+                            <p className="mt-2 text-sm">
+                                Beras Sintanola hadir dengan kualitas pulen,
+                                bersih, dan konsisten setiap kali dimasak.
+                            </p>
+
+                            <div className="mt-4">
+                                <button className="btn btn-success btn-sm text-white">
+                                    Lihat Detail
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -65,7 +79,7 @@ export default function Sukses({ kodeorder }) {
                 <div className="absolute bottom-0 left-0 w-full bg-white border-t p-2 flex justify-around">
                     <button className="btn btn-ghost btn-sm">🏠</button>
                     <button className="btn btn-ghost btn-sm">🛒</button>
-                    <Keranjangapp kodeorder={kodeorder} meja="0" />
+                    <Keranjangapp kodeorder={kodeorder} meja={meja} />
                     <button className="btn btn-ghost btn-sm">💬</button>
                     <button className="btn btn-ghost btn-sm">👤</button>
                 </div>

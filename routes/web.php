@@ -16,6 +16,7 @@ use App\Http\Controllers\admin\ProdukController;
 use App\Http\Controllers\app\HomeController;
 use App\Http\Controllers\app\KeranjangController as AppKeranjangController;
 use App\Http\Controllers\app\MenuController;
+use App\Http\Controllers\app\PesananandaController;
 use App\Http\Controllers\app\SuksesController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -122,8 +123,11 @@ Route::put('/tambahqtyuser/{id}', [AppKeranjangController::class, 'tambahqty'])-
 Route::put('/kurangqtyuser/{id}', [AppKeranjangController::class, 'kurangqty'])->name('kurangqtyuser');
 
 Route::post('/addorderuser', [AppKeranjangController::class, 'addorder'])->name('addroderuser');
-
 Route::get('/sukses', [SuksesController::class, 'index'])->name('sukses');
+Route::get('/pesanananda', [PesananandaController::class, 'index'])->name('pesanananda');
+Route::get('/detailpesanan/{kode}', [PesananandaController::class, 'detail'])->name('detailpesanan');
+
+
 
 
 
