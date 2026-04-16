@@ -34,7 +34,9 @@ export default function Sukses({ kodeorder }) {
                 >
                     <div className="flex justify-between">
                         <h3 className="font-bold">Order Sukses</h3>
-                        <i className="fas fa-angle-right"></i>
+                        <div onClick={() => window.history.back()}>
+                            <i className="fas fa-angle-right"></i>
+                        </div>
                     </div>
                 </div>
 
@@ -46,8 +48,8 @@ export default function Sukses({ kodeorder }) {
                     <div className="mt-20">
                         <img src="img/sukses.svg" alt="" />
                         <div className="text-center text-gray-500">
-                            Pesanan anda berhasil dikirim, silahan melakukan
-                            pembyaran di kasir agar pesanan anda di proses
+                            Pesanan anda berhasil dikirim, silahjan melakukan
+                            pembayaran di kasir agar pesanan anda di proses
                         </div>
                         <div className="flex justify-center">
                             <Link
@@ -63,11 +65,27 @@ export default function Sukses({ kodeorder }) {
 
                 {/* 🔥 BOTTOM NAV */}
                 <div className="absolute bottom-0 left-0 w-full bg-white border-t p-2 flex justify-around">
-                    <button className="btn btn-ghost btn-sm">🏠</button>
-                    <button className="btn btn-ghost btn-sm">🛒</button>
+                    <Link href="/app">
+                        <button className="btn btn-ghost btn-sm text-[25px]  text-green-500">
+                            <i className="fas fa-home"></i>
+                        </button>
+                    </Link>
+                    <Link href="/menu/All">
+                        <button className="btn btn-ghost btn-sm text-[25px]  text-green-500">
+                            <i className="fas fa-bowl-rice"></i>
+                        </button>
+                    </Link>
                     <Keranjangapp kodeorder={kodeorder} meja="0" />
-                    <button className="btn btn-ghost btn-sm">💬</button>
-                    <button className="btn btn-ghost btn-sm">👤</button>
+                    <Link href="/pesanananda">
+                        <button className="btn btn-ghost btn-sm text-[25px]  text-green-500">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </button>
+                    </Link>
+                    <Link href="/profil">
+                        <button className="btn btn-ghost btn-sm text-[25px] text-green-500">
+                            <i className="fas fa-user"></i>
+                        </button>
+                    </Link>
                 </div>
             </div>
         </div>

@@ -64,7 +64,9 @@ export default function Menu({ kategori, produk, menu, kodeorder, meja }) {
                 >
                     <div className="flex justify-between">
                         <h3 className="font-bold">{menu}</h3>
-                        <i className="fas fa-angle-right"></i>
+                        <div onClick={() => window.history.back()}>
+                            <i className="fas fa-angle-right"></i>
+                        </div>
                     </div>
                 </div>
 
@@ -213,11 +215,27 @@ export default function Menu({ kategori, produk, menu, kodeorder, meja }) {
 
                 {/* 🔥 BOTTOM NAV */}
                 <div className="absolute bottom-0 left-0 w-full bg-white border-t p-2 flex justify-around">
-                    <button className="btn btn-ghost btn-sm">🏠</button>
-                    <button className="btn btn-ghost btn-sm">🛒</button>
+                    <Link href="/app">
+                        <button className="btn btn-ghost btn-sm text-[25px]  text-green-500">
+                            <i className="fas fa-home"></i>
+                        </button>
+                    </Link>
+                    <Link href="/menu/All">
+                        <button className="btn btn-ghost btn-sm text-[25px]  text-green-500">
+                            <i className="fas fa-bowl-rice"></i>
+                        </button>
+                    </Link>
                     <Keranjangapp kodeorder={kodeorder} meja={meja} />
-                    <button className="btn btn-ghost btn-sm">💬</button>
-                    <button className="btn btn-ghost btn-sm">👤</button>
+                    <Link href="/pesanananda">
+                        <button className="btn btn-ghost btn-sm text-[25px]  text-green-500">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </button>
+                    </Link>
+                    <Link href="/profil">
+                        <button className="btn btn-ghost btn-sm text-[25px] text-green-500">
+                            <i className="fas fa-user"></i>
+                        </button>
+                    </Link>
                 </div>
             </div>
 

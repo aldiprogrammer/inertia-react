@@ -22,10 +22,10 @@ class PesananandaController extends Controller
     function detail(Request $request, $kode)
     {
         $order = Orderuser::where('kode_order', $kode)->first();
-        $listorder = ListOrder::where('kode_order', $kode)->get();
+        $listorder = ListOrder::with('listproduk')->where('kode_order', $kode)->get();
         $kodeorder = $request->session()->get('kode_order');
         $meja  = Meja::all();
         $tanggal = $order->tanggal;
-        return Inertia::render('App/Detailpesanan', compact('listorder', 'kodeorder', 'meja', 'tanggal'));
+        return Inertia::render('App/Detailpesanan', compact('listorder', 'kodeorder', 'meja', 'tanggal', 'order'));
     }
 }

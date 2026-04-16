@@ -109,7 +109,7 @@ export default function Keranjangapp({ kodeorder, meja }) {
     return (
         <>
             <button
-                className="btn bg-green-400 text-white rounded-full px-6"
+                className="btn bg-green-600 text-white rounded-full px-6"
                 onClick={openModal}
             >
                 <i className="fas fa-bag-shopping"></i>Order
@@ -270,7 +270,7 @@ export default function Keranjangapp({ kodeorder, meja }) {
                                             <select
                                                 name=""
                                                 id=""
-                                                className="input input-bordered inpu-success"
+                                                className="input input-bordered input-success text-gray-400"
                                                 onChange={(e) =>
                                                     setValmeja(e.target.value)
                                                 }
