@@ -17,6 +17,7 @@ use App\Http\Controllers\app\HomeController;
 use App\Http\Controllers\app\KeranjangController as AppKeranjangController;
 use App\Http\Controllers\app\MenuController;
 use App\Http\Controllers\app\PesananandaController;
+use App\Http\Controllers\app\ProfilController;
 use App\Http\Controllers\app\SuksesController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -126,6 +127,10 @@ Route::post('/addorderuser', [AppKeranjangController::class, 'addorder'])->name(
 Route::get('/sukses', [SuksesController::class, 'index'])->name('sukses');
 Route::get('/pesanananda', [PesananandaController::class, 'index'])->name('pesanananda');
 Route::get('/detailpesanan/{kode}', [PesananandaController::class, 'detail'])->name('detailpesanan');
+Route::get('/profil', [ProfilController::class, 'index'])->name('profilapp');
+Route::post('/profil', [ProfilController::class, 'store'])->name('addprofilapp');
+
+
 
 
 
