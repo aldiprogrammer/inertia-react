@@ -13,8 +13,10 @@ use App\Http\Controllers\admin\PenggunaController;
 use App\Http\Controllers\admin\PenjualanController;
 use App\Http\Controllers\admin\PotonganMemberController;
 use App\Http\Controllers\admin\ProdukController;
+use App\Http\Controllers\app\GoogleController;
 use App\Http\Controllers\app\HomeController;
 use App\Http\Controllers\app\KeranjangController as AppKeranjangController;
+use App\Http\Controllers\app\LoginController;
 use App\Http\Controllers\app\MenuController;
 use App\Http\Controllers\app\PesananandaController;
 use App\Http\Controllers\app\ProfilController;
@@ -129,6 +131,11 @@ Route::get('/pesanananda', [PesananandaController::class, 'index'])->name('pesan
 Route::get('/detailpesanan/{kode}', [PesananandaController::class, 'detail'])->name('detailpesanan');
 Route::get('/profil', [ProfilController::class, 'index'])->name('profilapp');
 Route::post('/profil', [ProfilController::class, 'store'])->name('addprofilapp');
+
+
+Route::get('/loginapp', [LoginController::class, 'index'])->name('loginapp');
+Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google');
+Route::get('/auth/callback', [GoogleController::class, 'callback']);
 
 
 
