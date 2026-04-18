@@ -42,6 +42,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'admin' => [ // 🔥 TAMBAHAN
+            'driver' => 'session',
+            'provider' => 'pengguna',
+        ],
     ],
 
     /*
@@ -66,6 +71,12 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', User::class),
         ],
+
+        'pengguna' => [ // 🔥 TAMBAHAN
+            'driver' => 'eloquent',
+            'model' => App\Models\Pengguna::class,
+        ],
+
 
         // 'users' => [
         //     'driver' => 'database',

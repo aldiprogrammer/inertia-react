@@ -6,6 +6,7 @@ use App\Http\Controllers\admin\InventarisController;
 use App\Http\Controllers\admin\KasirController;
 use App\Http\Controllers\admin\KategoriController;
 use App\Http\Controllers\admin\KeranjangController;
+use App\Http\Controllers\admin\LoginController as AdminLoginController;
 use App\Http\Controllers\admin\MejaController;
 use App\Http\Controllers\admin\MemberController;
 use App\Http\Controllers\admin\PegawaiController;
@@ -136,6 +137,11 @@ Route::post('/profil', [ProfilController::class, 'store'])->name('addprofilapp')
 Route::get('/loginapp', [LoginController::class, 'index'])->name('loginapp');
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google');
 Route::get('/auth/callback', [GoogleController::class, 'callback']);
+
+
+Route::get('/admin/login', [AdminLoginController::class, 'index'])->name('loginadmin');
+Route::post('/admin/login', [AdminLoginController::class, 'auth'])->name('atuhadmin');
+
 
 
 

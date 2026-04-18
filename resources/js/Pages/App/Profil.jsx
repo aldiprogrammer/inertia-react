@@ -10,9 +10,9 @@ export default function Profil({ profil, kodeorder, meja }) {
     const scrollRef = useRef(null);
 
     const { data, setData, reset, post, processing } = useForm({
-        tgl_lahir: profil.tgl_lahir,
-        wa: profil.nowa,
-        alamat: profil.alamat,
+        tgl_lahir: profil?.tgl_lahir ?? '',
+        wa: profil?.nowa ?? '',
+        alamat: profil?.alamat ?? '',
         id_user: auth.user?.id,
     });
 
