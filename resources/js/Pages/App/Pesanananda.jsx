@@ -26,11 +26,10 @@ export default function Pesanananda({ kodeorder, meja, orderuser }) {
             <div className="w-full h-screen bg-white overflow-hidden relative md:max-w-[375px] md:mx-auto md:shadow-2xl md:border md:rounded-sm">
                 {/* 🔥 HEADER STICKY */}
                 <div
-                    className={`sticky top-0 z-50 p-4 transition-all duration-300 ${
-                        scrolled
-                            ? "bg-white shadow-md border-b"
-                            : "bg-white/80 backdrop-blur"
-                    }`}
+                    className={`sticky top-0 z-50 p-4 transition-all duration-300 ${scrolled
+                        ? "bg-white shadow-md border-b"
+                        : "bg-white/80 backdrop-blur"
+                        }`}
                 >
                     <div className="flex justify-between">
                         <h3 className="font-bold">Pesanan anda</h3>
@@ -89,7 +88,31 @@ export default function Pesanananda({ kodeorder, meja, orderuser }) {
                             </Link>
                         ))}
                     </div>
+
+                    <div className="mt-40">
+                        {orderuser == false ? (
+                            <div className="mt-20">
+                                <div className="flex justify-center">
+                                    <img
+                                        width="64"
+                                        height="64"
+                                        src="https://img.icons8.com/arcade/64/shop-local.png"
+                                        alt="shop-local"
+                                    />
+                                </div>
+                                <div className="flex justify-center items-center text-center text-gray-400">
+                                    Mohon maaf, Untuk saat ini pesanan anda  belum tersedia
+                                </div>
+                            </div>
+                        ) : (
+                            <></>
+                        )}
+                    </div>
+
                 </div>
+
+
+
 
                 {/* 🔥 BOTTOM NAV */}
                 <div className="absolute bottom-0 left-0 w-full bg-white border-t p-2 flex justify-around">
@@ -116,6 +139,6 @@ export default function Pesanananda({ kodeorder, meja, orderuser }) {
                     </Link>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

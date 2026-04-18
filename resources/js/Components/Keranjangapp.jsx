@@ -1,9 +1,10 @@
-import { router } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 
 export default function Keranjangapp({ kodeorder, meja }) {
     const modalRef = useRef(null);
+    const { auth } = usePage().props;
     const [keranjang, Setkeranjang] = useState([]);
     const [total, setTotal] = useState(0);
     const [showmeja, setShowmeja] = useState(true);
@@ -26,7 +27,7 @@ export default function Keranjangapp({ kodeorder, meja }) {
             // console.log(response);
             Setkeranjang(response.data.listorder);
             setTotal(response.data.total);
-        } catch (error) {}
+        } catch (error) { }
     };
     const hapus = (id) => {
         if (confirm("Yakin ingin menghapus ?")) {
@@ -83,6 +84,7 @@ export default function Keranjangapp({ kodeorder, meja }) {
         router.post(
             "/addorderuser",
             {
+                id_user: auth.user?.id,
                 kode_order: kodeorder,
                 jenis_pesanan: jenispesanan,
                 meja: valmeja,
@@ -195,8 +197,8 @@ export default function Keranjangapp({ kodeorder, meja }) {
                         ))}
 
                         {keranjang == false ||
-                        keranjang == null ||
-                        keranjang == [] ? (
+                            keranjang == null ||
+                            keranjang == [] ? (
                             <div className="my-20 ">
                                 <div className="flex justify-center">
                                     <img

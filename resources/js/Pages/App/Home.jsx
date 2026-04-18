@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 
 export default function Home({ kategori, produk, kodeorder, meja }) {
     const { flash } = usePage().props;
+    const { auth } = usePage().props;
     const [wishlist, setWishlist] = useState([]);
     const [scrolled, setScrolled] = useState(false);
     const scrollRef = useRef(null);
@@ -72,9 +73,14 @@ export default function Home({ kategori, produk, kodeorder, meja }) {
                                 Green Left
                             </h3>
                         </div>
-                        <div className="text-[25px] text-green-800 mt-3">
+
+                        <img
+                            src={auth.user?.avatar}
+                            className="w-10 h-10 rounded-full"
+                        />
+                        {/* <div className="text-[25px] text-green-800 mt-3">
                             <i className="fas fa-search"></i>
-                        </div>
+                        </div> */}
                         {/* <img
                             src="https://i.pravatar.cc/40"
                             className="w-10 h-10 rounded-full"
@@ -94,9 +100,14 @@ export default function Home({ kategori, produk, kodeorder, meja }) {
                 >
                     {/* BANNER */}
                     <div className="bg-green-200 rounded-xl p-3">
-                        <div className="font-bold">Hello Aldi</div>
-                        <div>Selamat datang di aplikasi E-order</div>
+                        <div className="font-bold">Hello {auth.user?.name}</div>
+                        <div>Selamat datang di aplikasi kita</div>
                     </div>
+
+                    <img
+                        src="img/bannerapp.png"
+                        className="rounded-lg"
+                    />
 
                     {/* MENU */}
                     <div className="grid grid-cols-4 gap-3">
@@ -110,7 +121,7 @@ export default function Home({ kategori, produk, kodeorder, meja }) {
                     </div>
 
                     {/* PAYMENT */}
-                    <div className="bg-gray-100 rounded-xl p-3 flex justify-between">
+                    {/* <div className="bg-gray-100 rounded-xl p-3 flex justify-between">
                         <div>
                             <p className="text-xs text-gray-500">Payment</p>
                             <p className="font-semibold text-sm">Add a Card</p>
@@ -119,7 +130,7 @@ export default function Home({ kategori, produk, kodeorder, meja }) {
                             <span>Ovo 0</span>
                             <span>Gift</span>
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* FOOD */}
                     <div className="">
@@ -153,24 +164,23 @@ export default function Home({ kategori, produk, kodeorder, meja }) {
                                             </div>
 
                                             {/* ❤️ LOVE */}
-                                            <button
+                                            {/* <button
                                                 onClick={() =>
                                                     toggleLove(product.id)
                                                 }
                                                 className="absolute right-2 top-2 bg-white/80 backdrop-blur rounded-full p-1 shadow"
                                             >
                                                 <span
-                                                    className={`text-lg transition duration-200 ${
-                                                        wishlist.includes(
-                                                            product.id,
-                                                        )
-                                                            ? "text-red-500 scale-125"
-                                                            : "text-gray-400"
-                                                    }`}
+                                                    className={`text-lg transition duration-200 ${wishlist.includes(
+                                                        product.id,
+                                                    )
+                                                        ? "text-red-500 scale-125"
+                                                        : "text-gray-400"
+                                                        }`}
                                                 >
                                                     ❤️
                                                 </span>
-                                            </button>
+                                            </button> */}
                                         </figure>
 
                                         {/* BODY */}

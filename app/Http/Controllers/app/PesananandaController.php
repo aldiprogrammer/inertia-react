@@ -7,13 +7,15 @@ use App\Models\ListOrder;
 use App\Models\Meja;
 use App\Models\Orderuser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class PesananandaController extends Controller
 {
     function index(Request $request)
     {
-        $orderuser = Orderuser::all();
+        $user = Auth::user();
+        $orderuser = Orderuser::where('id_user', $user->id)->get();
         $kodeorder = $request->session()->get('kode_order');
         $meja  = Meja::all();
         return Inertia::render('App/Pesanananda', compact('orderuser', 'kodeorder', 'meja'));

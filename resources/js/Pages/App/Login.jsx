@@ -38,7 +38,7 @@ export default function Login() {
                             account facebook
                         </button>
                     </div>
-                    <div className="text-center mt-2 text-gray-400">
+                    <div className="text-center mt-2 mb-10 text-gray-400">
                         Silahkan login dengan akun anda
                     </div>
                 </div>

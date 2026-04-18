@@ -77,7 +77,7 @@ class KeranjangController extends Controller
         $data = new Orderuser();
         $data->tanggal = date('Y-m-d');
         $data->kode_order = $request->kode_order;
-        $data->id_user = 1;
+        $data->id_user = $request->id_user;
         $data->jenis_pesanan = $request->jenis_pesanan;
         $data->meja = $request->meja ?? 0;
         $data->catatan = $request->catatan ?? 0;

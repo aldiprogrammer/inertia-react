@@ -3,20 +3,24 @@ import { Link, router, useForm, usePage } from "@inertiajs/react";
 import { useEffect, useRef, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
-export default function Profil({ kodeorder, meja }) {
+export default function Profil({ profil, kodeorder, meja }) {
     const { flash } = usePage().props;
+    const { auth } = usePage().props;
     const [scrolled, setScrolled] = useState(false);
     const scrollRef = useRef(null);
 
     const { data, setData, reset, post, processing } = useForm({
-        tgl_lahir: "",
-        wa: "",
-        alamat: "",
+        tgl_lahir: profil.tgl_lahir,
+        wa: profil.nowa,
+        alamat: profil.alamat,
+        id_user: auth.user?.id,
     });
 
     const save = (e) => {
         e.preventDefault();
         post("/profil", {
+
+        }, {
             onSuccess: () => {
                 reset();
             },
@@ -61,9 +65,8 @@ export default function Profil({ kodeorder, meja }) {
                 {/* HEADER */}
                 <div className="relative">
                     <div
-                        className={`h-40 rounded-b-[40px] transition-all duration-300 ${
-                            scrolled ? "bg-green-500" : "bg-green-400"
-                        }`}
+                        className={`h-40 rounded-b-[40px] transition-all duration-300 ${scrolled ? "bg-green-500" : "bg-green-400"
+                            }`}
                     >
                         <div className="absolute inset-0 opacity-10 bg-[url('https://www.svgrepo.com/show/353403/food.svg')] bg-repeat"></div>
                     </div>
@@ -89,7 +92,7 @@ export default function Profil({ kodeorder, meja }) {
                     <div className="absolute left-1/2 -bottom-12 transform -translate-x-1/2">
                         <div className="w-24 h-24 rounded-full border-4 border-white overflow-hidden shadow-lg">
                             <img
-                                src="https://i.pravatar.cc/150"
+                                src={auth.user?.avatar}
                                 className="w-full h-full object-cover"
                             />
                         </div>
@@ -98,7 +101,7 @@ export default function Profil({ kodeorder, meja }) {
 
                 {/* INFO USER */}
                 <div className="mt-16 text-center">
-                    <h2 className="font-bold text-lg">Nartina Alexa</h2>
+                    <h2 className="font-bold text-lg">{auth.user?.name}</h2>
                     <p className="text-gray-400 text-sm">MM-35446464</p>
                 </div>
 
@@ -130,6 +133,7 @@ export default function Profil({ kodeorder, meja }) {
                                 type="number"
                                 name="wa"
                                 value={data.wa}
+                                required
                                 className="input input-bordered input-success w-full"
                                 onChange={(e) => setData("wa", e.target.value)}
                             />
@@ -144,6 +148,7 @@ export default function Profil({ kodeorder, meja }) {
                                 type="date"
                                 name="tgl_lahir"
                                 value={data.tgl_lahir}
+                                required
                                 className="input input-bordered input-success w-full"
                                 onChange={(e) =>
                                     setData("tgl_lahir", e.target.value)
@@ -159,6 +164,7 @@ export default function Profil({ kodeorder, meja }) {
                             <textarea
                                 className="textarea textarea-success w-full h-24"
                                 value={data.alamat}
+                                required
                                 onChange={(e) =>
                                     setData("alamat", e.target.value)
                                 }

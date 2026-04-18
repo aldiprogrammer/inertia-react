@@ -56,11 +56,10 @@ export default function Menu({ kategori, produk, menu, kodeorder, meja }) {
             <div className="w-full h-screen bg-white overflow-hidden relative md:max-w-[375px] md:mx-auto md:shadow-2xl md:border md:rounded-sm">
                 {/* 🔥 HEADER STICKY */}
                 <div
-                    className={`sticky top-0 z-50 p-4 transition-all duration-300 ${
-                        scrolled
-                            ? "bg-white shadow-md border-b"
-                            : "bg-white/80 backdrop-blur"
-                    }`}
+                    className={`sticky top-0 z-50 p-4 transition-all duration-300 ${scrolled
+                        ? "bg-white shadow-md border-b"
+                        : "bg-white/80 backdrop-blur"
+                        }`}
                 >
                     <div className="flex justify-between">
                         <h3 className="font-bold">{menu}</h3>
@@ -75,6 +74,11 @@ export default function Menu({ kategori, produk, menu, kodeorder, meja }) {
                     ref={scrollRef}
                     className="p-4 space-y-4 h-[calc(100%-130px)] overflow-y-auto"
                 >
+
+                    <img
+                        src="../img/bannerapp.png"
+                        className="rounded-lg"
+                    />
                     {/* MENU */}
                     <div className="grid grid-cols-4 gap-3">
                         <Link href={"/menu/All"}>
@@ -140,24 +144,23 @@ export default function Menu({ kategori, produk, menu, kodeorder, meja }) {
                                         </div>
 
                                         {/* ❤️ LOVE */}
-                                        <button
+                                        {/* <button
                                             onClick={() =>
                                                 toggleLove(product.id)
                                             }
                                             className="absolute right-2 top-2 bg-white/80 backdrop-blur rounded-full p-1 shadow"
                                         >
                                             <span
-                                                className={`text-lg transition duration-200 ${
-                                                    wishlist.includes(
-                                                        product.id,
-                                                    )
+                                                className={`text-lg transition duration-200 ${wishlist.includes(
+                                                    product.id,
+                                                )
                                                         ? "text-red-500 scale-125"
                                                         : "text-gray-400"
-                                                }`}
+                                                    }`}
                                             >
                                                 ❤️
                                             </span>
-                                        </button>
+                                        </button> */}
                                     </figure>
 
                                     {/* BODY */}

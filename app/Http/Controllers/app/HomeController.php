@@ -7,6 +7,7 @@ use App\Models\Kategori;
 use App\Models\Meja;
 use App\Models\Produk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class HomeController extends Controller
@@ -17,6 +18,7 @@ class HomeController extends Controller
         $produk = Produk::inRandomOrder()->limit(6)->get();
         $meja = Meja::all();
         $kodeorder = $request->session()->get('kode_order');
-        return Inertia::render('App/Home', compact('kategori', 'produk', 'meja', 'kodeorder'));
+        $user = Auth::user();
+        return Inertia::render('App/Home', compact('kategori', 'produk', 'meja', 'kodeorder', 'user'));
     }
 }
