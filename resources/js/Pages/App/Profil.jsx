@@ -79,7 +79,7 @@ export default function Profil({ kodeorder, meja }) {
 
                     {/* TOP BAR */}
                     <div className="absolute top-0 left-0 w-full p-4 flex justify-between text-white">
-                        <h3 className="font-semibold">Profil</h3>
+                        <h3 className="font-semibold">Profile</h3>
                         <button onClick={() => window.history.back()}>
                             <i className="fas fa-arrow-right"></i>
                         </button>
