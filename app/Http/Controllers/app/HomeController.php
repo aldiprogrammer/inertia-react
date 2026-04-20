@@ -14,6 +14,9 @@ class HomeController extends Controller
 {
     function index(Request $request)
     {
+        if (!$request->session()->has('kode_order')) {
+            $request->session()->put('kode_order', 'ORD-' . rand(100000, 999999));
+        }
         $kategori = Kategori::all();
         $produk = Produk::inRandomOrder()->limit(6)->get();
         $meja = Meja::all();

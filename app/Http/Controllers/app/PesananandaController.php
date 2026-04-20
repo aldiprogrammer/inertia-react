@@ -30,4 +30,11 @@ class PesananandaController extends Controller
         $tanggal = $order->tanggal;
         return Inertia::render('App/Detailpesanan', compact('listorder', 'kodeorder', 'meja', 'tanggal', 'order'));
     }
+
+    function show(Request $request, $tgl)
+    {
+        $user = Auth::user();
+        $orderuser = Orderuser::where('id_user', $user->id)->where('tanggal', $tgl)->get();
+        return response()->json($orderuser);
+    }
 }

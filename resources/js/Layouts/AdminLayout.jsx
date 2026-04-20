@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 
 export default function AdminLayout({ children }) {
+    const { session } = usePage().props;
+
     return (
         <div className="drawer lg:drawer-open">
             <input id="sidebar" type="checkbox" className="drawer-toggle" />
@@ -74,7 +76,7 @@ export default function AdminLayout({ children }) {
                                     </div>
                                 </div>
                                 <span className="hidden md:block font-medium">
-                                    Admin
+                                    {session.username}
                                 </span>
                             </div>
 
@@ -82,14 +84,19 @@ export default function AdminLayout({ children }) {
                                 tabIndex="0"
                                 className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
                             >
-                                <li>
+                                {/* <li>
                                     <a>Profile</a>
                                 </li>
                                 <li>
                                     <a>Pengaturan</a>
-                                </li>
+                                </li> */}
                                 <li>
-                                    <a className="text-error">Logout</a>
+                                    <Link
+                                        href="/admin/logout"
+                                        className="text-error"
+                                    >
+                                        Logout
+                                    </Link>
                                 </li>
                             </ul>
                         </div>

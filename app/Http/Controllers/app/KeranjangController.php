@@ -85,6 +85,7 @@ class KeranjangController extends Controller
         $data->total_harga = $request->total_harga;
         $data->save();
         $request->session()->forget('kode_order');
+
         return redirect()->route('sukses')->with('success', 'Order behasil dikirim');
     }
 }

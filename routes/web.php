@@ -23,31 +23,37 @@ use App\Http\Controllers\app\PesananandaController;
 use App\Http\Controllers\app\ProfilController;
 use App\Http\Controllers\app\SuksesController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\CekLoginAdmin;
+use App\Http\Middleware\CekLoginUser;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use PhpParser\Node\Expr\FuncCall;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
+// });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return Inertia::render('Dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/About', [AboutController::class, 'index'])->middleware(['auth', 'verified'])->name('about');
+// Route::get('/About', [AboutController::class, 'index'])->middleware(['auth', 'verified'])->name('about');
 
 // Route::get('/admin', function () {
 //     return Inertia::render('Admin/Home');
 // })->middleware(['auth', 'verified'])->name('admin');
 
-Route::middleware('auth')->group(function () {
+Route::get('/admin/login', [AdminLoginController::class, 'index'])->name('loginadmin');
+Route::post('/admin/login', [AdminLoginController::class, 'auth'])->name('atuhadmin');
+Route::get('/admin/logout', [AdminLoginController::class, 'logout'])->name('logoutadmin');
 
+Route::middleware([CekLoginAdmin::class])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -112,35 +118,37 @@ Route::middleware('auth')->group(function () {
     Route::get('/detailpenjualan/{kode}', [PenjualanController::class, 'detail'])->name('penjualan.detail');
     Route::delete('/hapusdetailorder/{id}', [PenjualanController::class, 'hapusdetail'])->name('penjualan.deletedetail');
     Route::delete('/hapusorder/{kode}', [PenjualanController::class, 'hapusorder'])->name('penjualan.deletorder');
-
     Route::get('/penjualanhariini', [PenjualanController::class, 'penjualanhariini'])->name('penjualanhariini');
-
     Route::get('/testprint', [PenjualanController::class, 'testprint'])->name('testprint');
 });
 
-Route::get('/app', [HomeController::class, 'index'])->name('app');
-Route::get('/menu/{menu}', [MenuController::class, 'index'])->name('menu');
-Route::post('/addkeranjanguser', [AppKeranjangController::class, 'store'])->name('addkeranjanguser');
-Route::get('/keranjanguser/{kodeorder}', [AppKeranjangController::class, 'index'])->name('datakeranjanguser');
-Route::delete('/hapuslistorderuser/{id}', [AppKeranjangController::class, 'delete'])->name('hapuslistorderuser');
-Route::put('/tambahqtyuser/{id}', [AppKeranjangController::class, 'tambahqty'])->name('tambahqtyuser');
-Route::put('/kurangqtyuser/{id}', [AppKeranjangController::class, 'kurangqty'])->name('kurangqtyuser');
-
-Route::post('/addorderuser', [AppKeranjangController::class, 'addorder'])->name('addroderuser');
-Route::get('/sukses', [SuksesController::class, 'index'])->name('sukses');
-Route::get('/pesanananda', [PesananandaController::class, 'index'])->name('pesanananda');
-Route::get('/detailpesanan/{kode}', [PesananandaController::class, 'detail'])->name('detailpesanan');
-Route::get('/profil', [ProfilController::class, 'index'])->name('profilapp');
-Route::post('/profil', [ProfilController::class, 'store'])->name('addprofilapp');
 
 
-Route::get('/loginapp', [LoginController::class, 'index'])->name('loginapp');
+Route::middleware([CekLoginUser::class])->group(function () {
+    Route::get('/app', [HomeController::class, 'index'])->name('app');
+    Route::get('/menu/{menu}', [MenuController::class, 'index'])->name('menu');
+    Route::post('/addkeranjanguser', [AppKeranjangController::class, 'store'])->name('addkeranjanguser');
+    Route::get('/keranjanguser/{kodeorder}', [AppKeranjangController::class, 'index'])->name('datakeranjanguser');
+    Route::delete('/hapuslistorderuser/{id}', [AppKeranjangController::class, 'delete'])->name('hapuslistorderuser');
+    Route::put('/tambahqtyuser/{id}', [AppKeranjangController::class, 'tambahqty'])->name('tambahqtyuser');
+    Route::put('/kurangqtyuser/{id}', [AppKeranjangController::class, 'kurangqty'])->name('kurangqtyuser');
+
+    Route::post('/addorderuser', [AppKeranjangController::class, 'addorder'])->name('addroderuser');
+    Route::get('/sukses', [SuksesController::class, 'index'])->name('sukses');
+    Route::get('/pesanananda', [PesananandaController::class, 'index'])->name('pesanananda');
+    Route::get('/pesanananda/{tgl}', [PesananandaController::class, 'show'])->name('pesanananda.tgl');
+    Route::get('/detailpesanan/{kode}', [PesananandaController::class, 'detail'])->name('detailpesanan');
+    Route::get('/profil', [ProfilController::class, 'index'])->name('profilapp');
+    Route::post('/profil', [ProfilController::class, 'store'])->name('addprofilapp');
+});
+
+Route::get('/', [LoginController::class, 'index'])->name('loginapp');
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google');
 Route::get('/auth/callback', [GoogleController::class, 'callback']);
 
 
-Route::get('/admin/login', [AdminLoginController::class, 'index'])->name('loginadmin');
-Route::post('/admin/login', [AdminLoginController::class, 'auth'])->name('atuhadmin');
+
+
 
 
 

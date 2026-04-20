@@ -3,9 +3,16 @@ import AdminLayout from "../../Layouts/AdminLayout";
 import { Link } from "@inertiajs/react";
 
 export default function Home({ member, ordertoday, order, produk, dataorder }) {
+    const enableNotif = () => {
+        window.OneSignalDeferred.push(async function (OneSignal) {
+            await OneSignal.Notifications.requestPermission();
+        });
+    };
     return (
         <div>
             <main class="p-6 space-y-6">
+                <button onClick={enableNotif}>Aktifkan Notifikasi</button>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
                     <div class="card bg-red-200 shadow-md border border-base-300">
                         <div class="card-body">

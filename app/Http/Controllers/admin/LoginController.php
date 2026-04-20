@@ -21,11 +21,30 @@ class LoginController extends Controller
             'password' => $request->password,
         ])) {
             $request->session()->regenerate();
+            session([
+                'id' => Auth::guard('admin')->user()->id,
+                'email' => Auth::guard('admin')->user()->email,
+                'username' => Auth::guard('admin')->user()->username,
+                'role' => Auth::guard('admin')->user()->role
+            ]);
             return redirect('/dashboard');
         }
 
         return back()->withErrors([
-            'email' => 'Login gagal',
+            'email' => 'Login gagal, masukan email & password dengan benar',
         ]);
+    }
+
+    function logout(Request $request)
+    {
+
+        Auth::guard('admin')->logout();
+
+        // Hapus session
+        $request->session()->forget(['id', 'role', 'username', 'email']);
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/admin/login');
     }
 }
