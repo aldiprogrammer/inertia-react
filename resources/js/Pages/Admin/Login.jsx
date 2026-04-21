@@ -1,4 +1,5 @@
 import { useForm } from "@inertiajs/react";
+import { useEffect } from "react";
 
 export default function Login() {
     const { data, setData, post, processing, errors } = useForm({
@@ -10,6 +11,43 @@ export default function Login() {
         e.preventDefault();
         post("/admin/login");
     };
+
+    useEffect(() => {
+        window.OneSignal = window.OneSignal || [];
+
+        window.OneSignal.push(function () {
+            window.OneSignal.init({
+                appId: "573acbd0-d573-4120-a75b-cf6f9c15e88c",
+                notifyButton: {
+                    enable: true,
+                },
+            });
+
+            // tampilkan popup
+            window.OneSignal.showSlidedownPrompt();
+
+            // 🔥 INI YANG BENAR
+            window.OneSignal.on("subscriptionChange", function (isSubscribed) {
+                console.log("Subscribed:", isSubscribed);
+
+                if (isSubscribed) {
+                    window.OneSignal.getUserId().then(function (playerId) {
+                        console.log("PLAYER ID:", playerId);
+
+                        // if (playerId) {
+                        //     axios.post(
+                        //         "http://localhost:8000/api/save-player-id",
+                        //         {
+                        //             player_id: playerId,
+                        //             user_id: 1,
+                        //         },
+                        //     );
+                        // }
+                    });
+                }
+            });
+        });
+    }, []);
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">

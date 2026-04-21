@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Orderuser;
 use App\Models\Produk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class KeranjangController extends Controller
 
@@ -85,6 +86,24 @@ class KeranjangController extends Controller
         $data->total_harga = $request->total_harga;
         $data->save();
         $request->session()->forget('kode_order');
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Basic os_v2_app_k45mxugvonasbj23z5xzyfpirsnylueoqake445s3gyfljw27qfw7mtjsz4rdp2gexluwqffkzfpdtres2op77mz4mvtscvdyt3ixjy',
+            'Content-Type' => 'application/json',
+        ])->post('https://onesignal.com/api/v1/notifications', [
+            'app_id' => '573acbd0-d573-4120-a75b-cf6f9c15e88c',
+            'included_segments' => ['All'],
+            'contents' => [
+                'en' => 'Hello kasir, ada pesanan baru untuk anda',
+                'id' => 'Hello kasir, ada pesanan baru untuk anda'
+            ],
+            'headings' => [
+                'en' => 'Pesanan Baru',
+                'id' => 'Pesanan Baru'
+            ],
+        ]);
+
+        // dd($response->json());
 
         return redirect()->route('sukses')->with('success', 'Order behasil dikirim');
     }
