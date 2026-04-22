@@ -88,7 +88,7 @@ class KeranjangController extends Controller
         $request->session()->forget('kode_order');
 
         $response = Http::withHeaders([
-            'Authorization' => 'Basic os_v2_app_k45mxugvonasbj23z5xzyfpirsnylueoqake445s3gyfljw27qfw7mtjsz4rdp2gexluwqffkzfpdtres2op77mz4mvtscvdyt3ixjy',
+            'Authorization' => 'Basic os_v2_app_k45mxugvonasbj23z5xzyfpirrhcmaqq5zeuzi5gmw3wdth3cccpsityod3aex437hicakrnbwjnl2xdw6cpxyhuvozoeini2vepgya',
             'Content-Type' => 'application/json',
         ])->post('https://onesignal.com/api/v1/notifications', [
             'app_id' => '573acbd0-d573-4120-a75b-cf6f9c15e88c',
@@ -100,6 +100,15 @@ class KeranjangController extends Controller
             'headings' => [
                 'en' => 'Pesanan Baru',
                 'id' => 'Pesanan Baru'
+            ],
+
+
+            // 🔥 TAMBAHKAN INI
+            'content_available' => true,
+
+            // 🔥 OPTIONAL (biar jelas)
+            'data' => [
+                'type' => 'order_baru'
             ],
         ]);
 

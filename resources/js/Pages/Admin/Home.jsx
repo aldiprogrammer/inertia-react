@@ -6,16 +6,19 @@ export default function Home({ member, ordertoday, order, produk, dataorder }) {
     useEffect(() => {
         window.OneSignal = window.OneSignal || [];
 
-        window.OneSignal.push(function () {
-            // saat notif diklik
-            window.OneSignal.on("notificationClick", function (event) {
-                console.log("klik notif");
-            });
+        window.OneSignal.push(() => {
+            window.OneSignal.on(
+                "notificationForegroundWillDisplay",
+                (event) => {
+                    console.log("📩 MASUK:", event);
 
-            // saat page dibuka kembali
-            document.addEventListener("visibilitychange", function () {
-                if (document.visibilityState === "visible") {
-                }
+                    // optional: tetap tampilkan notif
+                    event.complete(event.notification);
+                },
+            );
+
+            window.OneSignal.on("notificationClick", (event) => {
+                console.log("🖱️ DIKLIK:", event);
             });
         });
     }, []);

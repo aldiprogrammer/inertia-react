@@ -9,9 +9,11 @@ use App\Http\Controllers\admin\KeranjangController;
 use App\Http\Controllers\admin\LoginController as AdminLoginController;
 use App\Http\Controllers\admin\MejaController;
 use App\Http\Controllers\admin\MemberController;
+use App\Http\Controllers\admin\OrderUserController;
 use App\Http\Controllers\admin\PegawaiController;
 use App\Http\Controllers\admin\PenggunaController;
 use App\Http\Controllers\admin\PenjualanController;
+use App\Http\Controllers\admin\Pesancontroller;
 use App\Http\Controllers\admin\PotonganMemberController;
 use App\Http\Controllers\admin\ProdukController;
 use App\Http\Controllers\app\GoogleController;
@@ -98,7 +100,7 @@ Route::middleware([CekLoginAdmin::class])->group(function () {
     Route::delete('/hapuspengguna/{id}', [PenggunaController::class, 'delete'])->name('pengguna.delete');
     Route::patch('/statuspengguna/{id}', [PenggunaController::class, 'status'])->name('pengguna.status');
 
-    Route::get('/kasir', [KasirController::class, 'index'])->name('kasir');
+    Route::get('/kasir/{kode?}', [KasirController::class, 'index'])->name('kasir');
     Route::post('/addkeranjang', [KeranjangController::class, 'store'])->name('keranjang.store');
     Route::delete('/hapuslistorder/{id}', [KeranjangController::class, 'delete'])->name('keranjang.delete');
     Route::put('/tambahqty/{id}', [KeranjangController::class, 'tambahqty'])->name('keranjang.tambahqty');
@@ -120,6 +122,11 @@ Route::middleware([CekLoginAdmin::class])->group(function () {
     Route::delete('/hapusorder/{kode}', [PenjualanController::class, 'hapusorder'])->name('penjualan.deletorder');
     Route::get('/penjualanhariini', [PenjualanController::class, 'penjualanhariini'])->name('penjualanhariini');
     Route::get('/testprint', [PenjualanController::class, 'testprint'])->name('testprint');
+
+    Route::get('/orderuser', [OrderUserController::class, 'index'])->name('orderuser');
+
+    Route::get('/pesan', [Pesancontroller::class, 'index'])->name('pesan');
+    Route::post('/pesan', [Pesancontroller::class, 'send'])->name('sendpesan');
 });
 
 

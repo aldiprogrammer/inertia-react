@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Orderuser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
@@ -42,7 +43,11 @@ class HandleInertiaRequests extends Middleware
             'session' => [
                 'username' => $request->session()->get('username'),
                 'role' => $request->session()->get('role'),
-            ]
+            ],
+
+            'orderuser' => [
+                'order' => Orderuser::where('status', 0)->get(),
+            ],
 
 
 

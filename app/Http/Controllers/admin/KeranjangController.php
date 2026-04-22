@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ListOrder;
 use App\Models\Member;
 use App\Models\Order;
+use App\Models\Orderuser;
 use App\Models\PotonganMember;
 use App\Models\Produk;
 use Illuminate\Http\Request;
@@ -108,6 +109,16 @@ class KeranjangController extends Controller
         $add->jenis_pesanan = $request->jenis_pesanan;
         $add->status = 1;
         $add->save();
-        return redirect()->back()->with('success', 'Data berhasil ditambah');
+
+
+        $cekorderuser = Orderuser::where('kode_order', $request->kode)->first();
+        if ($cekorderuser) {
+            $or = Orderuser::find($cekorderuser->id);
+            $or->status = 1;
+            $or->update();
+        }
+
+        $request->session()->forget('kode_order');
+        return redirect('/kasir')->with('success', 'Data berhasil ditambah');
     }
 }

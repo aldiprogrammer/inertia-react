@@ -2,7 +2,7 @@ import { router, useForm } from "@inertiajs/react";
 import axios from "axios";
 import React, { useRef, useState } from "react";
 
-export default function Listorder({ list, total, kode, meja }) {
+export default function Listorder({ list, total, kode, meja, orderuser }) {
     const [member, setMember] = useState("");
     // const [showformcash, setShowformcash] = useState(false);
     const [showdiskon, setShowdiskon] = useState(false);
