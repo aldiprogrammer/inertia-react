@@ -3,7 +3,7 @@ import { useForm, usePage } from "@inertiajs/react";
 import React, { useEffect, useRef, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
-export default function Meja({ meja }) {
+export default function Meja({ meja, kode }) {
     const { flash } = usePage().props;
     const {
         data,
@@ -15,7 +15,7 @@ export default function Meja({ meja }) {
         error,
         reset,
     } = useForm({
-        kode: "",
+        kode: kode,
         meja: "",
     });
     const [id, setId] = useState(0);

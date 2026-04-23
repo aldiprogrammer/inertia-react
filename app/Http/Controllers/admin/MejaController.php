@@ -12,7 +12,8 @@ class MejaController extends Controller
     function index()
     {
         $meja = Meja::all();
-        return Inertia::render('Admin/Meja', compact('meja'));
+        $kode = 'MJ-' . rand(0, 100000);
+        return Inertia::render('Admin/Meja', compact('meja', 'kode'));
     }
 
     function store(Request $request)

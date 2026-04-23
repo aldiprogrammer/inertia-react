@@ -12,7 +12,8 @@ class KategoriController extends Controller
     function index()
     {
         $kategori = Kategori::all();
-        return Inertia::render('Admin/Kategori', compact('kategori'));
+        $kode = 'KTR-' . rand(0, 100000);
+        return Inertia::render('Admin/Kategori', compact('kategori', 'kode'));
     }
 
     function store(Request $request)

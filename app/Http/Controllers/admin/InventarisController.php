@@ -12,7 +12,8 @@ class InventarisController extends Controller
     function index()
     {
         $inventaris = Inventaris::all();
-        return Inertia::render('Admin/Inventaris', compact('inventaris'));
+        $kode = 'INVS-' . rand(0, 100000);
+        return Inertia::render('Admin/Inventaris', compact('inventaris', 'kode'));
     }
 
     function store(Request $request)

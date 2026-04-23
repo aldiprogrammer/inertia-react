@@ -3,7 +3,7 @@ import { useForm, usePage } from "@inertiajs/react";
 import React, { useEffect, useRef, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
-export default function Inventaris({ inventaris }) {
+export default function Inventaris({ inventaris, kode }) {
     const [id, setId] = useState(0);
     const { flash } = usePage().props;
     const {
@@ -17,7 +17,7 @@ export default function Inventaris({ inventaris }) {
         errors,
     } = useForm({
         nama_barang: "",
-        kode: "",
+        kode: kode,
         tanggal: "",
         jenis: "",
         jumlah: "",

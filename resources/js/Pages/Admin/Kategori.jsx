@@ -3,7 +3,7 @@ import { Form, useForm, usePage } from "@inertiajs/react";
 import React, { useEffect, useRef, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
-export default function Kategori({ kategori }) {
+export default function Kategori({ kategori, kode }) {
     const { flash } = usePage().props;
     const [id, setId] = useState(0);
     const modalRef = useRef(null);
@@ -39,7 +39,7 @@ export default function Kategori({ kategori }) {
         processing,
         reset,
     } = useForm({
-        kode: "",
+        kode: kode,
         kategori: "",
         id: "",
     });
