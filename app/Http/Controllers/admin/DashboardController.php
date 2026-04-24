@@ -17,7 +17,7 @@ class DashboardController extends Controller
         $ordertoday = Order::where('tanggal', date('Y-m-d'))->count();
         $order = Order::count();
         $produk = Produk::count();
-        $dataorder = Order::where('tanggal', date('Y-m-d'))->get();
+        $dataorder = Order::where('tanggal', date('Y-m-d'))->limit(5)->orderBy('id', 'desc')->get();
         return Inertia::render('Admin/Home', compact('member', 'ordertoday', 'order', 'produk', 'dataorder'));
     }
 }

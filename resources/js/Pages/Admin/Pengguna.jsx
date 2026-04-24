@@ -187,7 +187,7 @@ export default function Pengguna({ pengguna }) {
                                                     <option value="Kasir">
                                                         Kasir
                                                     </option>
-                                                    <option value="Kasir">
+                                                    <option value="Admin">
                                                         Admin
                                                     </option>
                                                 </select>
@@ -316,7 +316,7 @@ export default function Pengguna({ pengguna }) {
                                                     <option value="Kasir">
                                                         Kasir
                                                     </option>
-                                                    <option value="Kasir">
+                                                    <option value="Admin">
                                                         Admin
                                                     </option>
                                                 </select>

@@ -55,6 +55,13 @@ export default function Login() {
             <div className="min-h-screen flex items-center justify-center bg-gray-100">
                 <div className="w-full max-w-md bg-white p-6 rounded-2xl shadow-lg">
                     {/* Title */}
+                    <div className="flex justify-center">
+                        <img
+                            className="text-center h-20"
+                            src="/img/logo.png"
+                            alt=""
+                        />
+                    </div>
                     <h2 className="text-2xl font-bold text-center mb-6">
                         Login Admin
                     </h2>

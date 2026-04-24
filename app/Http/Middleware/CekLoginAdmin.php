@@ -13,10 +13,20 @@ class CekLoginAdmin
      *
      * @param  Closure(Request): (Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next,  ...$roles): Response
     {
         if (!session()->has('email')) {
             return redirect('/admin/login')->with('error', 'Silakan login dulu');
+        }
+
+        // ambil role dari session
+        $userRole = session('role');
+
+        // cek role
+        if (!empty($roles)) {
+            if (!in_array($userRole, $roles)) {
+                abort(403);
+            }
         }
         return $next($request);
     }

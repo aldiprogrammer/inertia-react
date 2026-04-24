@@ -16,6 +16,7 @@ use App\Http\Controllers\admin\PenjualanController;
 use App\Http\Controllers\admin\Pesancontroller;
 use App\Http\Controllers\admin\PotonganMemberController;
 use App\Http\Controllers\admin\ProdukController;
+use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\app\GoogleController;
 use App\Http\Controllers\app\HomeController;
 use App\Http\Controllers\app\KeranjangController as AppKeranjangController;
@@ -124,6 +125,16 @@ Route::middleware([CekLoginAdmin::class])->group(function () {
     Route::get('/testprint', [PenjualanController::class, 'testprint'])->name('testprint');
 
     Route::get('/orderuser', [OrderUserController::class, 'index'])->name('orderuser');
+    Route::get('/dataorderuser', [OrderUserController::class, 'data'])->name('dataorderuser');
+    Route::delete('/dataorderuser/{kode}', [OrderUserController::class, 'hapus'])->name('hapusdataorderuser');
+    Route::get('/detailorderuser/{kode}', [OrderUserController::class, 'detail'])->name('detailorderuser');
+    Route::delete('/detailorderuser/{id}', [OrderUserController::class, 'hapusdetail'])->name('hapusdetailorderuser');
+
+
+    Route::get('/user', [UserController::class, 'index'])->name('datauser');
+    Route::delete('/user/{id}', [UserController::class, 'hapus'])->name('deleteuser');
+
+
 
     Route::get('/pesan', [Pesancontroller::class, 'index'])->name('pesan');
     Route::post('/pesan', [Pesancontroller::class, 'send'])->name('sendpesan');

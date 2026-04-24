@@ -1,34 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AdminLayout from "../../Layouts/AdminLayout";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 
 export default function Home({ member, ordertoday, order, produk, dataorder }) {
+    const [time, setTime] = useState(new Date());
+    const { session } = usePage().props;
+
     useEffect(() => {
-        window.OneSignal = window.OneSignal || [];
+        const interval = setInterval(() => {
+            setTime(new Date());
+        }, 1000);
 
-        window.OneSignal.push(() => {
-            window.OneSignal.on(
-                "notificationForegroundWillDisplay",
-                (event) => {
-                    console.log("📩 MASUK:", event);
-
-                    // optional: tetap tampilkan notif
-                    event.complete(event.notification);
-                },
-            );
-
-            window.OneSignal.on("notificationClick", (event) => {
-                console.log("🖱️ DIKLIK:", event);
-            });
-        });
+        return () => clearInterval(interval);
     }, []);
+
     return (
         <div>
             <main class="p-6 space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
                     <div class="card bg-red-200 shadow-md border border-base-300">
                         <div class="card-body">
-                            <p class="text-sm text-gray-500">Total Member</p>
+                            <p class="text-sm text-gray-500">
+                                Total Member {session.role}
+                            </p>
                             <h2 class="text-3xl font-bold">{member}</h2>
                             <span class="text-success text-sm">
                                 <Link href="/member">
@@ -103,89 +97,85 @@ export default function Home({ member, ordertoday, order, produk, dataorder }) {
                             </div>
 
                             <div class="overflow-x-auto">
-                                <table class="table table-zebra">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Kode</th>
-                                            <th>Tanggal</th>
-                                            <th>Meja</th>
-                                            <th>Total</th>
-                                            <th>Metode P</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {dataorder.map((item, index) => (
+                                {dataorder == false ? (
+                                    <>
+                                        <div className="text-center my-10 text-gray-500">
+                                            Data order hari ini masih kosong
+                                            lore
+                                        </div>
+                                    </>
+                                ) : (
+                                    <table class="table table-zebra">
+                                        <thead>
                                             <tr>
-                                                <td>{index + 1}</td>
-                                                <td>{item.kode}</td>
-                                                <td>{item.tanggal}</td>
-                                                <td>
-                                                    {/* <span class="badge badge-success">
+                                                <th>No</th>
+                                                <th>Kode</th>
+                                                <th>Tanggal</th>
+                                                <th>Meja</th>
+                                                <th>Total</th>
+                                                <th>Metode P</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {dataorder.map((item, index) => (
+                                                <tr>
+                                                    <td>{index + 1}</td>
+                                                    <td>{item.kode}</td>
+                                                    <td>{item.tanggal}</td>
+                                                    <td>
+                                                        {/* <span class="badge badge-success">
                                                         Admin
                                                     </span>
                                                      */}
-                                                    {item.meja}
-                                                </td>
-                                                <td>
-                                                    {Number(
-                                                        item.total_harga,
-                                                    ).toLocaleString("id-ID")}
-                                                </td>
-                                                <td>
-                                                    <span class="badge badge-success text-white">
-                                                        {item.metode_pembayaran}
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                                                        {item.meja}
+                                                    </td>
+                                                    <td>
+                                                        {Number(
+                                                            item.total_harga,
+                                                        ).toLocaleString(
+                                                            "id-ID",
+                                                        )}
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge badge-success text-white">
+                                                            {
+                                                                item.metode_pembayaran
+                                                            }
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                )}
                             </div>
                         </div>
                     </div>
 
-                    <div class="card bg-base-100 shadow-md border border-base-300">
-                        <div class="card-body">
-                            <h2 class="card-title mb-4">Aktivitas Terbaru</h2>
+                    <div className="card bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white shadow-xl border-0">
+                        <div className="card-body items-center text-center">
+                            <h2 className="card-title mb-2 text-white/80">
+                                <i className="fa fa-clock"></i> Waktu Sekarang
+                            </h2>
 
-                            <ul class="timeline timeline-vertical">
-                                <li>
-                                    <div class="timeline-start text-sm">
-                                        08:00
-                                    </div>
-                                    <div class="timeline-middle">
-                                        <div class="badge badge-success badge-sm"></div>
-                                    </div>
-                                    <div class="timeline-end timeline-box">
-                                        User baru mendaftar
-                                    </div>
-                                </li>
+                            {/* JAM */}
+                            <div className="text-4xl md:text-5xl font-bold tracking-widest drop-shadow-lg">
+                                {time.toLocaleTimeString("id-ID", {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    second: "2-digit",
+                                })}
+                            </div>
 
-                                <li>
-                                    <div class="timeline-start text-sm">
-                                        09:30
-                                    </div>
-                                    <div class="timeline-middle">
-                                        <div class="badge badge-success badge-sm"></div>
-                                    </div>
-                                    <div class="timeline-end timeline-box">
-                                        Pesanan berhasil diproses
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div class="timeline-start text-sm">
-                                        11:15
-                                    </div>
-                                    <div class="timeline-middle">
-                                        <div class="badge badge-warning badge-sm"></div>
-                                    </div>
-                                    <div class="timeline-end timeline-box">
-                                        Stok produk hampir habis
-                                    </div>
-                                </li>
-                            </ul>
+                            {/* TANGGAL */}
+                            <div className="text-sm mt-2 text-white/80">
+                                {time.toLocaleDateString("id-ID", {
+                                    weekday: "long",
+                                    day: "numeric",
+                                    month: "long",
+                                    year: "numeric",
+                                })}
+                            </div>
                         </div>
                     </div>
                 </div>

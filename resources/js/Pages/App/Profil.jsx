@@ -1,6 +1,6 @@
 import Keranjangapp from "@/Components/Keranjangapp";
 import { Head, Link, useForm, usePage } from "@inertiajs/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
 export default function Profil({ profil, kodeorder, meja, total }) {
@@ -25,17 +25,20 @@ export default function Profil({ profil, kodeorder, meja, total }) {
         e.preventDefault();
         post("/profil", {
             onSuccess: () => {
-                reset();
-                if (flash.success) {
-                    toast.success(flash.success, {
-                        position: "top-center",
-                        autoClose: 1000,
-                        theme: "light",
-                    });
-                }
+                // reset();
             },
         });
     };
+
+    useEffect(() => {
+        if (flash.success) {
+            toast.success(flash.success, {
+                position: "top-center",
+                autoClose: 1000,
+                theme: "light",
+            });
+        }
+    }, [flash]);
 
     return (
         <>

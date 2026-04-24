@@ -43,7 +43,6 @@ class ProfilController extends Controller
             $pp->alamat = $request->alamat;
             $pp->alamat = $request->alamat;
             $pp->update();
-            return redirect()->back()->with('success', 'Data berhasil diupdate');
         } else {
 
             $request->validate([
@@ -64,7 +63,8 @@ class ProfilController extends Controller
             $pp->status = 1;
 
             $pp->save();
-            return redirect()->back()->with('success', 'Member berhasil dibuat');
         }
+
+        return redirect()->back()->with('success', 'Member berhasil dibuat');
     }
 }

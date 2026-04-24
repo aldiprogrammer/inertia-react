@@ -162,6 +162,15 @@ export default function AdminLayout({ children }) {
                                 </Link>
                             </li>
                             <li>
+                                <Link
+                                    href="/dataorderuser"
+                                    className="rounded-xl"
+                                >
+                                    <i className="fas fa-bag-shopping"></i>Order
+                                    User
+                                </Link>
+                            </li>
+                            <li>
                                 <details>
                                     <summary className="rounded-xl">
                                         <i className="fas fa-calendar-days"></i>{" "}
@@ -207,6 +216,12 @@ export default function AdminLayout({ children }) {
                                     Inventaris
                                 </Link>
                             </li>
+
+                            <li>
+                                <Link href="/user" className="rounded-xl">
+                                    <i className="fas fa-users"></i> User
+                                </Link>
+                            </li>
                             <li>
                                 <details>
                                     <summary className="rounded-xl">
@@ -230,7 +245,7 @@ export default function AdminLayout({ children }) {
                             </li>
                             <li>
                                 <Link href="/pengguna" className="rounded-xl">
-                                    <i className="fas fa-users"></i> Admin
+                                    <i className="fas fa-user"></i> Admin
                                 </Link>
                             </li>
                             {/* <li>

@@ -59,7 +59,7 @@ export default function Home({ kategori, produk, kodeorder, meja }) {
         <>
             <Head title="App" />
             <div className="bg-gray-200 md:flex md:items-center md:justify-center md:min-h-screen">
-                <div className="w-full h-screen bg-white overflow-hidden relative md:max-w-[375px] md:mx-auto md:shadow-2xl md:border md:rounded-sm">
+                <div className="w-full h-screen bg-white overflow-hidden relative md:max-w-[375px]  md:mx-auto md:shadow-2xl md:border md:rounded-sm">
                     {/* HEADER */}
                     <div
                         className={`sticky top-0 z-50 p-4 transition ${scrolled ? "bg-white shadow-md border-b" : "bg-white/80 backdrop-blur"}`}
