@@ -4,9 +4,73 @@ import axios from "axios";
 
 export default function AdminLayout({ children }) {
     const { session } = usePage().props;
+    const url = usePage().url;
     const [orderuser, setOrderuser] = useState([]);
 
     const modalRef = useRef(null);
+
+    useEffect(() => {
+        if (typeof window.jQuery === "undefined") return;
+
+        const timer = setTimeout(() => {
+            const el = document.getElementById("myTable");
+            if (!el) return;
+
+            const $ = window.jQuery;
+            if ($.fn.DataTable.isDataTable(el)) {
+                $(el).DataTable().destroy();
+            }
+
+            const title =
+                document
+                    .querySelector(".card-title")
+                    ?.textContent?.trim() || "laporan";
+            const filename = title
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/^-|-$/g, "");
+
+            $(el).DataTable({
+                dom: '<"flex flex-wrap gap-2 items-center mb-2"Bf>rt<"flex flex-wrap justify-between items-center mt-2"lip>',
+                buttons: [
+                    {
+                        extend: "copy",
+                        text: '<i class="fas fa-copy"></i> Copy',
+                    },
+                    {
+                        extend: "csv",
+                        text: '<i class="fas fa-file-csv"></i> CSV',
+                    },
+                    {
+                        extend: "excel",
+                        text: '<i class="fas fa-file-excel"></i> Excel',
+                    },
+                    {
+                        extend: "pdf",
+                        text: '<i class="fas fa-file-pdf"></i> PDF',
+                        filename: filename,
+                    },
+                    {
+                        extend: "print",
+                        text: '<i class="fas fa-print"></i> Print',
+                    },
+                ],
+                pageLength: 25,
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "Semua"],
+                ],
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json",
+                },
+                exportOptions: {
+                    modifier: { page: "all" },
+                },
+            });
+        }, 50);
+
+        return () => clearTimeout(timer);
+    }, [url]);
 
     const openModal = () => {
         modalRef.current.showModal();
@@ -20,13 +84,89 @@ export default function AdminLayout({ children }) {
     const Listorderuser = async () => {
         try {
             const response = await axios.get("/orderuser");
-            console.log(response.data);
             setOrderuser(response.data);
-        } catch (error) {}
+            return response.data;
+        } catch (error) {
+            return [];
+        }
     };
 
+    const prevOrderIds = useRef(new Set());
+
     useEffect(() => {
-        Listorderuser();
+        Listorderuser().then((orders) => {
+            if (orders) {
+                prevOrderIds.current = new Set(
+                    orders.map((o) => o.id),
+                );
+            }
+        });
+
+        const poll = setInterval(async () => {
+            const orders = await Listorderuser();
+            if (!orders || orders.length === 0) return;
+
+            const currentIds = new Set(orders.map((o) => o.id));
+            const newOrders = orders.filter(
+                (o) => !prevOrderIds.current.has(o.id),
+            );
+
+            if (newOrders.length > 0) {
+                if (typeof window.AudioContext !== "undefined" || typeof window.webkitAudioContext !== "undefined") {
+                    try {
+                        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                        [523, 659].forEach((freq, i) => {
+                            const osc = ctx.createOscillator();
+                            const gain = ctx.createGain();
+                            osc.connect(gain);
+                            gain.connect(ctx.destination);
+                            osc.frequency.value = freq;
+                            osc.type = "sine";
+                            const t = ctx.currentTime + i * 0.15;
+                            gain.gain.setValueAtTime(0.3, t);
+                            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+                            osc.start(t);
+                            osc.stop(t + 0.4);
+                        });
+                        setTimeout(() => {
+                            if (typeof window.SpeechSynthesis !== "undefined") {
+                                const ucapan = new SpeechSynthesisUtterance("Ada pesanan");
+                                ucapan.lang = "id-ID";
+                                ucapan.rate = 1;
+                                window.speechSynthesis.cancel();
+                                window.speechSynthesis.speak(ucapan);
+                            }
+                        }, 500);
+                    } catch (e) {}
+                }
+                if (typeof window.Swal !== "undefined") {
+                    newOrders.forEach((order) => {
+                        window.Swal.fire({
+                            icon: "info",
+                            title: "Pesanan Baru!",
+                            html: `
+                                <b>Kode:</b> ${order.kode_order}<br>
+                                <b>Meja:</b> ${order.meja}<br>
+                                <b>Total:</b> Rp ${Number(order.total_harga).toLocaleString("id-ID")}
+                            `,
+                            timer: 8000,
+                            showConfirmButton: true,
+                            confirmButtonText: "Proses ke Kasir",
+                            showCancelButton: true,
+                            cancelButtonText: "Tutup",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "/kasir/" + order.kode_order;
+                            }
+                        });
+                    });
+                }
+            }
+
+            prevOrderIds.current = currentIds;
+        }, 5000);
+
+        return () => clearInterval(poll);
     }, []);
 
     return (
@@ -87,7 +227,11 @@ export default function AdminLayout({ children }) {
                                             d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
                                         />
                                     </svg>
-                                    <span className="badge badge-sm badge-success indicator-item"></span>
+                                    {orderuser.length > 0 && (
+                                        <span className="badge badge-sm badge-error indicator-item">
+                                            {orderuser.length}
+                                        </span>
+                                    )}
                                 </div>
                             </button>
 

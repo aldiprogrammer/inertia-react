@@ -2,6 +2,7 @@ import AdminLayout from "@/Layouts/AdminLayout";
 import { useForm, usePage } from "@inertiajs/react";
 import React, { useEffect, useRef, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
+import { QRCodeCanvas } from "qrcode.react";
 
 export default function Meja({ meja, kode }) {
     const { flash } = usePage().props;
@@ -69,6 +70,85 @@ export default function Meja({ meja, kode }) {
         }
     };
 
+    const downloadQR = (id) => {
+        const canvas = document.getElementById("qr-" + id);
+        if (canvas) {
+            const pngUrl = canvas.toDataURL("image/png");
+            const link = document.createElement("a");
+            link.download = "meja-" + id + ".png";
+            link.href = pngUrl;
+            link.click();
+        }
+    };
+
+    const cetakQR = () => {
+        const canvases = document.querySelectorAll('[id^="qr-"]');
+        const qrData = [];
+        canvases.forEach((canvas, i) => {
+            qrData.push({ dataUrl: canvas.toDataURL("image/png"), label: meja[i]?.meja || "" });
+        });
+        const win = window.open("", "_blank");
+        win.document.write(`
+            <html>
+            <head>
+                <title>Export QR Meja</title>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"><\/script>
+                <style>
+                    * { margin: 0; padding: 0; box-sizing: border-box; }
+                    body { padding: 20px; font-family: Arial, sans-serif; }
+                    #pdf-content {
+                        display: grid;
+                        grid-template-columns: repeat(4, 1fr);
+                        gap: 16px;
+                        max-width: 100%;
+                    }
+                    .card {
+                        border: 2px solid #333;
+                        border-radius: 8px;
+                        padding: 16px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        aspect-ratio: 1 / 1;
+                    }
+                    .card img { display: block; max-width: 70%; height: auto; }
+                    .card .label {
+                        margin-top: 10px;
+                        font-size: 14px;
+                        font-weight: bold;
+                        text-align: center;
+                        text-transform: uppercase;
+                    }
+                </style>
+            </head>
+            <body>
+                <div id="pdf-content">
+                    ${qrData.map(q => `
+                        <div class="card">
+                            <img src="${q.dataUrl}" alt="QR Meja" />
+                            <div class="label">${q.label}</div>
+                        </div>
+                    `).join("")}
+                </div>
+                <script>
+                    var opt = {
+                        margin:       0.5,
+                        filename:     'qrcode-meja.pdf',
+                        image:        { type: 'jpeg', quality: 0.98 },
+                        html2canvas:  { scale: 2, useCORS: true },
+                        jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' },
+                        pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+                    };
+                    var el = document.getElementById('pdf-content');
+                    html2pdf().set(opt).from(el).save().then(function() { window.close(); });
+                <\/script>
+            </body>
+            </html>
+        `);
+        win.document.close();
+    };
+
     useEffect(() => {
         if (flash.success) {
             toast.success(flash.success, {
@@ -90,6 +170,13 @@ export default function Meja({ meja, kode }) {
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
                             <h2 class="card-title">Data Meja</h2>
                             <div class="flex gap-2">
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={cetakQR}
+                                >
+                                    <i className="fas fa-print"></i>
+                                    Cetak QR
+                                </button>
                                 <button
                                     className="btn btn-success"
                                     onClick={openModal}
@@ -262,6 +349,7 @@ export default function Meja({ meja, kode }) {
                                         <th>No</th>
                                         <th>Kode</th>
                                         <th>Meja</th>
+                                        <th>QR Code</th>
                                         <th>Opsi</th>
                                     </tr>
                                 </thead>
@@ -271,6 +359,28 @@ export default function Meja({ meja, kode }) {
                                             <td>{index + 1}</td>
                                             <td>{item.kode}</td>
                                             <td>{item.meja}</td>
+                                            <td>
+                                                <div className="flex flex-col items-center gap-1">
+                                                    <QRCodeCanvas
+                                                        id={"qr-" + item.id}
+                                                        value={
+                                                            window.location.origin +
+                                                            "/?table=" +
+                                                            item.kode
+                                                        }
+                                                        size={80}
+                                                        level="M"
+                                                    />
+                                                    <button
+                                                        className="btn btn-ghost btn-xs"
+                                                        onClick={() =>
+                                                            downloadQR(item.id)
+                                                        }
+                                                    >
+                                                        <i className="fas fa-download"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
                                             <td>
                                                 <div className="flex gap-2">
                                                     <button

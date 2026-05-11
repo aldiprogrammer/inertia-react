@@ -122,6 +122,7 @@ Route::middleware([CekLoginAdmin::class])->group(function () {
     Route::delete('/hapusdetailorder/{id}', [PenjualanController::class, 'hapusdetail'])->name('penjualan.deletedetail');
     Route::delete('/hapusorder/{kode}', [PenjualanController::class, 'hapusorder'])->name('penjualan.deletorder');
     Route::get('/penjualanhariini', [PenjualanController::class, 'penjualanhariini'])->name('penjualanhariini');
+
     Route::get('/testprint', [PenjualanController::class, 'testprint'])->name('testprint');
 
     Route::get('/orderuser', [OrderUserController::class, 'index'])->name('orderuser');
